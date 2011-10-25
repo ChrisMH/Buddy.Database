@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace Utility.Database.PostgreSql.Test
 {
-  public class DbCreatorTest
+  public class PgCreatorTest
   {
     [Test]
     public void SchemaConnectionStringAttributeIsRemoved()

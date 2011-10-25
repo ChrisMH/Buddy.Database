@@ -49,6 +49,8 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="DbDescription.cs" />
+    <Compile Include="DbScript.cs" />
     <Compile Include="IDbCreator.cs" />
     <Compile Include="PostgreSql\PgCreator.cs" />
     <Compile Include="PostgreSql\PgSuperuser.cs" />
