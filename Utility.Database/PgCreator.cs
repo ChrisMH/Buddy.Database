@@ -66,6 +66,9 @@ namespace Utility.Database.PostgreSql
         foreach (var schema in schemas)
         {
           db.ExecuteNonQuery(string.Format("GRANT ALL ON SCHEMA {0} TO {1}", schema, Provider.ConnectionString["user id"]));
+          db.ExecuteNonQuery(string.Format("GRANT ALL ON ALL TABLES IN SCHEMA {0} TO {1}", schema, Provider.ConnectionString["user id"]));
+          db.ExecuteNonQuery(string.Format("GRANT ALL ON ALL SEQUENCES IN SCHEMA {0} TO {1}", schema, Provider.ConnectionString["user id"]));
+          db.ExecuteNonQuery(string.Format("GRANT ALL ON ALL FUNCTIONS IN SCHEMA {0} TO {1}", schema, Provider.ConnectionString["user id"]));
         }
       }
     }
