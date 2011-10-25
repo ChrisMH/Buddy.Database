@@ -8,7 +8,7 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void SchemaConnectionStringAttributeIsRemoved()
     {
-      var creator = new PgCreator("ProviderWithSchema", null, null, new PgSuperuser());
+      var creator = new PgCreator("ProviderWithSchema", new PgSuperuser(), null, null);
 
       Assert.False(creator.Provider.ConnectionString.ContainsKey("schema"));
     }
@@ -16,7 +16,7 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void DatabaseWithExistingUserNameIsCreated()
     {
-      var creator = new PgCreator("ProviderWithExistingUserName", null, null, new PgSuperuser());
+      var creator = new PgCreator("ProviderWithExistingUserName", new PgSuperuser(), null, null);
 
       try
       {
@@ -36,7 +36,7 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void DatabaseAndUserWithMissingUserNameAreCreated()
     {
-      var creator = new PgCreator("ProviderWithMissingUserName", null, null, new PgSuperuser());
+      var creator = new PgCreator("ProviderWithMissingUserName", new PgSuperuser(), null, null);
 
       try
       {
@@ -59,9 +59,9 @@ namespace Utility.Database.PostgreSql.Test
     public void DatabaseCreationCreatesSchema()
     {
       var creator = new PgCreator("ProviderWithMissingUserName",
+                                  new PgSuperuser(),
                                   () => new List<string> {TestSchema},
-                                  null,
-                                  new PgSuperuser());
+                                  null);
 
       try
       {
@@ -82,9 +82,9 @@ namespace Utility.Database.PostgreSql.Test
     public void DatabaseCreationGrantsPermissionsOnPublicSchema()
     {
       var creator = new PgCreator("ProviderWithMissingUserName",
-                                  () => new List<string> { TestSchema },
-                                  null,
-                                  new PgSuperuser());
+                                  new PgSuperuser(),
+                                  () => new List<string> {TestSchema},
+                                  null);
 
       try
       {
@@ -106,9 +106,9 @@ namespace Utility.Database.PostgreSql.Test
     public void DatabaseCreationGrantsPermissionsOnSchema()
     {
       var creator = new PgCreator("ProviderWithMissingUserName",
-                                  () => new List<string> { TestSchema },
-                                  null,
-                                  new PgSuperuser());
+                                  new PgSuperuser(),
+                                  () => new List<string> {TestSchema},
+                                  null);
 
       try
       {
@@ -125,14 +125,14 @@ namespace Utility.Database.PostgreSql.Test
         creator.Destroy();
       }
     }
-    
+
     [Test]
     public void DatabaseSeedSeedsDatabase()
     {
       var creator = new PgCreator("ProviderWithMissingUserName",
-                                  () => new List<string> { TestSchema },
-                                  () => new List<string> { TestSeed },
-                                  new PgSuperuser());
+                                  new PgSuperuser(),
+                                  () => new List<string> {TestSchema},
+                                  () => new List<string> {TestSeed});
 
       try
       {
@@ -154,6 +154,4 @@ namespace Utility.Database.PostgreSql.Test
     private const string TestSchema = "CREATE SCHEMA test_schema; CREATE TABLE test_schema.test_table ( id serial NOT NULL, name varchar NOT NULL );";
     private const string TestSeed = "INSERT INTO test_schema.test_table (name) VALUES('name1');INSERT INTO test_schema.test_table (name) VALUES('name2');";
   }
-
-
 }

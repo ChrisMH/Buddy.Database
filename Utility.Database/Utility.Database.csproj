@@ -46,9 +46,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="IDbCreator.cs" />
-    <Compile Include="PgCreator.cs" />
-    <Compile Include="PgSuperuser.cs" />
+    <Compile Include="PostgreSql\PgCreator.cs" />
+    <Compile Include="PostgreSql\PgSuperuser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

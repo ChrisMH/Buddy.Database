@@ -9,7 +9,6 @@ namespace Utility.Database.PostgreSql.Test
   [SetUpFixture]
   public static class GlobalTest
   {
-    public static PgCreator AccountSchema { get; private set; }
     public static ILogger Logger { get; private set; }
 
     static GlobalTest()
@@ -21,7 +20,6 @@ namespace Utility.Database.PostgreSql.Test
         MoLogger.Logger = Logger;
         MoLogger.Enabled = true;
       }
-
       catch (Exception e)
       {
         Logger.Fatal(e, "GlobalTest : {0} : {1}", e.GetType(), e.Message);

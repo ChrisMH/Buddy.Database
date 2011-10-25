@@ -9,9 +9,9 @@ namespace Utility.Database.PostgreSql
   public class PgCreator : IDbCreator
   {
     public PgCreator(string connectionStringName,
+                     PgSuperuser superuser,
                      Func<IEnumerable<string>> schemaDefinitions,
-                     Func<IEnumerable<string>> seedDefinitions,
-                     PgSuperuser superuser)
+                     Func<IEnumerable<string>> seedDefinitions)
     {
       Provider = new MoConnectionProvider(connectionStringName);
       Provider.ConnectionString.Remove("schema");
