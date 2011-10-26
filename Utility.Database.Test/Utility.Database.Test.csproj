@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="DbDescriptions.cs" />
     <Compile Include="DbDescriptionTest.cs" />
+    <Compile Include="DbScripts.cs" />
     <Compile Include="DbScriptTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -63,8 +64,10 @@
       <Name>Utility.Database</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Resources\" />
+    <EmbeddedResource Include="Resources\schema.txt" />
+    <EmbeddedResource Include="Resources\seed.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

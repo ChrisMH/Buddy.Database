@@ -9,5 +9,14 @@
 
     public static string MinimumValid = "<DbDescription><ConnectionString>database=test</ConnectionString><ProviderName>Provider</ProviderName></DbDescription>";
 
+    public static string SingleFileSchema = "<DbDescription>" +
+                                            "<ConnectionString>database=test</ConnectionString><ProviderName>Provider</ProviderName>" +
+                                            "<Schema type=file>d:\\directory\\desc.xml</Schema>" +
+                                            "</DbDescription>";
+
+    public static string SingleResourceSchema = "<DbDescription>" +
+                                                "<ConnectionString>database=test</ConnectionString><ProviderName>Provider</ProviderName>" +
+                                                "<Schema type=resource>desc</Schema>" +
+                                                "</DbDescription>";
   }
 }

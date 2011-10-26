@@ -22,4 +22,5 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("02713427-cfa0-4212-b4b5-1f9bdb95f4da")]
 
+[assembly: InternalsVisibleTo("Utility.Database.Test")]
 [assembly: InternalsVisibleTo("Utility.Database.PostgreSql.Test")]
