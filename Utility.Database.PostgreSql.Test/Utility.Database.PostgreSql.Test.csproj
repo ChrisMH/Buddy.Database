@@ -70,6 +70,7 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="PgCreatorFromDescriptionTest.cs" />
     <Compile Include="PgCreatorTest.cs" />
     <Compile Include="GlobalTest.cs">
       <SubType>Code</SubType>
@@ -88,16 +89,22 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="nlog.desktop.config" />
     <None Include="packages.config" />
-    <Content Include="Resources\Basic.xml" />
+    <None Include="Resources\TestDescription.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\TestSeed.sql" />
+    <EmbeddedResource Include="Resources\TestSchema.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

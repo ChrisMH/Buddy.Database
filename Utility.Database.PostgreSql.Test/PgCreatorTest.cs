@@ -8,7 +8,7 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void SchemaConnectionStringAttributeIsRemoved()
     {
-      var creator = new PgCreator("ProviderWithSchema", new PgSuperuser(), null, null);
+      var creator = new PgCreator("ConnectionNameWithSchema");
 
       Assert.False(creator.Provider.ConnectionString.ContainsKey("schema"));
     }
@@ -16,7 +16,7 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void DatabaseWithExistingUserNameIsCreated()
     {
-      var creator = new PgCreator("ProviderWithExistingUserName", new PgSuperuser(), null, null);
+      var creator = new PgCreator("ConnectionNameWithExistingUserName");
 
       try
       {
@@ -36,7 +36,7 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void DatabaseAndUserWithMissingUserNameAreCreated()
     {
-      var creator = new PgCreator("ProviderWithMissingUserName", new PgSuperuser(), null, null);
+      var creator = new PgCreator("ConnectionNameWithMissingUserName");
 
       try
       {
@@ -58,10 +58,8 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void DatabaseCreationCreatesSchema()
     {
-      var creator = new PgCreator("ProviderWithMissingUserName",
-                                  new PgSuperuser(),
-                                  () => new List<string> {TestSchema},
-                                  null);
+      var creator = new PgCreator("ConnectionName",
+                                  () => new List<string> {TestSchema});
 
       try
       {
@@ -81,10 +79,8 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void DatabaseCreationGrantsPermissionsOnPublicSchema()
     {
-      var creator = new PgCreator("ProviderWithMissingUserName",
-                                  new PgSuperuser(),
-                                  () => new List<string> {TestSchema},
-                                  null);
+      var creator = new PgCreator("ConnectionName",
+                                  () => new List<string> {TestSchema});
 
       try
       {
@@ -105,10 +101,8 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void DatabaseCreationGrantsPermissionsOnSchema()
     {
-      var creator = new PgCreator("ProviderWithMissingUserName",
-                                  new PgSuperuser(),
-                                  () => new List<string> {TestSchema},
-                                  null);
+      var creator = new PgCreator("ConnectionName",
+                                  () => new List<string> {TestSchema});
 
       try
       {
@@ -129,8 +123,7 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void DatabaseSeedSeedsDatabase()
     {
-      var creator = new PgCreator("ProviderWithMissingUserName",
-                                  new PgSuperuser(),
+      var creator = new PgCreator("ConnectionName",
                                   () => new List<string> {TestSchema},
                                   () => new List<string> {TestSeed});
 
@@ -149,6 +142,32 @@ namespace Utility.Database.PostgreSql.Test
       {
         creator.Destroy();
       }
+    }
+
+    [Test]
+    public void NullSuperuserUsesDefaultSuperuser()
+    {
+      var creator = new PgCreator("ConnectionName");
+
+      Assert.AreEqual("postgres", creator.CreateDatabaseProvider.ConnectionString["database"]);
+      Assert.AreEqual("postgres", creator.CreateDatabaseProvider.ConnectionString["user id"]);
+      Assert.AreEqual("postgres", creator.CreateDatabaseProvider.ConnectionString["password"]);
+      Assert.AreEqual("utility_database_test", creator.CreateContentProvider.ConnectionString["database"]);
+      Assert.AreEqual("postgres", creator.CreateContentProvider.ConnectionString["user id"]);
+      Assert.AreEqual("postgres", creator.CreateContentProvider.ConnectionString["password"]);
+    }
+
+    [Test]
+    public void SpecificSuperuserIsUsed()
+    {
+      var creator = new PgCreator("ConnectionName", null, null, new PgSuperuser {Database = "sudb", UserId = "suid", Password = "supw"});
+
+      Assert.AreEqual("sudb", creator.CreateDatabaseProvider.ConnectionString["database"]);
+      Assert.AreEqual("suid", creator.CreateDatabaseProvider.ConnectionString["user id"]);
+      Assert.AreEqual("supw", creator.CreateDatabaseProvider.ConnectionString["password"]);
+      Assert.AreEqual("utility_database_test", creator.CreateContentProvider.ConnectionString["database"]);
+      Assert.AreEqual("suid", creator.CreateContentProvider.ConnectionString["user id"]);
+      Assert.AreEqual("supw", creator.CreateContentProvider.ConnectionString["password"]);
     }
 
     private const string TestSchema = "CREATE SCHEMA test_schema; CREATE TABLE test_schema.test_table ( id serial NOT NULL, name varchar NOT NULL );";

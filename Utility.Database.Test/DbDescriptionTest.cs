@@ -8,62 +8,33 @@ namespace Utility.Database.Test
   public class DbDescriptionTest
   {
     [Test]
-    public void DescriptionMissingConnectionStringThrows()
+    public void DescriptionMissingConnectionNameThrows()
     {
       var desc = XElement.Parse(DbDescriptions.Empty);
 
       var e = Assert.Throws<ArgumentException>(() => new DbDescription(desc));
-      Assert.AreEqual("ConnectionString", e.ParamName);
+      Assert.AreEqual("ConnectionName", e.ParamName);
     }
 
     [Test]
-    public void DescriptionWithEmptyConnectionStringThrows()
+    public void DescriptionWithEmptyConnectionNameThrows()
     {
-      var desc = XElement.Parse(DbDescriptions.EmptyConnectionString);
+      var desc = XElement.Parse(DbDescriptions.EmptyConnectionName);
 
       var e = Assert.Throws<ArgumentException>(() => new DbDescription(desc));
-      Assert.AreEqual("ConnectionString", e.ParamName);
+      Assert.AreEqual("ConnectionName", e.ParamName);
     }
     
     [Test]
-    public void DescriptionMissingProviderNameThrows()
-    {
-      var desc = XElement.Parse(DbDescriptions.MissingProviderName);
-
-      var e = Assert.Throws<ArgumentException>(() => new DbDescription(desc));
-      Assert.AreEqual("ProviderName", e.ParamName);
-    }
-
-    [Test]
-    public void DescriptionWithEmptyProviderNameThrows()
-    {
-      var desc = XElement.Parse(DbDescriptions.EmptyProviderName);
-
-      var e = Assert.Throws<ArgumentException>(() => new DbDescription(desc));
-      Assert.AreEqual("ProviderName", e.ParamName);
-    }
-
-    [Test]
-    public void DescriptionParsesConnectionString()
+    public void DescriptionLoadsConnectionName()
     {
       var desc = XElement.Parse(DbDescriptions.MinimumValid);
 
       var result = new DbDescription(desc);
 
-      Assert.AreEqual("database=test", result.ConnectionString.ConnectionString);
+      Assert.AreEqual("ConnectionName", result.ConnectionName);
     }
-
-
-    [Test]
-    public void DescriptionParsesProviderName()
-    {
-      var desc = XElement.Parse(DbDescriptions.MinimumValid);
-
-      var result = new DbDescription(desc);
-
-      Assert.AreEqual("Provider", result.ProviderName);
-    }
-
+    
     [Test]
     public void DescriptionMissingSchemaReturnsEmptySchemaCollection()
     {
@@ -82,6 +53,60 @@ namespace Utility.Database.Test
       var result = new DbDescription(desc);
 
       Assert.AreEqual(0, result.Seeds.Count());
+    }
+
+    [TestCase(DbDescriptions.SingleFileSchema)]
+    [TestCase(DbDescriptions.SingleResourceSchema)]
+    public void CanLoadSingleSchema(string script)
+    {
+      var desc = XElement.Parse(script);
+
+      var result = new DbDescription(desc);
+      
+      Assert.AreEqual(1, result.Schemas.Count());
+    }
+
+    [TestCase(DbDescriptions.SingleFileSeed)]
+    [TestCase(DbDescriptions.SingleResourceSeed)]
+    public void CanLoadSingleSeed(string script)
+    {
+      var desc = XElement.Parse(script);
+
+      var result = new DbDescription(desc);
+
+      Assert.AreEqual(1, result.Seeds.Count());
+    }
+
+    [Test]
+    public void CanLoadSchemasAndSeeds()
+    {
+      var desc = XElement.Parse(DbDescriptions.SchemasAndSeeds);
+
+      var result = new DbDescription(desc);
+
+      Assert.AreEqual(2, result.Schemas.Count());
+      Assert.AreEqual(2, result.Seeds.Count());
+    }
+
+    [Test]
+    public void EmptyBaseDirectoryUsesAppDomainBaseDirectory()
+    {
+      var root = XElement.Parse(DbDescriptions.SingleFileSchema);
+
+      var result = new DbDescription(root);
+
+      Assert.AreEqual(AppDomain.CurrentDomain.BaseDirectory, result.schemas[0].BaseDirectory);
+    }
+
+    [Test]
+    public void CanLoadRelativeFileScript()
+    {
+      var root = XElement.Parse(DbDescriptions.RelativeFileSchema);
+
+      var result = new DbDescription(root, "d:\\DevP\\Utility.Database\\Utility.Database.Test");
+
+      Assert.AreEqual("schema", result.Schemas.First());
+      Assert.AreEqual("seed", result.Seeds.First());
     }
   }
 }

@@ -1,26 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Common;
 using System.Xml.Linq;
+using MicrOrm;
+using MicrOrm.Core;
+using Utility;
 
 namespace Utility.Database
 {
   public class DbDescription
   {
-    public DbDescription(XElement root)
+    public DbDescription(XElement root, string baseDirectory = null)
     {
-      if (root.Element("ConnectionString") == null) throw new ArgumentException("ConnectionString element is missing", "ConnectionString");
-      if (string.IsNullOrEmpty(root.Element("ConnectionString").Value)) throw new ArgumentException("ConnectionString element is empty", "ConnectionString");
+      if (root.Element("ConnectionName") == null) throw new ArgumentException("ConnectionName element is missing", "ConnectionName");
+      if (string.IsNullOrEmpty(root.Element("ConnectionName").Value)) throw new ArgumentException("ConnectionName element is empty", "ConnectionName");
 
-      if (root.Element("ProviderName") == null) throw new ArgumentException("ProviderName element is missing", "ProviderName");
-      if (string.IsNullOrEmpty(root.Element("ProviderName").Value)) throw new ArgumentException("ProviderName element is empty", "ProviderName");
+      ConnectionName = root.Element("ConnectionName").Value;
 
-      ConnectionString = new DbConnectionStringBuilder { ConnectionString = root.Element("ConnectionString").Value };
-      ProviderName = root.Element("ProviderName").Value;
+      root.Elements("Schema").ForEach(element => schemas.Add(new DbScript(element, baseDirectory)));
+      root.Elements("Seed").ForEach(element => seeds.Add(new DbScript(element, baseDirectory)));
     }
 
-    public DbConnectionStringBuilder ConnectionString { get; private set; }
-    public string ProviderName { get; private set; }
+    public string ConnectionName { get; private set; }
 
     public IEnumerable<string> Schemas
     {
@@ -44,7 +46,7 @@ namespace Utility.Database
       }
     }
 
-    private List<DbScript> schemas = new List<DbScript>(); 
-    private List<DbScript> seeds = new List<DbScript>();
+    internal List<DbScript> schemas = new List<DbScript>(); 
+    internal List<DbScript> seeds = new List<DbScript>();
   }
 }

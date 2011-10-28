@@ -2,21 +2,45 @@
 {
   public static class DbDescriptions
   {
-    public static string Empty = "<DbDescription></DbDescription>";
-    public static string EmptyConnectionString = "<DbDescription><ConnectionString></ConnectionString></DbDescription>";
-    public static string MissingProviderName = "<DbDescription><ConnectionString>database=test</ConnectionString></DbDescription>";
-    public static string EmptyProviderName = "<DbDescription><ConnectionString>database=test</ConnectionString><ProviderName></ProviderName></DbDescription>";
+    public const string Empty = "<DbDescription></DbDescription>";
+    public const string EmptyConnectionName = "<DbDescription><ConnectionName></ConnectionName></DbDescription>";
+    public const string InvalidConnectionName = "<DbDescription><ConnectionName>InvalidConnectionName</ConnectionName></DbDescription>";
+    
+    public const string MinimumValid = "<DbDescription><ConnectionName>ConnectionName</ConnectionName></DbDescription>";
 
-    public static string MinimumValid = "<DbDescription><ConnectionString>database=test</ConnectionString><ProviderName>Provider</ProviderName></DbDescription>";
+    public const string SingleFileSchema = "<DbDescription>" +
+                                           "<ConnectionName>ConnectionName</ConnectionName>" +
+                                           "<Schema type=\"file\">d:\\DevP\\Utility.Database\\Utility.Database.Test\\Resources\\schema.txt</Schema>" +
+                                           "</DbDescription>";
 
-    public static string SingleFileSchema = "<DbDescription>" +
-                                            "<ConnectionString>database=test</ConnectionString><ProviderName>Provider</ProviderName>" +
-                                            "<Schema type=file>d:\\directory\\desc.xml</Schema>" +
-                                            "</DbDescription>";
+    public const string SingleResourceSchema = "<DbDescription>" +
+                                               "<ConnectionName>ConnectionName</ConnectionName>" +
+                                               "<Schema type=\"resource\">Utility.Database.Test.Resources.schema.txt</Schema>" +
+                                               "</DbDescription>";
 
-    public static string SingleResourceSchema = "<DbDescription>" +
-                                                "<ConnectionString>database=test</ConnectionString><ProviderName>Provider</ProviderName>" +
-                                                "<Schema type=resource>desc</Schema>" +
-                                                "</DbDescription>";
+    public const string SingleFileSeed = "<DbDescription>" +
+                                         "<ConnectionName>ConnectionName</ConnectionName>" +
+                                         "<Seed type=\"file\">d:\\DevP\\Utility.Database\\Utility.Database.Test\\Resources\\seed.txt</Seed>" +
+                                         "</DbDescription>";
+
+    public const string SingleResourceSeed = "<DbDescription>" +
+                                             "<ConnectionName>ConnectionName</ConnectionName>" +
+                                             "<Seed type=\"resource\">Utility.Database.Test.Resources.seed.txt</Seed>" +
+                                             "</DbDescription>";
+
+
+    public const string SchemasAndSeeds = "<DbDescription>" +
+                                          "<ConnectionName>ConnectionName</ConnectionName>" +
+                                          "<Schema type=\"file\">d:\\DevP\\Utility.Database\\Utility.Database.Test\\Resources\\schema.txt</Schema>" +
+                                          "<Schema type=\"resource\">Utility.Database.Test.Resources.schema.txt</Schema>" +
+                                          "<Seed type=\"file\">d:\\DevP\\Utility.Database\\Utility.Database.Test\\Resources\\seed.txt</Seed>" +
+                                          "<Seed type=\"resource\">Utility.Database.Test.Resources.seed.txt</Seed>" +
+                                          "</DbDescription>";
+
+    public const string RelativeFileSchema = "<DbDescription>" +
+                                             "<ConnectionName>ConnectionName</ConnectionName>" +
+                                             "<Schema type=\"file\">Resources\\schema.txt</Schema>" +
+                                             "<Seed type=\"file\">Resources\\seed.txt</Seed>" +
+                                             "</DbDescription>";
   }
 }

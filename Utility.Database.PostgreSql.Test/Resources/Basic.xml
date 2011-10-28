@@ -1,5 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<DbDescription>
-  <ConnectionString>host=localhost;port=5432;database=utility_database_test;user id=udtuser;password=udtpw</ConnectionString>
-  <ProviderName>Npgsql</ProviderName>
-</DbDescription>

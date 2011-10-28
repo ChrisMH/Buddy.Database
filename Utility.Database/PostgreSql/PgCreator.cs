@@ -8,27 +8,25 @@ namespace Utility.Database.PostgreSql
 {
   public class PgCreator : IDbCreator
   {
-    public PgCreator(string connectionStringName,
-                     PgSuperuser superuser,
-                     Func<IEnumerable<string>> schemaDefinitions,
-                     Func<IEnumerable<string>> seedDefinitions)
+    public PgCreator(string connectionName,
+                     Func<IEnumerable<string>> schemaDefinitions = null,
+                     Func<IEnumerable<string>> seedDefinitions = null,
+                     PgSuperuser superuser = null)
     {
-      Provider = new MoConnectionProvider(connectionStringName);
-      Provider.ConnectionString.Remove("schema");
-
-      CreateDatabaseProvider = new MoConnectionProvider(connectionStringName);
-      CreateDatabaseProvider.ConnectionString.Remove("schema");
-      CreateDatabaseProvider.ConnectionString["database"] = superuser.Database;
-      CreateDatabaseProvider.ConnectionString["user id"] = superuser.UserId;
-      CreateDatabaseProvider.ConnectionString["password"] = superuser.Password;
-
-      CreateContentProvider = new MoConnectionProvider(connectionStringName);
-      CreateContentProvider.ConnectionString.Remove("schema");
-      CreateContentProvider.ConnectionString["user id"] = superuser.UserId;
-      CreateContentProvider.ConnectionString["password"] = superuser.Password;
+      CreateProviders(connectionName, superuser ?? new PgSuperuser());
 
       SchemaDefinitions = schemaDefinitions;
       SeedDefinitions = seedDefinitions;
+    }
+
+
+    public PgCreator(DbDescription description,
+                     PgSuperuser superuser = null)
+    {
+      CreateProviders(description.ConnectionName, superuser ?? new PgSuperuser());
+
+      SchemaDefinitions = () => description.Schemas;
+      SeedDefinitions = () => description.Seeds;
     }
 
 
@@ -97,6 +95,23 @@ namespace Utility.Database.PostgreSql
           db.ExecuteNonQuery(seedDefinition);
         }
       }
+    }
+
+    private void CreateProviders(string connectionName, PgSuperuser superuser)
+    {
+      Provider = new MoConnectionProvider(connectionName);
+      Provider.ConnectionString.Remove("schema");
+
+      CreateDatabaseProvider = new MoConnectionProvider(connectionName);
+      CreateDatabaseProvider.ConnectionString.Remove("schema");
+      CreateDatabaseProvider.ConnectionString["database"] = superuser.Database;
+      CreateDatabaseProvider.ConnectionString["user id"] = superuser.UserId;
+      CreateDatabaseProvider.ConnectionString["password"] = superuser.Password;
+
+      CreateContentProvider = new MoConnectionProvider(connectionName);
+      CreateContentProvider.ConnectionString.Remove("schema");
+      CreateContentProvider.ConnectionString["user id"] = superuser.UserId;
+      CreateContentProvider.ConnectionString["password"] = superuser.Password;
     }
 
     public IMoConnectionProvider Provider { get; private set; }

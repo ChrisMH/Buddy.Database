@@ -56,22 +56,19 @@ namespace Utility.Database
       }
       else
       {
-        var resourceStream = Assembly.GetExecutingAssembly() == null ? null : Assembly.GetExecutingAssembly().GetManifestResourceStream(ScriptValue);
-        if (resourceStream == null)
+        foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
         {
-          resourceStream = Assembly.GetCallingAssembly() == null ? null : Assembly.GetCallingAssembly().GetManifestResourceStream(ScriptValue);
-          if (resourceStream == null)
+          var resourceStream = assembly.GetManifestResourceStream(ScriptValue);
+          if (resourceStream != null)
           {
-            resourceStream = Assembly.GetEntryAssembly() == null ? null : Assembly.GetEntryAssembly().GetManifestResourceStream(ScriptValue);
+            using (var reader = new StreamReader(resourceStream))
+            {
+              return reader.ReadToEnd();
+            }
           }
         }
 
-        if(resourceStream == null) throw new MissingManifestResourceException(string.Format("Could not find resource '{0}'", ScriptValue));
-
-        using (var reader = new StreamReader(resourceStream))
-        {
-          return reader.ReadToEnd();
-        }
+        throw new MissingManifestResourceException(string.Format("Could not find resource '{0}'", ScriptValue));
       }
     }
 
