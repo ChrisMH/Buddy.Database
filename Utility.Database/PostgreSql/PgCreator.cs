@@ -88,7 +88,7 @@ namespace Utility.Database.PostgreSql
     {
       if (SeedDefinitions == null) return;
 
-      using (var db = Provider.Database)
+      using (var db = CreateContentProvider.Database)
       {
         foreach (var seedDefinition in SeedDefinitions.Invoke())
         {

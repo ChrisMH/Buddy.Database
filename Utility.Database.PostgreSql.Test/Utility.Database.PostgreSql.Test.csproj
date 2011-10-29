@@ -92,7 +92,9 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="nlog.desktop.config" />
+    <None Include="nlog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Resources\TestDescription.xml" />
   </ItemGroup>
