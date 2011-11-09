@@ -55,6 +55,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="DbDescriptions.cs" />
     <Compile Include="DbDescriptionTest.cs" />
     <Compile Include="DbScripts.cs" />

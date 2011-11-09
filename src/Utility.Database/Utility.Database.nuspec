@@ -1,14 +1,16 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>$id$</id>
+    <id>Utility.Database</id>
     <version>$version$</version>
-    <title>$title$</title>
-    <authors>$author$</authors>
-    <owners>$author$</owners>
+    <title>Utility.Database</title>
+    <authors>Chris Hogan</authors>
+    <owners>Chris Hogan</owners>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <projectUrl>https://github.com/ChrisMH/Utility.Database</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>$description$</description>
+    <description>Database utilities used mainly for testing</description>
     <copyright>Copyright 2011</copyright>
-    <tags>Tag1 Tag2</tags>
+    <tags>utility database testing</tags>
   </metadata>
 </package>

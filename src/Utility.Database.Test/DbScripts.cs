@@ -22,10 +22,10 @@
     public const string MissingResourceSeed = "<Schema type=\"resource\">schema.txt</Schema>";
 
     public const string RelativeFileSchema = "<Schema type=\"file\">..\\..\\Resources\\schema.txt</Schema>";
-    public const string AbsoluteFileSchema = "<Schema type=\"file\">d:\\DevP\\Utility.Database\\Utility.Database.Test\\Resources\\schema.txt</Schema>";
+    public const string AbsoluteFileSchema = "<Schema type=\"file\">d:\\DevP\\Utility.Database\\src\\Utility.Database.Test\\Resources\\schema.txt</Schema>";
     public const string ResourceSchema = "<Schema type=\"resource\">Utility.Database.Test.Resources.schema.txt</Schema>";
     public const string RelativeFileSeed = "<Schema type=\"file\">..\\..\\Resources\\seed.txt</Schema>";
-    public const string AbsoluteFileSeed = "<Schema type=\"file\">d:\\DevP\\Utility.Database\\Utility.Database.Test\\Resources\\seed.txt</Schema>";
+    public const string AbsoluteFileSeed = "<Schema type=\"file\">d:\\DevP\\Utility.Database\\src\\Utility.Database.Test\\Resources\\seed.txt</Schema>";
     public const string ResourceSeed = "<Schema type=\"resource\">Utility.Database.Test.Resources.seed.txt</Schema>";
   }
 }

@@ -59,10 +59,10 @@ namespace Utility.Database.Test
     }
 
     [TestCase(DbScripts.RelativeFileSchema, ScriptType.file, "..\\..\\Resources\\schema.txt")]
-    [TestCase(DbScripts.AbsoluteFileSchema, ScriptType.file, "d:\\DevP\\Utility.Database\\Utility.Database.Test\\Resources\\schema.txt")]
+    [TestCase(DbScripts.AbsoluteFileSchema, ScriptType.file, "d:\\DevP\\Utility.Database\\src\\Utility.Database.Test\\Resources\\schema.txt")]
     [TestCase(DbScripts.ResourceSchema, ScriptType.resource, "Utility.Database.Test.Resources.schema.txt")]
     [TestCase(DbScripts.RelativeFileSeed, ScriptType.file, "..\\..\\Resources\\seed.txt")]
-    [TestCase(DbScripts.AbsoluteFileSeed, ScriptType.file, "d:\\DevP\\Utility.Database\\Utility.Database.Test\\Resources\\seed.txt")]
+    [TestCase(DbScripts.AbsoluteFileSeed, ScriptType.file, "d:\\DevP\\Utility.Database\\src\\Utility.Database.Test\\Resources\\seed.txt")]
     [TestCase(DbScripts.ResourceSeed, ScriptType.resource, "Utility.Database.Test.Resources.seed.txt")]
     public void ScriptIsParsedCorrectly(string script, ScriptType scriptType, string scriptValue)
     {

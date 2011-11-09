@@ -103,7 +103,7 @@ namespace Utility.Database.Test
     {
       var root = XElement.Parse(DbDescriptions.RelativeFileSchema);
 
-      var result = new DbDescription(root, "d:\\DevP\\Utility.Database\\Utility.Database.Test");
+      var result = new DbDescription(root, "d:\\DevP\\Utility.Database\\src\\Utility.Database.Test");
 
       Assert.AreEqual("schema", result.Schemas.First());
       Assert.AreEqual("seed", result.Seeds.First());
