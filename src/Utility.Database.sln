@@ -5,11 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database", "Utility
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database.PostgreSql.Test", "Utility.Database.PostgreSql.Test\Utility.Database.PostgreSql.Test.csproj", "{A721320B-1B2E-4DBF-BE7F-A51D1BA55118}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{FEC0F27A-6814-4BAD-9957-01C166A38400}"
-	ProjectSection(SolutionItems) = preProject
-		CommonAssemblyInfo.cs = CommonAssemblyInfo.cs
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database.Test", "Utility.Database.Test\Utility.Database.Test.csproj", "{28BE2CC1-C9FE-41AC-BA10-6968BF728B9F}"
 EndProject
 Global
