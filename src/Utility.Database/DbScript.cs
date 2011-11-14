@@ -58,6 +58,11 @@ namespace Utility.Database
       {
         foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
         {
+          if(assembly.IsDynamic)
+          {
+            // GetManifestResourceStream will not work for dynamic assemblies
+            continue;
+          }
           var resourceStream = assembly.GetManifestResourceStream(ScriptValue);
           if (resourceStream != null)
           {
