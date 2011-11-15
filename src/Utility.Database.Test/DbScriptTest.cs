@@ -48,8 +48,10 @@ namespace Utility.Database.Test
 
     [TestCase(DbScripts.EmptyFileSchema, "Schema")]
     [TestCase(DbScripts.EmptyResourceSchema, "Schema")]
+    [TestCase(DbScripts.EmptyLiteralSchema, "Schema")]
     [TestCase(DbScripts.EmptyFileSeed, "Seed")]
     [TestCase(DbScripts.EmptyResourceSeed, "Seed")]
+    [TestCase(DbScripts.EmptyLiteralSeed, "Seed")]
     public void EmptyValueThrows(string script, string paramName)
     {
       var root = XElement.Parse(script);
@@ -58,12 +60,14 @@ namespace Utility.Database.Test
       Assert.AreEqual(paramName, e.ParamName);
     }
 
-    [TestCase(DbScripts.RelativeFileSchema, ScriptType.file, "..\\..\\Resources\\schema.txt")]
-    [TestCase(DbScripts.AbsoluteFileSchema, ScriptType.file, "d:\\DevP\\Utility.Database\\src\\Utility.Database.Test\\Resources\\schema.txt")]
-    [TestCase(DbScripts.ResourceSchema, ScriptType.resource, "Utility.Database.Test.Resources.schema.txt")]
-    [TestCase(DbScripts.RelativeFileSeed, ScriptType.file, "..\\..\\Resources\\seed.txt")]
-    [TestCase(DbScripts.AbsoluteFileSeed, ScriptType.file, "d:\\DevP\\Utility.Database\\src\\Utility.Database.Test\\Resources\\seed.txt")]
-    [TestCase(DbScripts.ResourceSeed, ScriptType.resource, "Utility.Database.Test.Resources.seed.txt")]
+    [TestCase(DbScripts.RelativeFileSchema, ScriptType.File, "..\\..\\Resources\\schema.txt")]
+    [TestCase(DbScripts.AbsoluteFileSchema, ScriptType.File, "d:\\DevP\\Utility.Database\\src\\Utility.Database.Test\\Resources\\schema.txt")]
+    [TestCase(DbScripts.ResourceSchema, ScriptType.Resource, "Utility.Database.Test.Resources.schema.txt")]
+    [TestCase(DbScripts.RelativeFileSeed, ScriptType.File, "..\\..\\Resources\\seed.txt")]
+    [TestCase(DbScripts.AbsoluteFileSeed, ScriptType.File, "d:\\DevP\\Utility.Database\\src\\Utility.Database.Test\\Resources\\seed.txt")]
+    [TestCase(DbScripts.ResourceSeed, ScriptType.Resource, "Utility.Database.Test.Resources.seed.txt")]
+    [TestCase(DbScripts.LiteralSchema, ScriptType.Literal, "CREATE SCHEMA literal;CREATE TABLE literal.table (id integer NOT NULL);")]
+    [TestCase(DbScripts.LiteralSeed, ScriptType.Literal, "INSERT INTO literal.table VALUES(1);INSERT INTO literal.table VALUES(2);")]
     public void ScriptIsParsedCorrectly(string script, ScriptType scriptType, string scriptValue)
     {
       var root = XElement.Parse(script);
@@ -98,6 +102,7 @@ namespace Utility.Database.Test
 
       Assert.Throws<MissingManifestResourceException>(() => result.Load());
     }
+    
 
     [TestCase(DbScripts.RelativeFileSchema, "schema")]
     [TestCase(DbScripts.AbsoluteFileSchema, "schema")]

@@ -8,7 +8,7 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void SchemaConnectionStringAttributeIsRemoved()
     {
-      var creator = new PgCreator("ConnectionNameWithSchema");
+      var creator = new PgCreator(new PgDbDescription {ConnectionName = "ConnectionNameWithSchema"});
 
       Assert.False(creator.Provider.ConnectionString.ContainsKey("schema"));
     }
@@ -16,7 +16,7 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void DatabaseWithExistingUserNameIsCreated()
     {
-      var creator = new PgCreator("ConnectionNameWithExistingUserName");
+      var creator = new PgCreator(new PgDbDescription {ConnectionName = "ConnectionNameWithExistingUserName"});
 
       try
       {
@@ -34,9 +34,33 @@ namespace Utility.Database.PostgreSql.Test
     }
 
     [Test]
+    public void DatabaseIsCreatedWithTemplate()
+    {
+      var creator = new PgCreator(new PgDbDescription
+                                  {
+                                    ConnectionName = "ConnectionNameWithExistingUserName",
+                                    TemplateName = "template_postgis"
+                                  });
+
+      try
+      {
+        creator.Create();
+
+        using (var db = creator.Provider.Database)
+        {
+          Assert.AreEqual(1, db.ExecuteScalar("SELECT COUNT(*) FROM pg_catalog.pg_tables WHERE schemaname=:p0 AND tablename=:p1", "public", "geometry_columns"));
+        }
+      }
+      finally
+      {
+        creator.Destroy();
+      }
+    }
+
+    [Test]
     public void DatabaseAndUserWithMissingUserNameAreCreated()
     {
-      var creator = new PgCreator("ConnectionNameWithMissingUserName");
+      var creator = new PgCreator(new PgDbDescription {ConnectionName = "ConnectionNameWithMissingUserName"});
 
       try
       {
@@ -58,8 +82,12 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void DatabaseCreationCreatesSchema()
     {
-      var creator = new PgCreator("ConnectionName",
-                                  () => new List<string> {TestSchema});
+      var creator = new PgCreator(
+        new PgDbDescription
+        {
+          ConnectionName = "ConnectionName",
+          Schemas = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = TestSchema}}
+        });
 
       try
       {
@@ -79,8 +107,12 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void DatabaseCreationGrantsPermissionsOnPublicSchema()
     {
-      var creator = new PgCreator("ConnectionName",
-                                  () => new List<string> {TestSchema});
+      var creator = new PgCreator(
+        new PgDbDescription
+        {
+          ConnectionName = "ConnectionName",
+          Schemas = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = TestSchema}}
+        });
 
       try
       {
@@ -101,8 +133,12 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void DatabaseCreationGrantsPermissionsOnSchema()
     {
-      var creator = new PgCreator("ConnectionName",
-                                  () => new List<string> {TestSchema});
+      var creator = new PgCreator(
+        new PgDbDescription
+        {
+          ConnectionName = "ConnectionName",
+          Schemas = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = TestSchema}}
+        });
 
       try
       {
@@ -123,9 +159,13 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void DatabaseSeedSeedsDatabase()
     {
-      var creator = new PgCreator("ConnectionName",
-                                  () => new List<string> {TestSchema},
-                                  () => new List<string> {TestSeed});
+      var creator = new PgCreator(
+        new PgDbDescription
+        {
+          ConnectionName = "ConnectionName",
+          Schemas = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = TestSchema}},
+          Seeds = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = TestSeed}}
+        });
 
       try
       {
@@ -147,7 +187,7 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void NullSuperuserUsesDefaultSuperuser()
     {
-      var creator = new PgCreator("ConnectionName");
+      var creator = new PgCreator(new PgDbDescription {ConnectionName = "ConnectionNameWithSchema"});
 
       Assert.AreEqual("postgres", creator.CreateDatabaseProvider.ConnectionString["database"]);
       Assert.AreEqual("postgres", creator.CreateDatabaseProvider.ConnectionString["user id"]);
@@ -160,7 +200,8 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void SpecificSuperuserIsUsed()
     {
-      var creator = new PgCreator("ConnectionName", null, null, new PgSuperuser {Database = "sudb", UserId = "suid", Password = "supw"});
+      var creator = new PgCreator(new PgDbDescription {ConnectionName = "ConnectionNameWithSchema"},
+                                  new PgSuperuser {Database = "sudb", UserId = "suid", Password = "supw"});
 
       Assert.AreEqual("sudb", creator.CreateDatabaseProvider.ConnectionString["database"]);
       Assert.AreEqual("suid", creator.CreateDatabaseProvider.ConnectionString["user id"]);

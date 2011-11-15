@@ -9,7 +9,7 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void DatabaseCreationCreatesSchema()
     {
-      var creator = new PgCreator(new DbDescription(XElement.Parse(Properties.Resources.TestDescription)));
+      var creator = new PgCreator(new PgDbDescription(XElement.Parse(Resources.TestDescription)));
 
       try
       {
@@ -30,7 +30,7 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void DatabaseSeedSeedsDatabase()
     {
-      var creator = new PgCreator(new DbDescription(XElement.Parse(Properties.Resources.TestDescription)));
+      var creator = new PgCreator(new PgDbDescription(XElement.Parse(Resources.TestDescription)));
 
       try
       {
@@ -40,7 +40,7 @@ namespace Utility.Database.PostgreSql.Test
 
         using (var db = creator.Provider.Database)
         {
-          Assert.AreEqual(2, db.ExecuteScalar("SELECT COUNT(*) FROM test_schema.test_table"));
+          Assert.AreEqual(3, db.ExecuteScalar("SELECT COUNT(*) FROM test_schema.test_table"));
         }
       }
       finally
@@ -53,7 +53,7 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void NullSuperuserUsesDefaultSuperuser()
     {
-      var creator = new PgCreator(new DbDescription(XElement.Parse(Properties.Resources.TestDescription)));
+      var creator = new PgCreator(new PgDbDescription(XElement.Parse(Resources.TestDescription)));
 
       Assert.AreEqual("postgres", creator.CreateDatabaseProvider.ConnectionString["database"]);
       Assert.AreEqual("postgres", creator.CreateDatabaseProvider.ConnectionString["user id"]);
@@ -66,7 +66,7 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void SpecificSuperuserIsUsed()
     {
-      var creator = new PgCreator(new DbDescription(XElement.Parse(Properties.Resources.TestDescription)),
+      var creator = new PgCreator(new PgDbDescription(XElement.Parse(Resources.TestDescription)),
                                   new PgSuperuser {Database = "sudb", UserId = "suid", Password = "supw"});
 
       Assert.AreEqual("sudb", creator.CreateDatabaseProvider.ConnectionString["database"]);

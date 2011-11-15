@@ -1,7 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Resources;
 using System.Xml.Linq;
 
@@ -9,12 +7,17 @@ namespace Utility.Database
 {
   public enum ScriptType
   {
-    file,
-    resource
+    File,
+    Resource,
+    Literal
   };
 
-  internal class DbScript
+  public class DbScript
   {
+    public DbScript()
+    {
+    }
+
     public DbScript(XElement root, string baseDirectory = null)
     {
       BaseDirectory = baseDirectory;
@@ -37,48 +40,59 @@ namespace Utility.Database
 
     public string Load()
     {
-      if (ScriptType == ScriptType.file)
+      switch (ScriptType)
       {
-        var fileName = ScriptValue;
-        if (!File.Exists(fileName))
+        case ScriptType.File:
         {
-          fileName = Path.Combine(BaseDirectory, ScriptValue);
+          var fileName = ScriptValue;
           if (!File.Exists(fileName))
           {
-            throw new FileNotFoundException("File not found", ScriptValue);
-          }
-        }
-        
-        using(var reader = new StreamReader(File.OpenRead(fileName)))
-        {
-          return reader.ReadToEnd();
-        }
-      }
-      else
-      {
-        foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-        {
-          if(assembly.IsDynamic)
-          {
-            // GetManifestResourceStream will not work for dynamic assemblies
-            continue;
-          }
-          var resourceStream = assembly.GetManifestResourceStream(ScriptValue);
-          if (resourceStream != null)
-          {
-            using (var reader = new StreamReader(resourceStream))
+            fileName = Path.Combine(BaseDirectory, ScriptValue);
+            if (!File.Exists(fileName))
             {
-              return reader.ReadToEnd();
+              throw new FileNotFoundException("File not found", ScriptValue);
             }
           }
-        }
 
-        throw new MissingManifestResourceException(string.Format("Could not find resource '{0}'", ScriptValue));
+          using (var reader = new StreamReader(File.OpenRead(fileName)))
+          {
+            return reader.ReadToEnd();
+          }
+        }
+        case ScriptType.Resource:
+        {
+          foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+          {
+            if (assembly.IsDynamic)
+            {
+              // GetManifestResourceStream will not work for dynamic assemblies
+              continue;
+            }
+            var resourceStream = assembly.GetManifestResourceStream(ScriptValue);
+            if (resourceStream != null)
+            {
+              using (var reader = new StreamReader(resourceStream))
+              {
+                return reader.ReadToEnd();
+              }
+            }
+          }
+
+          throw new MissingManifestResourceException(string.Format("Could not find resource '{0}'", ScriptValue));
+        }
+        case ScriptType.Literal:
+        {
+          return ScriptValue;
+        }
+        default:
+        {
+          throw new ArgumentException(string.Format("Unhandled ScriptType : {0}", ScriptType), "ScriptType");
+        }
       }
     }
 
-    public string BaseDirectory { get; private set; }
-    public ScriptType ScriptType { get; private set; }
-    public string ScriptValue { get; private set; }
+    public string BaseDirectory { get; set; }
+    public ScriptType ScriptType { get; set; }
+    public string ScriptValue { get; set; }
   }
 }

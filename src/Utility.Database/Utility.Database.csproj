@@ -57,6 +57,7 @@
     <Compile Include="DbScript.cs" />
     <Compile Include="IDbCreator.cs" />
     <Compile Include="PostgreSql\PgCreator.cs" />
+    <Compile Include="PostgreSql\PgDbDescription.cs" />
     <Compile Include="PostgreSql\PgSuperuser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

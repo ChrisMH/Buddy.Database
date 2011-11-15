@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Utility.Database.PostgreSql.Test.Properties {
+namespace Utility.Database.PostgreSql.Test {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Utility.Database.PostgreSql.Test.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Utility.Database.PostgreSql.Test.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Utility.Database.PostgreSql.Test.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -64,8 +64,9 @@ namespace Utility.Database.PostgreSql.Test.Properties {
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
         ///&lt;DbDescription&gt;
         ///  &lt;ConnectionName&gt;ConnectionName&lt;/ConnectionName&gt;
-        ///  &lt;Schema type=&quot;resource&quot;&gt;Utility.Database.PostgreSql.Test.Resources.TestSchema.sql&lt;/Schema&gt;
-        ///  &lt;Seed type=&quot;resource&quot;&gt;Utility.Database.PostgreSql.Test.Resources.TestSeed.sql&lt;/Seed&gt;
+        ///  &lt;Schema type=&quot;Resource&quot;&gt;Utility.Database.PostgreSql.Test.Resources.TestSchema.sql&lt;/Schema&gt;
+        ///  &lt;Seed type=&quot;Resource&quot;&gt;Utility.Database.PostgreSql.Test.Resources.TestSeed.sql&lt;/Seed&gt;
+        ///  &lt;Seed type=&quot;Literal&quot;&gt;INSERT INTO test_schema.test_table (name) VALUES(&apos;name3&apos;);&lt;/Seed&gt;
         ///&lt;/DbDescription&gt;.
         /// </summary>
         internal static string TestDescription {

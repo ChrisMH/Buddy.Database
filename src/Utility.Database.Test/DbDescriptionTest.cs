@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Xml.Linq;
 using NUnit.Framework;
-using System.Linq;
 
 namespace Utility.Database.Test
 {
@@ -24,7 +24,7 @@ namespace Utility.Database.Test
       var e = Assert.Throws<ArgumentException>(() => new DbDescription(desc));
       Assert.AreEqual("ConnectionName", e.ParamName);
     }
-    
+
     [Test]
     public void DescriptionLoadsConnectionName()
     {
@@ -34,7 +34,7 @@ namespace Utility.Database.Test
 
       Assert.AreEqual("ConnectionName", result.ConnectionName);
     }
-    
+
     [Test]
     public void DescriptionMissingSchemaReturnsEmptySchemaCollection()
     {
@@ -44,7 +44,7 @@ namespace Utility.Database.Test
 
       Assert.AreEqual(0, result.Schemas.Count());
     }
-    
+
     [Test]
     public void DescriptionMissingSeedReturnsEmptySeedCollection()
     {
@@ -62,7 +62,7 @@ namespace Utility.Database.Test
       var desc = XElement.Parse(script);
 
       var result = new DbDescription(desc);
-      
+
       Assert.AreEqual(1, result.Schemas.Count());
     }
 
@@ -95,7 +95,7 @@ namespace Utility.Database.Test
 
       var result = new DbDescription(root);
 
-      Assert.AreEqual(AppDomain.CurrentDomain.BaseDirectory, result.schemas[0].BaseDirectory);
+      Assert.AreEqual(AppDomain.CurrentDomain.BaseDirectory, result.Schemas[0].BaseDirectory);
     }
 
     [Test]
@@ -105,8 +105,8 @@ namespace Utility.Database.Test
 
       var result = new DbDescription(root, "d:\\DevP\\Utility.Database\\src\\Utility.Database.Test");
 
-      Assert.AreEqual("schema", result.Schemas.First());
-      Assert.AreEqual("seed", result.Seeds.First());
+      Assert.AreEqual("schema", result.Schemas.First().Load());
+      Assert.AreEqual("seed", result.Seeds.First().Load());
     }
   }
 }
