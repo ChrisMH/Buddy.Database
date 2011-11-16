@@ -3,7 +3,7 @@ using System.IO;
 using System.Resources;
 using System.Xml.Linq;
 
-namespace Utility.Database
+namespace Utility.Database.Management
 {
   public enum ScriptType
   {

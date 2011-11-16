@@ -1,45 +1,56 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
 using NUnit.Framework;
+using Utility.Database.Management;
 
 namespace Utility.Database.Test
 {
   public class DbDescriptionTest
   {
     [Test]
-    public void DescriptionMissingConnectionNameReturnsNullConnectionName()
+    public void DescriptionWithEmptyConnectionReturnsNullConnection()
     {
       var desc = XElement.Parse(DbDescriptions.Empty);
-      
-      var result = new DbDescription(desc);
-
-      Assert.Null(result.ConnectionName);
-    }
-
-    [Test]
-    public void DescriptionWithEmptyConnectionNameThrows()
-    {
-      var desc = XElement.Parse(DbDescriptions.EmptyConnectionName);
-
-      var e = Assert.Throws<ArgumentException>(() => new DbDescription(desc));
-      Assert.AreEqual("ConnectionName", e.ParamName);
-    }
-
-    [Test]
-    public void DescriptionLoadsConnectionName()
-    {
-      var desc = XElement.Parse(DbDescriptions.ValidConnectionName);
 
       var result = new DbDescription(desc);
 
-      Assert.AreEqual("ConnectionName", result.ConnectionName);
+      Assert.Null(result.Connection);
     }
 
+    [TestCase(DbDescriptions.ConnectionWithConnectionStringName)]
+    [TestCase(DbDescriptions.ConnectionWithConnectionStringAndProviderName)]
+    public void DescriptionWithValidConnectionLoadsConnection(string description)
+    {
+      var desc = XElement.Parse(description);
+
+      var result = new DbDescription(desc);
+
+      Assert.NotNull(result.Connection);
+      Assert.AreEqual("server=server", result.Connection.ConnectionString);
+      Assert.AreEqual("System.Data.SqlClient", result.Connection.ProviderName);
+      Assert.IsInstanceOf<System.Data.SqlClient.SqlClientFactory>(result.Connection.ProviderFactory);
+    }
+
+    [TestCase(DbDescriptions.EmptyConnection)]
+    [TestCase(DbDescriptions.ConnectionWithInvalidConnectionStringName)]
+    [TestCase(DbDescriptions.ConnectionWithConnectionString)]
+    [TestCase(DbDescriptions.ConnectionWithProviderName)]
+    [TestCase(DbDescriptions.ConnectionWithInvalidProviderName)]
+    public void DescriptionWithInvalidConnectionThrows(string description)
+    {
+      var desc = XElement.Parse(description);
+
+      var result = Assert.Throws<ArgumentException>(() => new DbDescription(desc));
+      Assert.AreEqual("Connection", result.ParamName);
+      Debug.WriteLine(result.Message);
+    }
+    
     [Test]
     public void DescriptionMissingSchemaReturnsEmptySchemaCollection()
     {
-      var desc = XElement.Parse(DbDescriptions.ValidConnectionName);
+      var desc = XElement.Parse(DbDescriptions.Empty);
 
       var result = new DbDescription(desc);
 
@@ -49,7 +60,7 @@ namespace Utility.Database.Test
     [Test]
     public void DescriptionMissingSeedReturnsEmptySeedCollection()
     {
-      var desc = XElement.Parse(DbDescriptions.ValidConnectionName);
+      var desc = XElement.Parse(DbDescriptions.Empty);
 
       var result = new DbDescription(desc);
 

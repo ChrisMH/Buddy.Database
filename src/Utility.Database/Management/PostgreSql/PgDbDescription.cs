@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml.Linq;
 
-namespace Utility.Database.PostgreSql
+namespace Utility.Database.Management.PostgreSql
 {
   public class PgDbDescription : DbDescription
   {

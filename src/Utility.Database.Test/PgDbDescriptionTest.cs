@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Linq;
 using NUnit.Framework;
-using Utility.Database.PostgreSql;
+using Utility.Database.Management.PostgreSql;
 
 namespace Utility.Database.Test
 {

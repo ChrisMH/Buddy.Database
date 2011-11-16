@@ -9,7 +9,7 @@
     <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
     <projectUrl>https://github.com/ChrisMH/Utility.Database</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Database utilities used mainly for testing</description>
+    <description>Database utilities</description>
     <copyright>Copyright 2011</copyright>
     <tags>utility database testing</tags>
   </metadata>

@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <DbDescription>
-  <ConnectionName>ConnectionName</ConnectionName>
+  <Connection>
+    <ConnectionStringName>ConnectionName</ConnectionStringName>
+  </Connection>
   <Schema type="Resource">Utility.Database.PostgreSql.Test.Resources.TestSchema.sql</Schema>
   <Seed type="Resource">Utility.Database.PostgreSql.Test.Resources.TestSeed.sql</Seed>
   <Seed type="Literal">INSERT INTO test_schema.test_table (name) VALUES('name3');</Seed>

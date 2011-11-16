@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Data.Common;
 using System.Xml.Linq;
 using NUnit.Framework;
+using Utility.Database.Management.PostgreSql;
 
 namespace Utility.Database.PostgreSql.Test
 {
@@ -9,20 +11,26 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void DatabaseCreationCreatesSchema()
     {
-      var creator = new PgCreator(new PgDbDescription(XElement.Parse(Resources.TestDescription)));
+      var manager = new PgDbManager(new PgDbDescription(XElement.Parse(Resources.TestDescription)));
 
       try
       {
-        creator.Create();
-
-        using (var db = creator.CreateContentProvider.Database)
+        manager.Create();
+        using (var conn = manager.Connection.ProviderFactory.CreateConnection())
         {
-          Assert.AreEqual(1, db.ExecuteScalar("SELECT COUNT(*) FROM pg_catalog.pg_namespace WHERE nspname='test_schema'"));
+          conn.ConnectionString = manager.CreateContentConnectionString;
+          conn.Open();
+
+          using (var cmd = conn.CreateCommand())
+          {
+            cmd.CommandText = "SELECT COUNT(*) FROM pg_catalog.pg_namespace WHERE nspname='test_schema'";
+            Assert.AreEqual(1, Convert.ToInt64(cmd.ExecuteScalar()));
+          }
         }
       }
       finally
       {
-        creator.Destroy();
+        manager.Destroy();
       }
     }
 
@@ -30,22 +38,28 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void DatabaseSeedSeedsDatabase()
     {
-      var creator = new PgCreator(new PgDbDescription(XElement.Parse(Resources.TestDescription)));
+      var manager = new PgDbManager(new PgDbDescription(XElement.Parse(Resources.TestDescription)));
 
       try
       {
-        creator.Create();
+        manager.Create();
 
-        creator.Seed();
-
-        using (var db = creator.Provider.Database)
+        manager.Seed();
+        using (var conn = manager.Connection.ProviderFactory.CreateConnection())
         {
-          Assert.AreEqual(3, db.ExecuteScalar("SELECT COUNT(*) FROM test_schema.test_table"));
+          conn.ConnectionString = manager.CreateContentConnectionString;
+          conn.Open();
+
+          using (var cmd = conn.CreateCommand())
+          {
+            cmd.CommandText = "SELECT COUNT(*) FROM test_schema.test_table";
+            Assert.AreEqual(3, Convert.ToInt64(cmd.ExecuteScalar()));
+          }
         }
       }
       finally
       {
-        creator.Destroy();
+        manager.Destroy();
       }
     }
 
@@ -53,57 +67,57 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void NullSuperuserUsesDefaultSuperuser()
     {
-      var creator = new PgCreator(new PgDbDescription(XElement.Parse(Resources.TestDescription)));
-      creator.CreateProviders();
-        
-      Assert.AreEqual("postgres", creator.CreateDatabaseProvider.ConnectionString["database"]);
-      Assert.AreEqual("postgres", creator.CreateDatabaseProvider.ConnectionString["user id"]);
-      Assert.AreEqual("postgres", creator.CreateDatabaseProvider.ConnectionString["password"]);
-      Assert.AreEqual("utility_database_test", creator.CreateContentProvider.ConnectionString["database"]);
-      Assert.AreEqual("postgres", creator.CreateContentProvider.ConnectionString["user id"]);
-      Assert.AreEqual("postgres", creator.CreateContentProvider.ConnectionString["password"]);
+      var manager = new PgDbManager(new PgDbDescription(XElement.Parse(Resources.TestDescription)));
+      manager.CreateConnectionStrings();
+
+      Assert.AreEqual("postgres", new DbConnectionStringBuilder {ConnectionString = manager.CreateDatabaseConnectionString}["database"]);
+      Assert.AreEqual("postgres", new DbConnectionStringBuilder {ConnectionString = manager.CreateDatabaseConnectionString}["user id"]);
+      Assert.AreEqual("postgres", new DbConnectionStringBuilder {ConnectionString = manager.CreateDatabaseConnectionString}["password"]);
+      Assert.AreEqual("utility_database_test", new DbConnectionStringBuilder {ConnectionString = manager.CreateContentConnectionString}["database"]);
+      Assert.AreEqual("postgres", new DbConnectionStringBuilder {ConnectionString = manager.CreateContentConnectionString}["user id"]);
+      Assert.AreEqual("postgres", new DbConnectionStringBuilder {ConnectionString = manager.CreateContentConnectionString}["password"]);
     }
 
     [Test]
     public void SpecificSuperuserIsUsed()
     {
-      var creator = new PgCreator(new PgDbDescription(XElement.Parse(Resources.TestDescription)),
-                                  new PgSuperuser {Database = "sudb", UserId = "suid", Password = "supw"});
-      creator.CreateProviders();
+      var manager = new PgDbManager(new PgDbDescription(XElement.Parse(Resources.TestDescription)),
+                                    new PgSuperuser {Database = "sudb", UserId = "suid", Password = "supw"});
+      manager.CreateConnectionStrings();
 
-      Assert.AreEqual("sudb", creator.CreateDatabaseProvider.ConnectionString["database"]);
-      Assert.AreEqual("suid", creator.CreateDatabaseProvider.ConnectionString["user id"]);
-      Assert.AreEqual("supw", creator.CreateDatabaseProvider.ConnectionString["password"]);
-      Assert.AreEqual("utility_database_test", creator.CreateContentProvider.ConnectionString["database"]);
-      Assert.AreEqual("suid", creator.CreateContentProvider.ConnectionString["user id"]);
-      Assert.AreEqual("supw", creator.CreateContentProvider.ConnectionString["password"]);
+      Assert.AreEqual("sudb", new DbConnectionStringBuilder {ConnectionString = manager.CreateDatabaseConnectionString}["database"]);
+      Assert.AreEqual("suid", new DbConnectionStringBuilder {ConnectionString = manager.CreateDatabaseConnectionString}["user id"]);
+      Assert.AreEqual("supw", new DbConnectionStringBuilder {ConnectionString = manager.CreateDatabaseConnectionString}["password"]);
+      Assert.AreEqual("utility_database_test", new DbConnectionStringBuilder {ConnectionString = manager.CreateContentConnectionString}["database"]);
+      Assert.AreEqual("suid", new DbConnectionStringBuilder {ConnectionString = manager.CreateContentConnectionString}["user id"]);
+      Assert.AreEqual("supw", new DbConnectionStringBuilder {ConnectionString = manager.CreateContentConnectionString}["password"]);
     }
 
     [Test]
-    public void CreateFromDescriptionWithNoConnectionNameThrows()
+    public void CreateFromDescriptionWithNoConnectionThrows()
     {
-      var creator = new PgCreator(new PgDbDescription(XElement.Parse(Resources.TestDescriptionNoConnectionName)));
+      var manager = new PgDbManager(new PgDbDescription(XElement.Parse(Resources.TestDescriptionNoConnectionName)));
 
-      var e = Assert.Throws<ArgumentException>(creator.Create);
-      Assert.AreEqual("Description.ConnectionName", e.ParamName);
+      var e = Assert.Throws<ArgumentException>(manager.Create);
+      Assert.AreEqual("Description.Connection", e.ParamName);
     }
 
     [Test]
-    public void DestroyFromDescriptionWithNoConnectionNameThrows()
+    public void DestroyFromDescriptionWithNoConnectionThrows()
     {
-      var creator = new PgCreator(new PgDbDescription(XElement.Parse(Resources.TestDescriptionNoConnectionName)));
+      var manager = new PgDbManager(new PgDbDescription(XElement.Parse(Resources.TestDescriptionNoConnectionName)));
 
-      var e = Assert.Throws<ArgumentException>(creator.Destroy);
-      Assert.AreEqual("Description.ConnectionName", e.ParamName);
+      var e = Assert.Throws<ArgumentException>(manager.Destroy);
+      Assert.AreEqual("Description.Connection", e.ParamName);
     }
 
     [Test]
-    public void SeedFromDescriptionWithNoConnectionNameThrows()
+    public void SeedFromDescriptionWithNoConnectionThrows()
     {
-      var creator = new PgCreator(new PgDbDescription(XElement.Parse(Resources.TestDescriptionNoConnectionName)));
+      var manager = new PgDbManager(new PgDbDescription(XElement.Parse(Resources.TestDescriptionNoConnectionName)));
 
-      var e = Assert.Throws<ArgumentException>(creator.Seed);
-      Assert.AreEqual("Description.ConnectionName", e.ParamName);
+      var e = Assert.Throws<ArgumentException>(manager.Seed);
+      Assert.AreEqual("Description.Connection", e.ParamName);
     }
   }
 }

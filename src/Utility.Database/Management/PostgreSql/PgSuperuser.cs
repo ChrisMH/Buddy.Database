@@ -1,4 +1,4 @@
-﻿namespace Utility.Database.PostgreSql
+﻿namespace Utility.Database.Management.PostgreSql
 {
   public class PgSuperuser
   {

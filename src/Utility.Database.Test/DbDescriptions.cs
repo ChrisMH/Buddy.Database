@@ -3,33 +3,70 @@
   public static class DbDescriptions
   {
     public const string Empty = "<DbDescription></DbDescription>";
-    public const string EmptyConnectionName = "<DbDescription><ConnectionName></ConnectionName></DbDescription>";
-    public const string InvalidConnectionName = "<DbDescription><ConnectionName>InvalidConnectionName</ConnectionName></DbDescription>";
-    public const string ValidConnectionName = "<DbDescription><ConnectionName>ConnectionName</ConnectionName></DbDescription>";
-    
+
+    // Valid Connection
+    public const string ConnectionWithConnectionStringName = "<DbDescription>" +
+                                                             "<Connection>" +
+                                                             "<ConnectionStringName>Valid</ConnectionStringName>" +
+                                                             "</Connection>" +
+                                                             "</DbDescription>";
+                                                             
+    public const string ConnectionWithConnectionStringAndProviderName = "<DbDescription>" +
+                                                                        "<Connection>" +
+                                                                        "<ConnectionString>server=server</ConnectionString>" +
+                                                                        "<ProviderName>System.Data.SqlClient</ProviderName>" +
+                                                                        "</Connection>" +
+                                                                        "</DbDescription>";
+
+    // Invalid Connection
+    public const string EmptyConnection = "<DbDescription><Connection></Connection></DbDescription>";
+
+
+    public const string ConnectionWithInvalidConnectionStringName = "<DbDescription>" +
+                                                                    "<Connection>" +
+                                                                    "<ConnectionStringName>InvalidConnectionName</ConnectionStringName>" +
+                                                                    "</Connection>" +
+                                                                    "</DbDescription>";
+
+
+    public const string ConnectionWithConnectionString = "<DbDescription>" +
+                                                         "<Connection>" +
+                                                         "<ConnectionString>server=server</ConnectionString>" +
+                                                         "</Connection>" +
+                                                         "</DbDescription>";
+
+    public const string ConnectionWithProviderName = "<DbDescription>" +
+                                                     "<Connection>" +
+                                                     "<ProviderName>System.Data.SqlClient</ProviderName>" +
+                                                     "</Connection>" +
+                                                     "</DbDescription>";
+                                                     
+    public const string ConnectionWithInvalidProviderName = "<DbDescription>" +
+                                                                        "<Connection>" +
+                                                                        "<ConnectionString>server=server</ConnectionString>" +
+                                                                        "<ProviderName>Invalid.Provider.Name</ProviderName>" +
+                                                                        "</Connection>" +
+                                                                        "</DbDescription>";
+
+    // Schemas and Seeds
     public const string SingleFileSchema = "<DbDescription>" +
-                                           "<ConnectionName>ConnectionName</ConnectionName>" +
                                            "<Schema type=\"File\">d:\\DevP\\Utility.Database\\src\\Utility.Database.Test\\Resources\\schema.txt</Schema>" +
                                            "</DbDescription>";
 
     public const string SingleResourceSchema = "<DbDescription>" +
-                                               "<ConnectionName>ConnectionName</ConnectionName>" +
                                                "<Schema type=\"Resource\">Utility.Database.Test.Resources.schema.txt</Schema>" +
                                                "</DbDescription>";
 
     public const string SingleFileSeed = "<DbDescription>" +
-                                         "<ConnectionName>ConnectionName</ConnectionName>" +
                                          "<Seed type=\"File\">d:\\DevP\\Utility.Database\\src\\Utility.Database.Test\\Resources\\seed.txt</Seed>" +
                                          "</DbDescription>";
 
     public const string SingleResourceSeed = "<DbDescription>" +
-                                             "<ConnectionName>ConnectionName</ConnectionName>" +
                                              "<Seed type=\"Resource\">Utility.Database.Test.Resources.seed.txt</Seed>" +
                                              "</DbDescription>";
 
 
     public const string SchemasAndSeeds = "<DbDescription>" +
-                                          "<ConnectionName>ConnectionName</ConnectionName>" +
                                           "<Schema type=\"File\">d:\\DevP\\Utility.Database\\src\\Utility.Database.Test\\Resources\\schema.txt</Schema>" +
                                           "<Schema type=\"Resource\">Utility.Database.Test.Resources.schema.txt</Schema>" +
                                           "<Seed type=\"File\">d:\\DevP\\Utility.Database\\src\\Utility.Database.Test\\Resources\\seed.txt</Seed>" +
@@ -37,12 +74,12 @@
                                           "</DbDescription>";
 
     public const string RelativeFileSchema = "<DbDescription>" +
-                                             "<ConnectionName>ConnectionName</ConnectionName>" +
                                              "<Schema type=\"File\">Resources\\schema.txt</Schema>" +
                                              "<Seed type=\"File\">Resources\\seed.txt</Seed>" +
                                              "</DbDescription>";
-                                             
-    public const string PgMinimumValidWithInvalidTemplateName = "<DbDescription><ConnectionName>ConnectionName</ConnectionName><TemplateName></TemplateName></DbDescription>";
-    public const string PgMinimumValidWithTemplateName = "<DbDescription><ConnectionName>ConnectionName</ConnectionName><TemplateName>template_postgis</TemplateName></DbDescription>";
+    
+    // Templates
+    public const string PgMinimumValidWithInvalidTemplateName = "<DbDescription><TemplateName></TemplateName></DbDescription>";
+    public const string PgMinimumValidWithTemplateName = "<DbDescription><TemplateName>template_postgis</TemplateName></DbDescription>";
   }
 }
