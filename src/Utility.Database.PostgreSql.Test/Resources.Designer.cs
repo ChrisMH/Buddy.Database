@@ -74,5 +74,20 @@ namespace Utility.Database.PostgreSql.Test {
                 return ResourceManager.GetString("TestDescription", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+        ///&lt;DbDescription&gt;
+        ///  &lt;ConnectionName&gt;ConnectionName&lt;/ConnectionName&gt;
+        ///  &lt;Schema type=&quot;Resource&quot;&gt;Utility.Database.PostgreSql.Test.Resources.TestSchema.sql&lt;/Schema&gt;
+        ///  &lt;Seed type=&quot;Resource&quot;&gt;Utility.Database.PostgreSql.Test.Resources.TestSeed.sql&lt;/Seed&gt;
+        ///  &lt;Seed type=&quot;Literal&quot;&gt;INSERT INTO test_schema.test_table (name) VALUES(&apos;name3&apos;);&lt;/Seed&gt;
+        ///&lt;/DbDescription&gt;.
+        /// </summary>
+        internal static string TestDescriptionNoConnectionName {
+            get {
+                return ResourceManager.GetString("TestDescriptionNoConnectionName", resourceCulture);
+            }
+        }
     }
 }

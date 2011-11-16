@@ -5,8 +5,7 @@
     public const string Empty = "<DbDescription></DbDescription>";
     public const string EmptyConnectionName = "<DbDescription><ConnectionName></ConnectionName></DbDescription>";
     public const string InvalidConnectionName = "<DbDescription><ConnectionName>InvalidConnectionName</ConnectionName></DbDescription>";
-    
-    public const string MinimumValid = "<DbDescription><ConnectionName>ConnectionName</ConnectionName></DbDescription>";
+    public const string ValidConnectionName = "<DbDescription><ConnectionName>ConnectionName</ConnectionName></DbDescription>";
     
     public const string SingleFileSchema = "<DbDescription>" +
                                            "<ConnectionName>ConnectionName</ConnectionName>" +

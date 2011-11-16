@@ -15,21 +15,24 @@ namespace Utility.Database.PostgreSql
 
     public PgCreator(PgDbDescription description, PgSuperuser superuser)
     {
+      createProviders = CreateProviders;
       if (description == null) throw new ArgumentNullException("description");
       
-      this.description = description;
-      CreateProviders(description.ConnectionName, superuser ?? new PgSuperuser());
+      Description = description;
+      Superuser = superuser ?? new PgSuperuser();
     }
 
     public void Create()
     {
+      createProviders();
+
       Destroy();
       using (var db = CreateDatabaseProvider.Database)
       {
         var createDatabaseCommand = string.Format("CREATE DATABASE \"{0}\"", Provider.ConnectionString["database"]);
-        if(!string.IsNullOrEmpty(description.TemplateName))
+        if(!string.IsNullOrEmpty(Description.TemplateName))
         {
-          createDatabaseCommand += string.Format(" TEMPLATE \"{0}\"", description.TemplateName);
+          createDatabaseCommand += string.Format(" TEMPLATE \"{0}\"", Description.TemplateName);
         }
         db.ExecuteNonQuery(createDatabaseCommand);
 
@@ -45,7 +48,7 @@ namespace Utility.Database.PostgreSql
       
       using (var db = CreateContentProvider.Database)
       {
-        foreach (var schemaDefinition in description.Schemas)
+        foreach (var schemaDefinition in Description.Schemas)
         {
           db.ExecuteNonQuery(schemaDefinition.Load());
         }
@@ -67,6 +70,8 @@ namespace Utility.Database.PostgreSql
 
     public void Destroy()
     {
+      createProviders();
+
       using (var db = CreateDatabaseProvider.Database)
       {
         db.ExecuteNonQuery(string.Format("DROP DATABASE IF EXISTS \"{0}\"", Provider.ConnectionString["database"]));
@@ -80,38 +85,46 @@ namespace Utility.Database.PostgreSql
 
     public void Seed()
     {
+      createProviders();
+
       using (var db = CreateContentProvider.Database)
       {
-        foreach (var seedDefinition in description.Seeds)
+        foreach (var seedDefinition in Description.Seeds)
         {
           db.ExecuteNonQuery(seedDefinition.Load());
         }
       }
     }
 
-    private void CreateProviders(string connectionName, PgSuperuser superuser)
+    internal void CreateProviders()
     {
-      Provider = new MoConnectionProvider(connectionName);
+      if(string.IsNullOrEmpty(Description.ConnectionName)) throw new ArgumentException("ConnectionName is empty", "Description.ConnectionName");
+
+      Provider = new MoConnectionProvider(Description.ConnectionName);
       Provider.ConnectionString.Remove("schema");
 
-      CreateDatabaseProvider = new MoConnectionProvider(connectionName);
+      CreateDatabaseProvider = new MoConnectionProvider(Description.ConnectionName);
       CreateDatabaseProvider.ConnectionString.Remove("schema");
-      CreateDatabaseProvider.ConnectionString["database"] = superuser.Database;
-      CreateDatabaseProvider.ConnectionString["user id"] = superuser.UserId;
-      CreateDatabaseProvider.ConnectionString["password"] = superuser.Password;
+      CreateDatabaseProvider.ConnectionString["database"] = Superuser.Database;
+      CreateDatabaseProvider.ConnectionString["user id"] = Superuser.UserId;
+      CreateDatabaseProvider.ConnectionString["password"] = Superuser.Password;
 
-      CreateContentProvider = new MoConnectionProvider(connectionName);
+      CreateContentProvider = new MoConnectionProvider(Description.ConnectionName);
       CreateContentProvider.ConnectionString.Remove("schema");
-      CreateContentProvider.ConnectionString["user id"] = superuser.UserId;
-      CreateContentProvider.ConnectionString["password"] = superuser.Password;
+      CreateContentProvider.ConnectionString["user id"] = Superuser.UserId;
+      CreateContentProvider.ConnectionString["password"] = Superuser.Password;
+
+      createProviders = () => { }; // Done, so don't call again
     }
 
     public IMoConnectionProvider Provider { get; private set; }
+    public PgDbDescription Description { get; private set; }
+    public PgSuperuser Superuser { get; private set; }
 
     internal IMoConnectionProvider CreateDatabaseProvider { get; set; }
     internal IMoConnectionProvider CreateContentProvider { get; set; }
 
-    private readonly PgDbDescription description;
+    private Action createProviders;
     private bool createdUser;
   }
 }

@@ -10,7 +10,7 @@ namespace Utility.Database.Test
     [Test]
     public void DescriptionMissingTemplateNameReturnsNullTemplateName()
     {
-      var desc = XElement.Parse(DbDescriptions.MinimumValid);
+      var desc = XElement.Parse(DbDescriptions.Empty);
 
       var result = new PgDbDescription(desc);
 

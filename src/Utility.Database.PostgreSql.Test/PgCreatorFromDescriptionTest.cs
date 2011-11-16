@@ -1,11 +1,11 @@
-﻿using System.Xml.Linq;
+﻿using System;
+using System.Xml.Linq;
 using NUnit.Framework;
 
 namespace Utility.Database.PostgreSql.Test
 {
   public class PgCreatorFromDescriptionTest
   {
-
     [Test]
     public void DatabaseCreationCreatesSchema()
     {
@@ -54,7 +54,8 @@ namespace Utility.Database.PostgreSql.Test
     public void NullSuperuserUsesDefaultSuperuser()
     {
       var creator = new PgCreator(new PgDbDescription(XElement.Parse(Resources.TestDescription)));
-
+      creator.CreateProviders();
+        
       Assert.AreEqual("postgres", creator.CreateDatabaseProvider.ConnectionString["database"]);
       Assert.AreEqual("postgres", creator.CreateDatabaseProvider.ConnectionString["user id"]);
       Assert.AreEqual("postgres", creator.CreateDatabaseProvider.ConnectionString["password"]);
@@ -68,6 +69,7 @@ namespace Utility.Database.PostgreSql.Test
     {
       var creator = new PgCreator(new PgDbDescription(XElement.Parse(Resources.TestDescription)),
                                   new PgSuperuser {Database = "sudb", UserId = "suid", Password = "supw"});
+      creator.CreateProviders();
 
       Assert.AreEqual("sudb", creator.CreateDatabaseProvider.ConnectionString["database"]);
       Assert.AreEqual("suid", creator.CreateDatabaseProvider.ConnectionString["user id"]);
@@ -75,6 +77,33 @@ namespace Utility.Database.PostgreSql.Test
       Assert.AreEqual("utility_database_test", creator.CreateContentProvider.ConnectionString["database"]);
       Assert.AreEqual("suid", creator.CreateContentProvider.ConnectionString["user id"]);
       Assert.AreEqual("supw", creator.CreateContentProvider.ConnectionString["password"]);
+    }
+
+    [Test]
+    public void CreateFromDescriptionWithNoConnectionNameThrows()
+    {
+      var creator = new PgCreator(new PgDbDescription(XElement.Parse(Resources.TestDescriptionNoConnectionName)));
+
+      var e = Assert.Throws<ArgumentException>(creator.Create);
+      Assert.AreEqual("Description.ConnectionName", e.ParamName);
+    }
+
+    [Test]
+    public void DestroyFromDescriptionWithNoConnectionNameThrows()
+    {
+      var creator = new PgCreator(new PgDbDescription(XElement.Parse(Resources.TestDescriptionNoConnectionName)));
+
+      var e = Assert.Throws<ArgumentException>(creator.Destroy);
+      Assert.AreEqual("Description.ConnectionName", e.ParamName);
+    }
+
+    [Test]
+    public void SeedFromDescriptionWithNoConnectionNameThrows()
+    {
+      var creator = new PgCreator(new PgDbDescription(XElement.Parse(Resources.TestDescriptionNoConnectionName)));
+
+      var e = Assert.Throws<ArgumentException>(creator.Seed);
+      Assert.AreEqual("Description.ConnectionName", e.ParamName);
     }
   }
 }

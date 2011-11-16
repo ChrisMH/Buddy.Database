@@ -8,12 +8,13 @@ namespace Utility.Database.Test
   public class DbDescriptionTest
   {
     [Test]
-    public void DescriptionMissingConnectionNameThrows()
+    public void DescriptionMissingConnectionNameReturnsNullConnectionName()
     {
       var desc = XElement.Parse(DbDescriptions.Empty);
+      
+      var result = new DbDescription(desc);
 
-      var e = Assert.Throws<ArgumentException>(() => new DbDescription(desc));
-      Assert.AreEqual("ConnectionName", e.ParamName);
+      Assert.Null(result.ConnectionName);
     }
 
     [Test]
@@ -28,7 +29,7 @@ namespace Utility.Database.Test
     [Test]
     public void DescriptionLoadsConnectionName()
     {
-      var desc = XElement.Parse(DbDescriptions.MinimumValid);
+      var desc = XElement.Parse(DbDescriptions.ValidConnectionName);
 
       var result = new DbDescription(desc);
 
@@ -38,7 +39,7 @@ namespace Utility.Database.Test
     [Test]
     public void DescriptionMissingSchemaReturnsEmptySchemaCollection()
     {
-      var desc = XElement.Parse(DbDescriptions.MinimumValid);
+      var desc = XElement.Parse(DbDescriptions.ValidConnectionName);
 
       var result = new DbDescription(desc);
 
@@ -48,7 +49,7 @@ namespace Utility.Database.Test
     [Test]
     public void DescriptionMissingSeedReturnsEmptySeedCollection()
     {
-      var desc = XElement.Parse(DbDescriptions.MinimumValid);
+      var desc = XElement.Parse(DbDescriptions.ValidConnectionName);
 
       var result = new DbDescription(desc);
 

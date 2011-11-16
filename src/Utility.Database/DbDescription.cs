@@ -20,11 +20,11 @@ namespace Utility.Database
     public DbDescription(XElement root, string baseDirectory = null)
       : this()
     {
-      if (root.Element("ConnectionName") == null) throw new ArgumentException("ConnectionName element is missing", "ConnectionName");
-      if (string.IsNullOrEmpty(root.Element("ConnectionName").Value)) throw new ArgumentException("ConnectionName element is empty", "ConnectionName");
-
-      ConnectionName = root.Element("ConnectionName").Value;
-
+      if (root.Element("ConnectionName") != null)
+      {
+        ConnectionName = root.Element("ConnectionName").Value;
+        if (string.IsNullOrEmpty(ConnectionName)) throw new ArgumentException("ConnectionName element is empty", "ConnectionName");
+      }
       root.Elements("Schema").ForEach(element => Schemas.Add(new DbScript(element, baseDirectory)));
       root.Elements("Seed").ForEach(element => Seeds.Add(new DbScript(element, baseDirectory)));
     }
