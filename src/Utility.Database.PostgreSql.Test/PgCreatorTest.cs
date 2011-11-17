@@ -12,13 +12,13 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void DatabaseWithExistingUserNameIsCreated()
     {
-      var manager = new PgDbManager(new PgDbDescription {Connection = new DbConnection("ConnectionNameWithExistingUserName")});
+      var manager = new PgDbManager(new PgDbDescription {ConnectionInfo = new DbConnectionInfo("ConnectionNameWithExistingUserName")});
 
       try
       {
         manager.Create();
 
-        using (var conn = manager.Connection.ProviderFactory.CreateConnection())
+        using (var conn = manager.ConnectionInfo.ProviderFactory.CreateConnection())
         {
           conn.ConnectionString = manager.CreateContentConnectionString;
           conn.Open();
@@ -41,7 +41,7 @@ namespace Utility.Database.PostgreSql.Test
     {
       var manager = new PgDbManager(new PgDbDescription
                                     {
-                                      Connection = new DbConnection("ConnectionNameWithExistingUserName"),
+                                      ConnectionInfo = new DbConnectionInfo("ConnectionNameWithExistingUserName"),
                                       TemplateName = "template_postgis"
                                     });
 
@@ -49,7 +49,7 @@ namespace Utility.Database.PostgreSql.Test
       {
         manager.Create();
 
-        using (var conn = manager.Connection.ProviderFactory.CreateConnection())
+        using (var conn = manager.ConnectionInfo.ProviderFactory.CreateConnection())
         {
           conn.ConnectionString = manager.CreateContentConnectionString;
           conn.Open();
@@ -70,13 +70,13 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void DatabaseAndUserWithMissingUserNameAreCreated()
     {
-      var manager = new PgDbManager(new PgDbDescription {Connection = new DbConnection("ConnectionNameWithMissingUserName")});
+      var manager = new PgDbManager(new PgDbDescription {ConnectionInfo = new DbConnectionInfo("ConnectionNameWithMissingUserName")});
 
       try
       {
         manager.Create();
 
-        using (var conn = manager.Connection.ProviderFactory.CreateConnection())
+        using (var conn = manager.ConnectionInfo.ProviderFactory.CreateConnection())
         {
           conn.ConnectionString = manager.CreateContentConnectionString;
           conn.Open();
@@ -104,7 +104,7 @@ namespace Utility.Database.PostgreSql.Test
       var manager = new PgDbManager(
         new PgDbDescription
         {
-          Connection = new DbConnection("ConnectionName"),
+          ConnectionInfo = new DbConnectionInfo("ConnectionName"),
           Schemas = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = TestSchema}}
         });
 
@@ -112,7 +112,7 @@ namespace Utility.Database.PostgreSql.Test
       {
         manager.Create();
 
-        using (var conn = manager.Connection.ProviderFactory.CreateConnection())
+        using (var conn = manager.ConnectionInfo.ProviderFactory.CreateConnection())
         {
           conn.ConnectionString = manager.CreateContentConnectionString;
           conn.Open();
@@ -136,7 +136,7 @@ namespace Utility.Database.PostgreSql.Test
       var manager = new PgDbManager(
         new PgDbDescription
         {
-          Connection = new DbConnection("ConnectionName"),
+          ConnectionInfo = new DbConnectionInfo("ConnectionName"),
           Schemas = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = TestSchema}}
         });
 
@@ -144,7 +144,7 @@ namespace Utility.Database.PostgreSql.Test
       {
         manager.Create();
 
-        using (var conn = manager.Connection.ProviderFactory.CreateConnection())
+        using (var conn = manager.ConnectionInfo.ProviderFactory.CreateConnection())
         {
           conn.ConnectionString = manager.CreateContentConnectionString;
           conn.Open();
@@ -169,7 +169,7 @@ namespace Utility.Database.PostgreSql.Test
       var manager = new PgDbManager(
         new PgDbDescription
         {
-          Connection = new DbConnection("ConnectionName"),
+          ConnectionInfo = new DbConnectionInfo("ConnectionName"),
           Schemas = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = TestSchema}}
         });
 
@@ -177,7 +177,7 @@ namespace Utility.Database.PostgreSql.Test
       {
         manager.Create();
 
-        using (var conn = manager.Connection.ProviderFactory.CreateConnection())
+        using (var conn = manager.ConnectionInfo.ProviderFactory.CreateConnection())
         {
           conn.ConnectionString = manager.CreateContentConnectionString;
           conn.Open();
@@ -202,7 +202,7 @@ namespace Utility.Database.PostgreSql.Test
       var manager = new PgDbManager(
         new PgDbDescription
         {
-          Connection = new DbConnection("ConnectionName"),
+          ConnectionInfo = new DbConnectionInfo("ConnectionName"),
           Schemas = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = TestSchema}},
           Seeds = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = TestSeed}}
         });
@@ -213,7 +213,7 @@ namespace Utility.Database.PostgreSql.Test
 
         manager.Seed();
 
-        using (var conn = manager.Connection.ProviderFactory.CreateConnection())
+        using (var conn = manager.ConnectionInfo.ProviderFactory.CreateConnection())
         {
           conn.ConnectionString = manager.CreateContentConnectionString;
           conn.Open();
@@ -234,7 +234,7 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void NullSuperuserUsesDefaultSuperuser()
     {
-      var manager = new PgDbManager(new PgDbDescription {Connection = new DbConnection("ConnectionName")});
+      var manager = new PgDbManager(new PgDbDescription {ConnectionInfo = new DbConnectionInfo("ConnectionName")});
       manager.CreateConnectionStrings();
       
       Assert.AreEqual("postgres", new DbConnectionStringBuilder {ConnectionString = manager.CreateDatabaseConnectionString}["database"]);
@@ -248,7 +248,7 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void SpecificSuperuserIsUsed()
     {
-      var manager = new PgDbManager(new PgDbDescription {Connection = new DbConnection("ConnectionName")},
+      var manager = new PgDbManager(new PgDbDescription {ConnectionInfo = new DbConnectionInfo("ConnectionName")},
                                     new PgSuperuser {Database = "sudb", UserId = "suid", Password = "supw"});
       manager.CreateConnectionStrings();
 

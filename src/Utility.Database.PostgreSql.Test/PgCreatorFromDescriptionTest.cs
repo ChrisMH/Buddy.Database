@@ -16,7 +16,7 @@ namespace Utility.Database.PostgreSql.Test
       try
       {
         manager.Create();
-        using (var conn = manager.Connection.ProviderFactory.CreateConnection())
+        using (var conn = manager.ConnectionInfo.ProviderFactory.CreateConnection())
         {
           conn.ConnectionString = manager.CreateContentConnectionString;
           conn.Open();
@@ -45,7 +45,7 @@ namespace Utility.Database.PostgreSql.Test
         manager.Create();
 
         manager.Seed();
-        using (var conn = manager.Connection.ProviderFactory.CreateConnection())
+        using (var conn = manager.ConnectionInfo.ProviderFactory.CreateConnection())
         {
           conn.ConnectionString = manager.CreateContentConnectionString;
           conn.Open();

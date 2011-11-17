@@ -25,7 +25,7 @@ namespace Utility.Database.Management.PostgreSql
       createConnectionStrings();
 
       Destroy();
-      using (var conn = Connection.ProviderFactory.CreateConnection())
+      using (var conn = ConnectionInfo.ProviderFactory.CreateConnection())
       {
         conn.ConnectionString = CreateDatabaseConnectionString;
         conn.Open();
@@ -51,7 +51,7 @@ namespace Utility.Database.Management.PostgreSql
         }
       }
 
-      using (var conn = Connection.ProviderFactory.CreateConnection())
+      using (var conn = ConnectionInfo.ProviderFactory.CreateConnection())
       {
         conn.ConnectionString = CreateContentConnectionString;
         conn.Open();
@@ -101,7 +101,7 @@ namespace Utility.Database.Management.PostgreSql
     {
       createConnectionStrings();
 
-      using (var conn = Connection.ProviderFactory.CreateConnection())
+      using (var conn = ConnectionInfo.ProviderFactory.CreateConnection())
       {
         conn.ConnectionString = CreateDatabaseConnectionString;
         conn.Open();
@@ -124,7 +124,7 @@ namespace Utility.Database.Management.PostgreSql
     {
       createConnectionStrings();
 
-      using (var conn = Connection.ProviderFactory.CreateConnection())
+      using (var conn = ConnectionInfo.ProviderFactory.CreateConnection())
       {
         conn.ConnectionString = CreateContentConnectionString;
         conn.Open();
@@ -140,18 +140,18 @@ namespace Utility.Database.Management.PostgreSql
       }
     }
 
-    public IDbConnection Connection
+    public IDbConnectionInfo ConnectionInfo
     {
-      get { return Description.Connection; }
+      get { return Description.ConnectionInfo; }
     }
 
     internal void CreateConnectionStrings()
     {
-      if (Description.Connection == null) throw new ArgumentException("Connection information is missing", "Description.Connection");
-      if (string.IsNullOrEmpty(Description.Connection.ConnectionString)) throw new ArgumentException("Connection information is missing a connection string", "Description.Connection.ConnectionString");
-      if (Description.Connection.ProviderFactory == null) throw new ArgumentException("Connection information is missing a provider factory", "Description.Connection.ProviderFactory");
+      if (Description.ConnectionInfo == null) throw new ArgumentException("Connection information is missing", "Description.Connection");
+      if (string.IsNullOrEmpty(Description.ConnectionInfo.ConnectionString)) throw new ArgumentException("Connection information is missing a connection string", "Description.Connection.ConnectionString");
+      if (Description.ConnectionInfo.ProviderFactory == null) throw new ArgumentException("Connection information is missing a provider factory", "Description.Connection.ProviderFactory");
 
-      var csBuilder = new DbConnectionStringBuilder {ConnectionString = Description.Connection.ConnectionString};
+      var csBuilder = new DbConnectionStringBuilder {ConnectionString = Description.ConnectionInfo.ConnectionString};
       databaseName = Convert.ToString(csBuilder["database"]);
       userId = Convert.ToString(csBuilder["user id"]);
       password = Convert.ToString(csBuilder["password"]);
@@ -163,7 +163,7 @@ namespace Utility.Database.Management.PostgreSql
       CreateDatabaseConnectionString = csBuilder.ConnectionString;
 
       // Database content creation connection string
-      csBuilder = new DbConnectionStringBuilder {ConnectionString = Description.Connection.ConnectionString};
+      csBuilder = new DbConnectionStringBuilder {ConnectionString = Description.ConnectionInfo.ConnectionString};
       csBuilder["user id"] = Superuser.UserId;
       csBuilder["password"] = Superuser.Password;
       CreateContentConnectionString = csBuilder.ConnectionString;

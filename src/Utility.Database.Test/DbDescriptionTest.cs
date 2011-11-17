@@ -16,7 +16,7 @@ namespace Utility.Database.Test
 
       var result = new DbDescription(desc);
 
-      Assert.Null(result.Connection);
+      Assert.Null(result.ConnectionInfo);
     }
 
     [TestCase(DbDescriptions.ConnectionWithConnectionStringName)]
@@ -27,10 +27,10 @@ namespace Utility.Database.Test
 
       var result = new DbDescription(desc);
 
-      Assert.NotNull(result.Connection);
-      Assert.AreEqual("server=server", result.Connection.ConnectionString);
-      Assert.AreEqual("System.Data.SqlClient", result.Connection.ProviderName);
-      Assert.IsInstanceOf<System.Data.SqlClient.SqlClientFactory>(result.Connection.ProviderFactory);
+      Assert.NotNull(result.ConnectionInfo);
+      Assert.AreEqual("server=server", result.ConnectionInfo.ConnectionString);
+      Assert.AreEqual("System.Data.SqlClient", result.ConnectionInfo.ProviderName);
+      Assert.IsInstanceOf<System.Data.SqlClient.SqlClientFactory>(result.ConnectionInfo.ProviderFactory);
     }
 
     [TestCase(DbDescriptions.EmptyConnection)]

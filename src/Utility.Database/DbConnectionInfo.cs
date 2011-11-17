@@ -4,24 +4,25 @@ using System.Data.Common;
 
 namespace Utility.Database
 {
-  public class DbConnection : IDbConnection
+  public class DbConnectionInfo : IDbConnectionInfo
   {
-    public DbConnection()
+    public DbConnectionInfo()
     {
     }
 
-    public DbConnection(string connectionStringName)
+    public DbConnectionInfo(string connectionStringName)
     {
       if (string.IsNullOrEmpty(connectionStringName))
         throw new ArgumentException("Connection string name not provided", "connectionStringName");
       if(ConfigurationManager.ConnectionStrings[connectionStringName] == null)
         throw new ArgumentException(string.Format("Connection string name '{0}' not found in the configuration", connectionStringName), "connectionStringName");
 
+      Name = connectionStringName;
       ConnectionString = new DbConnectionStringBuilder {ConnectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString}.ConnectionString;
       ProviderName = ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName;
     }
 
-
+    public string Name { get; set; }
     public string ConnectionString { get; set; }
     public DbProviderFactory ProviderFactory { get; set; }
 

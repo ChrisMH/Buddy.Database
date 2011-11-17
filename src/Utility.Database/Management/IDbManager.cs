@@ -6,6 +6,6 @@
     void Destroy();
     void Seed();
 
-    IDbConnection Connection { get; }
+    IDbConnectionInfo ConnectionInfo { get; }
   }
 }

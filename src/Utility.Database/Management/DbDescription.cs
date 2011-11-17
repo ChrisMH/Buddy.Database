@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace Utility.Database.Management
@@ -23,11 +24,11 @@ namespace Utility.Database.Management
 
           if (connectionElement.Element("ConnectionStringName") != null)
           {
-            Connection = new DbConnection(connectionElement.Element("ConnectionStringName").Value);
+            ConnectionInfo = new DbConnectionInfo(connectionElement.Element("ConnectionStringName").Value);
           }
           else if (connectionElement.Element("ConnectionString") != null && connectionElement.Element("ProviderName") != null)
           {
-            Connection = new DbConnection
+            ConnectionInfo = new DbConnectionInfo
                          {
                            ConnectionString = connectionElement.Element("ConnectionString").Value,
                            ProviderName = connectionElement.Element("ProviderName").Value
@@ -43,11 +44,17 @@ namespace Utility.Database.Management
           throw new ArgumentException(e.Message, "Connection", e);
         }
       }
-      root.Elements("Schema").ForEach(element => Schemas.Add(new DbScript(element, baseDirectory)));
-      root.Elements("Seed").ForEach(element => Seeds.Add(new DbScript(element, baseDirectory)));
+      if(root.Elements("Schema").Any())
+      {
+        Schemas = root.Elements("Schema").Select(e => new DbScript(e, baseDirectory)).ToList();
+      }
+      if(root.Elements("Seed").Any())
+      {
+        Seeds = root.Elements("Seed").Select(e => new DbScript(e, baseDirectory)).ToList();
+      }
     }
 
-    public IDbConnection Connection { get; set; }
+    public IDbConnectionInfo ConnectionInfo { get; set; }
     public List<DbScript> Schemas { get; set; }
     public List<DbScript> Seeds { get; set; }
   }
