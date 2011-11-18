@@ -54,6 +54,12 @@ namespace Utility.Database.Management
       }
     }
 
+    public DbDescription(IDbConnectionInfo connectionInfo, XElement root, string baseDirectory = null)
+    : this(root, baseDirectory)
+    {
+      ConnectionInfo = connectionInfo;
+    }
+
     public IDbConnectionInfo ConnectionInfo { get; set; }
     public List<DbScript> Schemas { get; set; }
     public List<DbScript> Seeds { get; set; }

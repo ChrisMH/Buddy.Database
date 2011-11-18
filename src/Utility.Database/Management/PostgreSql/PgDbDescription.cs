@@ -17,7 +17,11 @@ namespace Utility.Database.Management.PostgreSql
         TemplateName = root.Element("TemplateName").Value;
         if(string.IsNullOrEmpty(TemplateName)) throw new ArgumentException("TemplateName element is empty", "TemplateName");
       }
-      
+    }
+    
+    public PgDbDescription(IDbConnectionInfo connectionInfo, XElement root, string baseDirectory = null)
+    : base(connectionInfo, root, baseDirectory)
+    {
     }
 
     public String TemplateName { get; set; }
