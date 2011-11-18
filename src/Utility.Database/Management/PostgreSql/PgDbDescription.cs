@@ -19,11 +19,6 @@ namespace Utility.Database.Management.PostgreSql
       }
     }
     
-    public PgDbDescription(IDbConnectionInfo connectionInfo, XElement root, string baseDirectory = null)
-    : base(connectionInfo, root, baseDirectory)
-    {
-    }
-
     public String TemplateName { get; set; }
   }
 }

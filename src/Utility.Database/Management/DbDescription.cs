@@ -53,13 +53,7 @@ namespace Utility.Database.Management
         Seeds = root.Elements("Seed").Select(e => new DbScript(e, baseDirectory)).ToList();
       }
     }
-
-    public DbDescription(IDbConnectionInfo connectionInfo, XElement root, string baseDirectory = null)
-    : this(root, baseDirectory)
-    {
-      ConnectionInfo = connectionInfo;
-    }
-
+    
     public IDbConnectionInfo ConnectionInfo { get; set; }
     public List<DbScript> Schemas { get; set; }
     public List<DbScript> Seeds { get; set; }

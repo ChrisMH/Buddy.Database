@@ -175,6 +175,26 @@ namespace Utility.Database.PostgreSql.Test
     }
 
     [Test]
+    public void CreateFromDescriptionWithTemplateCreatesDatabaseWithTemplate()
+    {
+      var manager = new PgDbManager(new PgDbDescription(XElement.Parse(Resources.TestDescriptionWithTemplate)));
+
+      manager.Create();
+
+      using (var conn = manager.ConnectionInfo.ProviderFactory.CreateConnection())
+      {
+        conn.ConnectionString = PgDbManager.CreateContentConnectionString(GlobalTest.ConnectionInfo1, GlobalTest.Superuser);
+        conn.Open();
+
+        using (var cmd = conn.CreateCommand())
+        {
+          cmd.CommandText = "SELECT COUNT(*) FROM pg_catalog.pg_tables WHERE schemaname='public' AND tablename='geometry_columns'";
+          Assert.AreEqual(1, Convert.ToInt64(cmd.ExecuteScalar()));
+        }
+      }
+    }
+
+    [Test]
     public void CreateFromDescriptionCreatesSchema()
     {
       var manager = new PgDbManager(new PgDbDescription(XElement.Parse(Resources.TestDescription)));
