@@ -68,10 +68,10 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="PgCreatorFromDescriptionTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="PgCreatorTest.cs" />
+    <Compile Include="PgDbManagerCreateTest.cs" />
+    <Compile Include="PgDbManagerDestroyTest.cs" />
+    <Compile Include="PgDbManagerSeedTest.cs" />
+    <Compile Include="PgDbManagerTest.cs" />
     <Compile Include="GlobalTest.cs">
       <SubType>Code</SubType>
     </Compile>
