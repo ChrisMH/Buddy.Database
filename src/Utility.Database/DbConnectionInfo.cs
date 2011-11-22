@@ -10,6 +10,13 @@ namespace Utility.Database
     {
     }
 
+    public DbConnectionInfo(IDbConnectionInfo copy)
+    {
+      Name = copy.Name;
+      ConnectionString = copy.ConnectionString;
+      ProviderName = copy.ProviderName; 
+    }
+
     public DbConnectionInfo(string connectionStringName)
     {
       if (string.IsNullOrEmpty(connectionStringName))
@@ -20,38 +27,33 @@ namespace Utility.Database
       Name = connectionStringName;
       ConnectionString = new DbConnectionStringBuilder {ConnectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString}.ConnectionString;
       ProviderName = ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName;
+      if(string.IsNullOrEmpty(ProviderName))
+      {
+        ProviderName = null;
+      }
     }
 
     public string Name { get; set; }
     public string ConnectionString { get; set; }
-    public DbProviderFactory ProviderFactory { get; set; }
-
-    public string ProviderName
+    public string ProviderName { get; set; }
+    public DbProviderFactory ProviderFactory
     {
-      get { return providerName; }
-      set
+      get
       {
-        if(string.IsNullOrEmpty(value))
+        if (string.IsNullOrEmpty(ProviderName))
         {
-          providerName = null;
-          ProviderFactory = null;
+          return null;
         }
-        else
+
+        try
         {
-          providerName = value;
-          try
-          {
-            ProviderFactory = DbProviderFactories.GetFactory(providerName);
-          }
-          catch (ArgumentException e)
-          {
-            throw new ArgumentException(string.Format("Could not create a DbProviderFactory from provider name '{0}'", providerName), "ProviderName", e);
-          }
+          return DbProviderFactories.GetFactory(ProviderName);
+        }
+        catch (ArgumentException e)
+        {
+          throw new ArgumentException(string.Format("Could not create a DbProviderFactory from provider name '{0}'", ProviderName), "ProviderName", e);
         }
       }
     }
-
-
-    private string providerName;
   }
 }

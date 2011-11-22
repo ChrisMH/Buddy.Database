@@ -104,12 +104,15 @@ namespace Utility.Database.PostgreSql.Test
       var manager = new PgDbManager(new PgDbDescription());
       Assert.AreEqual("Description.ConnectionInfo",
                       Assert.Throws<ArgumentNullException>(manager.Create).ParamName);
+
       manager = new PgDbManager(new PgDbDescription {ConnectionInfo = new DbConnectionInfo()});
       Assert.AreEqual("Description.ConnectionInfo.ConnectionString",
                       Assert.Throws<ArgumentException>(manager.Create).ParamName);
+
       manager = new PgDbManager(new PgDbDescription {ConnectionInfo = new DbConnectionInfo {ConnectionString = ""}});
       Assert.AreEqual("Description.ConnectionInfo.ConnectionString",
                       Assert.Throws<ArgumentException>(manager.Create).ParamName);
+
       manager = new PgDbManager(new PgDbDescription {ConnectionInfo = new DbConnectionInfo {ConnectionString = "database=database"}});
       Assert.AreEqual("Description.ConnectionInfo.ProviderFactory",
                       Assert.Throws<ArgumentException>(manager.Create).ParamName);

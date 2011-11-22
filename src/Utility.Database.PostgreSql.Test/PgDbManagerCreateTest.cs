@@ -196,7 +196,7 @@ namespace Utility.Database.PostgreSql.Test
 
     [Test]
     public void CreateFromDescriptionCreatesSchema()
-    {
+    { 
       var manager = new PgDbManager(new PgDbDescription(XElement.Parse(Resources.TestDescription)));
 
       manager.Create();

@@ -37,7 +37,6 @@ namespace Utility.Database.Test
     [TestCase(DbDescriptions.ConnectionWithInvalidConnectionStringName)]
     [TestCase(DbDescriptions.ConnectionWithConnectionString)]
     [TestCase(DbDescriptions.ConnectionWithProviderName)]
-    [TestCase(DbDescriptions.ConnectionWithInvalidProviderName)]
     public void DescriptionWithInvalidConnectionThrows(string description)
     {
       var desc = XElement.Parse(description);
@@ -119,6 +118,17 @@ namespace Utility.Database.Test
 
       Assert.AreEqual("schema", result.Schemas.First().Load());
       Assert.AreEqual("seed", result.Seeds.First().Load());
+    }
+
+    [Test]
+    public void CopyOfDbConnectionInfoIsUsed()
+    {
+      var connectionInfo = new DbConnectionInfo {ConnectionString = "schema=schema", ProviderName = "System.Data.SqlClient"};
+      var result = new DbDescription {ConnectionInfo = connectionInfo};
+
+      connectionInfo.ConnectionString = "schema=other_schema";
+
+      Assert.AreEqual("schema=schema", result.ConnectionInfo.ConnectionString);
     }
   }
 }

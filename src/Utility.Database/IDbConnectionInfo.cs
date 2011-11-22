@@ -4,9 +4,9 @@ namespace Utility.Database
 {
   public interface IDbConnectionInfo
   {
-    string Name { get; }
-    string ConnectionString { get; }
-    string ProviderName { get; }
+    string Name { get; set; }
+    string ConnectionString { get; set; }
+    string ProviderName { get; set; }
     DbProviderFactory ProviderFactory { get; }
   }
 }

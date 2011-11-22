@@ -35,12 +35,14 @@ namespace Utility.Database.Test
     }
 
     [Test]
-    public void CreateWithInvalidProviderNameThrows()
+    public void GetProviderWithInvalidProviderNameThrows()
     {
-      var result = Assert.Throws<ArgumentException>(() => new DbConnectionInfo
-                                                          {
-                                                            ProviderName = "Invalid.Provider.Name"
-                                                          });
+      var connectionInfo = new DbConnectionInfo
+                           {
+                             ProviderName = "Invalid.Provider.Name"
+                           };
+                           
+      var result = Assert.Throws<ArgumentException>(() => { var factory = connectionInfo.ProviderFactory; });
       Assert.AreEqual("ProviderName", result.ParamName);
       Console.WriteLine(result.Message);
     }
