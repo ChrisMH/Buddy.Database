@@ -26,17 +26,17 @@ namespace Utility.Database.Management
           {
             ConnectionInfo = new DbConnectionInfo(connectionElement.Element("ConnectionStringName").Value);
           }
-          else if (connectionElement.Element("ConnectionString") != null && connectionElement.Element("ProviderName") != null)
+          else if (connectionElement.Element("ConnectionString") != null && connectionElement.Element("Provider") != null)
           {
             ConnectionInfo = new DbConnectionInfo
                          {
                            ConnectionString = connectionElement.Element("ConnectionString").Value,
-                           ProviderName = connectionElement.Element("ProviderName").Value
+                           Provider = connectionElement.Element("Provider").Value
                          };
           }
           else
           {
-            throw new ArgumentException("Connection element must contain EITHER ConnectionStringName OR ConnectionString AND ProviderName", "Connection");
+            throw new ArgumentException("Connection element must contain EITHER ConnectionStringName OR ConnectionString AND Provider", "Connection");
           }
         }
         catch(ArgumentException e)

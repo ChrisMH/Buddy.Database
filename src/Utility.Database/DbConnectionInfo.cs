@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Data.Common;
+using System.Reflection;
 
 namespace Utility.Database
 {
@@ -14,7 +15,7 @@ namespace Utility.Database
     {
       Name = copy.Name;
       ConnectionString = copy.ConnectionString;
-      ProviderName = copy.ProviderName; 
+      Provider = copy.Provider; 
     }
 
     public DbConnectionInfo(string connectionStringName)
@@ -26,32 +27,50 @@ namespace Utility.Database
 
       Name = connectionStringName;
       ConnectionString = new DbConnectionStringBuilder {ConnectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString}.ConnectionString;
-      ProviderName = ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName;
-      if(string.IsNullOrEmpty(ProviderName))
+      Provider = ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName;
+      if(string.IsNullOrEmpty(Provider))
       {
-        ProviderName = null;
+        Provider = null;
       }
     }
 
     public string Name { get; set; }
     public string ConnectionString { get; set; }
-    public string ProviderName { get; set; }
+    public string Provider { get; set; }
     public DbProviderFactory ProviderFactory
     {
       get
       {
-        if (string.IsNullOrEmpty(ProviderName))
+        if (string.IsNullOrEmpty(Provider))
         {
           return null;
         }
 
         try
         {
-          return DbProviderFactories.GetFactory(ProviderName);
+          // First try to create from a registered provider name
+          return DbProviderFactories.GetFactory(Provider);
         }
-        catch (ArgumentException e)
+        catch (ArgumentException)
         {
-          throw new ArgumentException(string.Format("Could not create a DbProviderFactory from provider name '{0}'", ProviderName), "ProviderName", e);
+          // If that fails, try to create it by type
+          try
+          {
+            var providerType = new ReflectionType(Provider).CreateType();
+            var instanceField = providerType.GetField("Instance", BindingFlags.DeclaredOnly | BindingFlags.Static | BindingFlags.Public);
+            if (instanceField == null && !instanceField.FieldType.IsSubclassOf(typeof (DbProviderFactory)))
+            {
+              throw new ArgumentException(string.Format("Could not load a provider factory for '{0}'", Provider), "Provider");
+            }
+
+            return (DbProviderFactory) instanceField.GetValue(null);
+
+          }
+          catch (Exception e)
+          {
+            if(e is ArgumentException) throw;
+            throw new ArgumentException(string.Format("Could not load a provider factory for '{0}'", Provider), "Provider");
+          }
         }
       }
     }

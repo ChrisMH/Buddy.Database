@@ -60,8 +60,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Utility.Logging.1.3.2.0\lib\net40\Utility.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="Utility.Logging.NLog">
-      <HintPath>..\packages\Utility.Logging.NLog.1.2\lib\net40\Utility.Logging.NLog.dll</HintPath>
+    <Reference Include="Utility.Logging.NLog, Version=1.3.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Utility.Logging.NLog.1.3.2.0\lib\net40\Utility.Logging.NLog.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -96,6 +97,8 @@
     <None Include="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="nlog.desktop.config" />
+    <None Include="nlog.web.config" />
     <None Include="packages.config" />
     <None Include="Resources\TestDescription.xml" />
   </ItemGroup>

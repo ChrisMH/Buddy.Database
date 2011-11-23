@@ -19,18 +19,20 @@ namespace Utility.Database.Test
       Assert.Null(result.ConnectionInfo);
     }
 
-    [TestCase(DbDescriptions.ConnectionWithConnectionStringName)]
-    [TestCase(DbDescriptions.ConnectionWithConnectionStringAndProviderName)]
-    public void DescriptionWithValidConnectionLoadsConnection(string description)
+    [TestCase(DbDescriptions.ConnectionWithConnectionStringName, "server=server", "System.Data.SqlClient", typeof(System.Data.SqlClient.SqlClientFactory))]
+    [TestCase(DbDescriptions.ConnectionWithConnectionStringAndProviderName, "server=server", "System.Data.SqlClient", typeof(System.Data.SqlClient.SqlClientFactory))]
+    [TestCase(DbDescriptions.ConnectionWithConnectionStringAndProviderType, "server=server", 
+      "System.Data.SqlClient.SqlClientFactory, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089", typeof(System.Data.SqlClient.SqlClientFactory))]
+    public void DescriptionWithValidConnectionLoadsConnection(string description, string connectionString, string provider, Type providerFactoryType)
     {
       var desc = XElement.Parse(description);
 
       var result = new DbDescription(desc);
 
       Assert.NotNull(result.ConnectionInfo);
-      Assert.AreEqual("server=server", result.ConnectionInfo.ConnectionString);
-      Assert.AreEqual("System.Data.SqlClient", result.ConnectionInfo.ProviderName);
-      Assert.IsInstanceOf<System.Data.SqlClient.SqlClientFactory>(result.ConnectionInfo.ProviderFactory);
+      Assert.AreEqual(connectionString, result.ConnectionInfo.ConnectionString);
+      Assert.AreEqual(provider, result.ConnectionInfo.Provider);
+      Assert.IsInstanceOf(providerFactoryType, result.ConnectionInfo.ProviderFactory);
     }
 
     [TestCase(DbDescriptions.EmptyConnection)]
@@ -123,7 +125,7 @@ namespace Utility.Database.Test
     [Test]
     public void CopyOfDbConnectionInfoIsUsed()
     {
-      var connectionInfo = new DbConnectionInfo {ConnectionString = "schema=schema", ProviderName = "System.Data.SqlClient"};
+      var connectionInfo = new DbConnectionInfo {ConnectionString = "schema=schema", Provider = "System.Data.SqlClient"};
       var result = new DbDescription {ConnectionInfo = connectionInfo};
 
       connectionInfo.ConnectionString = "schema=other_schema";

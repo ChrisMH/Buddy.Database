@@ -15,7 +15,7 @@ namespace Utility.Database.Test
 
       Assert.NotNull(result);
       Assert.AreEqual("server=server", result.ConnectionString);
-      Assert.Null(result.ProviderName);
+      Assert.Null(result.Provider);
       Assert.Null(result.ProviderFactory);
     }
 
@@ -25,12 +25,27 @@ namespace Utility.Database.Test
       var result = (IDbConnectionInfo) new DbConnectionInfo
                                    {
                                      ConnectionString = "server=server",
-                                     ProviderName = "System.Data.SqlClient"
+                                     Provider = "System.Data.SqlClient"
                                    };
 
       Assert.NotNull(result);
       Assert.AreEqual("server=server", result.ConnectionString);
-      Assert.AreEqual("System.Data.SqlClient", result.ProviderName);
+      Assert.AreEqual("System.Data.SqlClient", result.Provider);
+      Assert.IsInstanceOf<System.Data.SqlClient.SqlClientFactory>(result.ProviderFactory);
+    }
+
+    [Test]
+    public void CanCreateWithConnectionStringAndProviderType()
+    {
+      var result = (IDbConnectionInfo) new DbConnectionInfo
+                                   {
+                                     ConnectionString = "server=server",
+                                     Provider = "System.Data.SqlClient.SqlClientFactory, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+                                   };
+
+      Assert.NotNull(result);
+      Assert.AreEqual("server=server", result.ConnectionString);
+      Assert.AreEqual("System.Data.SqlClient.SqlClientFactory, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089", result.Provider);
       Assert.IsInstanceOf<System.Data.SqlClient.SqlClientFactory>(result.ProviderFactory);
     }
 
@@ -39,11 +54,11 @@ namespace Utility.Database.Test
     {
       var connectionInfo = new DbConnectionInfo
                            {
-                             ProviderName = "Invalid.Provider.Name"
+                             Provider = "Invalid.Provider.Name"
                            };
                            
       var result = Assert.Throws<ArgumentException>(() => { var factory = connectionInfo.ProviderFactory; });
-      Assert.AreEqual("ProviderName", result.ParamName);
+      Assert.AreEqual("Provider", result.ParamName);
       Console.WriteLine(result.Message);
     }
 
@@ -54,7 +69,7 @@ namespace Utility.Database.Test
 
       Assert.NotNull(result);
       Assert.AreEqual("server=server", result.ConnectionString);
-      Assert.AreEqual("System.Data.SqlClient", result.ProviderName);
+      Assert.AreEqual("System.Data.SqlClient", result.Provider);
       Assert.IsInstanceOf<System.Data.SqlClient.SqlClientFactory>(result.ProviderFactory);
     }
 
@@ -65,7 +80,7 @@ namespace Utility.Database.Test
 
       Assert.NotNull(result);
       Assert.AreEqual("server=server", result.ConnectionString);
-      Assert.Null(result.ProviderName);
+      Assert.Null(result.Provider);
       Assert.Null(result.ProviderFactory);
     }
 
@@ -76,7 +91,7 @@ namespace Utility.Database.Test
 
       Assert.NotNull(result);
       Assert.AreEqual("server=server", result.ConnectionString);
-      Assert.Null(result.ProviderName);
+      Assert.Null(result.Provider);
       Assert.Null(result.ProviderFactory);
     }
 
@@ -86,7 +101,7 @@ namespace Utility.Database.Test
       var result = (IDbConnectionInfo) new DbConnectionInfo("BlankConnectionString");
       
       Assert.AreEqual("", result.ConnectionString);
-      Assert.AreEqual("System.Data.SqlClient", result.ProviderName);
+      Assert.AreEqual("System.Data.SqlClient", result.Provider);
       Assert.IsInstanceOf<System.Data.SqlClient.SqlClientFactory>(result.ProviderFactory);
     }
 

@@ -14,7 +14,7 @@ namespace Utility.Database.PostgreSql.Test
     public static IDbConnectionInfo ConnectionInfo1 { get; private set; }
     public static IDbConnectionInfo ConnectionInfo2 { get; private set; }
     public static PgSuperuser Superuser = new PgSuperuser();
-
+    
     [SetUp]
     public void SetUp()
     {

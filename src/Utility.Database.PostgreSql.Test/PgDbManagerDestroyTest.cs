@@ -81,7 +81,7 @@ namespace Utility.Database.PostgreSql.Test
                                        ConnectionInfo = new DbConnectionInfo
                                                         {
                                                           ConnectionString = csBuilderT.ConnectionString,
-                                                          ProviderName = GlobalTest.ConnectionInfo1.ProviderName
+                                                          Provider = GlobalTest.ConnectionInfo1.Provider
                                                         }
                                      });
       
