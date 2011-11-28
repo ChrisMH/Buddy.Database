@@ -85,6 +85,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Utility.Database.PostgreSql\Utility.Database.PostgreSql.csproj">
+      <Project>{85411145-55E5-405B-B5B4-8EC433FE2C81}</Project>
+      <Name>Utility.Database.PostgreSql</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utility.Database\Utility.Database.csproj">
       <Project>{7C3DF2C6-65E5-49B6-83D7-960551666DA4}</Project>
       <Name>Utility.Database</Name>
@@ -97,8 +101,6 @@
     <None Include="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="nlog.desktop.config" />
-    <None Include="nlog.web.config" />
     <None Include="packages.config" />
     <None Include="Resources\TestDescription.xml" />
   </ItemGroup>

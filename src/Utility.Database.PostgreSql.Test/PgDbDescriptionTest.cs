@@ -1,10 +1,15 @@
-﻿using NUnit.Framework;
-using Utility.Database.Management.PostgreSql;
+﻿using System;
+using System.Xml.Linq;
+using NUnit.Framework;
 
 namespace Utility.Database.PostgreSql.Test
 {
   public class PgDbDescriptionTest
   {
+    public const string Empty = "<DbDescription></DbDescription>";
+    public const string MinimumValidWithInvalidTemplateName = "<DbDescription><TemplateName></TemplateName></DbDescription>";
+    public const string MinimumValidWithTemplateName = "<DbDescription><TemplateName>template_postgis</TemplateName></DbDescription>";
+
     [Test]
     public void PoolingIsNotAllowedByDefault()
     {
@@ -65,6 +70,36 @@ namespace Utility.Database.PostgreSql.Test
       var result = new PgDbDescription {ConnectionInfo = connectionInfo};
 
       Assert.AreEqual("schema=schema;pooling=false", result.ConnectionInfo.ConnectionString);
+    }
+
+        [Test]
+    public void DescriptionMissingTemplateNameReturnsNullTemplateName()
+    {
+      var desc = XElement.Parse(Empty);
+
+      var result = new PgDbDescription(desc);
+
+      Assert.Null(result.TemplateName);
+    }
+
+    [Test]
+    public void DescriptionMissingTemplateNameThrows()
+    {
+      var desc = XElement.Parse(MinimumValidWithInvalidTemplateName);
+
+      var e = Assert.Throws<ArgumentException>(() => new PgDbDescription(desc));
+
+      Assert.AreEqual("TemplateName", e.ParamName);
+    }
+
+    [Test]
+    public void DescriptionLoadsTemplateName()
+    {
+      var desc = XElement.Parse(MinimumValidWithTemplateName);
+
+      var result = new PgDbDescription(desc);
+
+      Assert.AreEqual("template_postgis", result.TemplateName);
     }
   }
 }

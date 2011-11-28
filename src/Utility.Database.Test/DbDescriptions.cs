@@ -84,8 +84,5 @@
                                              "<Seed type=\"File\">Resources\\seed.txt</Seed>" +
                                              "</DbDescription>";
     
-    // Templates
-    public const string PgMinimumValidWithInvalidTemplateName = "<DbDescription><TemplateName></TemplateName></DbDescription>";
-    public const string PgMinimumValidWithTemplateName = "<DbDescription><TemplateName>template_postgis</TemplateName></DbDescription>";
   }
 }

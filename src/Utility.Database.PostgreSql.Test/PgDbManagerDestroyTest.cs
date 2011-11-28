@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data.Common;
 using NUnit.Framework;
-using Utility.Database.Management.PostgreSql;
 
 namespace Utility.Database.PostgreSql.Test
 {
@@ -84,12 +83,12 @@ namespace Utility.Database.PostgreSql.Test
                                                           Provider = GlobalTest.ConnectionInfo1.Provider
                                                         }
                                      });
-      
+
       managerT.Create();
       managerT.Destroy();
 
       // connection 2's user should not have been deleted because it is still in use by connection 2's database
-      
+
       using (var conn = managerT.ConnectionInfo.ProviderFactory.CreateConnection())
       {
         conn.ConnectionString = PgDbManager.CreateDatabaseConnectionString(managerT.ConnectionInfo, GlobalTest.Superuser);
@@ -101,7 +100,6 @@ namespace Utility.Database.PostgreSql.Test
           Assert.AreEqual(1, Convert.ToInt64(cmd.ExecuteScalar()));
         }
       }
-
     }
   }
 }

@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 using NUnit.Framework;
-using Utility.Database.Management;
-using Utility.Database.Management.PostgreSql;
 
 namespace Utility.Database.PostgreSql.Test
 {

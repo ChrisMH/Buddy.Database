@@ -2,7 +2,6 @@
 using System.Data.Common;
 using System.Xml.Linq;
 using NUnit.Framework;
-using Utility.Database.Management.PostgreSql;
 
 namespace Utility.Database.PostgreSql.Test
 {
@@ -101,55 +100,38 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void CreateThrowsWhenParametersAreInvalid()
     {
-      var manager = new PgDbManager(new PgDbDescription());
-      Assert.AreEqual("Description.ConnectionInfo",
-                      Assert.Throws<ArgumentNullException>(manager.Create).ParamName);
-
-      manager = new PgDbManager(new PgDbDescription {ConnectionInfo = new DbConnectionInfo()});
-      Assert.AreEqual("Description.ConnectionInfo.ConnectionString",
-                      Assert.Throws<ArgumentException>(manager.Create).ParamName);
-
-      manager = new PgDbManager(new PgDbDescription {ConnectionInfo = new DbConnectionInfo {ConnectionString = ""}});
-      Assert.AreEqual("Description.ConnectionInfo.ConnectionString",
-                      Assert.Throws<ArgumentException>(manager.Create).ParamName);
-
-      manager = new PgDbManager(new PgDbDescription {ConnectionInfo = new DbConnectionInfo {ConnectionString = "database=database"}});
-      Assert.AreEqual("Description.ConnectionInfo.ProviderFactory",
-                      Assert.Throws<ArgumentException>(manager.Create).ParamName);
+      InvalidParameterTests(manager => manager.Create());
     }
 
     [Test]
     public void DestroyThrowsWhenParametersAreInvalid()
     {
-      var manager = new PgDbManager(new PgDbDescription());
-      Assert.AreEqual("Description.ConnectionInfo",
-                      Assert.Throws<ArgumentNullException>(manager.Destroy).ParamName);
-      manager = new PgDbManager(new PgDbDescription {ConnectionInfo = new DbConnectionInfo()});
-      Assert.AreEqual("Description.ConnectionInfo.ConnectionString",
-                      Assert.Throws<ArgumentException>(manager.Destroy).ParamName);
-      manager = new PgDbManager(new PgDbDescription {ConnectionInfo = new DbConnectionInfo {ConnectionString = ""}});
-      Assert.AreEqual("Description.ConnectionInfo.ConnectionString",
-                      Assert.Throws<ArgumentException>(manager.Destroy).ParamName);
-      manager = new PgDbManager(new PgDbDescription {ConnectionInfo = new DbConnectionInfo {ConnectionString = "database=database"}});
-      Assert.AreEqual("Description.ConnectionInfo.ProviderFactory",
-                      Assert.Throws<ArgumentException>(manager.Destroy).ParamName);
+      InvalidParameterTests(manager => manager.Destroy());
     }
 
     [Test]
     public void SeedThrowsWhenParametersAreInvalid()
     {
+      InvalidParameterTests(manager => manager.Seed());
+    }
+
+    private void InvalidParameterTests(Action<PgDbManager> action)
+    {
       var manager = new PgDbManager(new PgDbDescription());
       Assert.AreEqual("Description.ConnectionInfo",
-                      Assert.Throws<ArgumentNullException>(manager.Seed).ParamName);
+                      Assert.Throws<ArgumentNullException>(() => action.Invoke(manager)).ParamName);
+
       manager = new PgDbManager(new PgDbDescription {ConnectionInfo = new DbConnectionInfo()});
       Assert.AreEqual("Description.ConnectionInfo.ConnectionString",
-                      Assert.Throws<ArgumentException>(manager.Seed).ParamName);
+                      Assert.Throws<ArgumentException>(() => action.Invoke(manager)).ParamName);
+
       manager = new PgDbManager(new PgDbDescription {ConnectionInfo = new DbConnectionInfo {ConnectionString = ""}});
       Assert.AreEqual("Description.ConnectionInfo.ConnectionString",
-                      Assert.Throws<ArgumentException>(manager.Seed).ParamName);
+                      Assert.Throws<ArgumentException>(() => action.Invoke(manager)).ParamName);
+
       manager = new PgDbManager(new PgDbDescription {ConnectionInfo = new DbConnectionInfo {ConnectionString = "database=database"}});
       Assert.AreEqual("Description.ConnectionInfo.ProviderFactory",
-                      Assert.Throws<ArgumentException>(manager.Seed).ParamName);
+                      Assert.Throws<ArgumentException>(() => action.Invoke(manager)).ParamName);
     }
 
     [Test]

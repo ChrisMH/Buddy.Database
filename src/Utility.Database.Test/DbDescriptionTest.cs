@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Xml.Linq;
 using NUnit.Framework;
-using Utility.Database.Management;
 
 namespace Utility.Database.Test
 {
@@ -23,6 +22,7 @@ namespace Utility.Database.Test
     [TestCase(DbDescriptions.ConnectionWithConnectionStringAndProviderName, "server=server", "System.Data.SqlClient", typeof(System.Data.SqlClient.SqlClientFactory))]
     [TestCase(DbDescriptions.ConnectionWithConnectionStringAndProviderType, "server=server", 
       "System.Data.SqlClient.SqlClientFactory, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089", typeof(System.Data.SqlClient.SqlClientFactory))]
+    [TestCase(DbDescriptions.ConnectionWithConnectionString, "server=server", null, null)]
     public void DescriptionWithValidConnectionLoadsConnection(string description, string connectionString, string provider, Type providerFactoryType)
     {
       var desc = XElement.Parse(description);
@@ -32,12 +32,14 @@ namespace Utility.Database.Test
       Assert.NotNull(result.ConnectionInfo);
       Assert.AreEqual(connectionString, result.ConnectionInfo.ConnectionString);
       Assert.AreEqual(provider, result.ConnectionInfo.Provider);
-      Assert.IsInstanceOf(providerFactoryType, result.ConnectionInfo.ProviderFactory);
+      if(providerFactoryType != null)
+      {
+        Assert.IsInstanceOf(providerFactoryType, result.ConnectionInfo.ProviderFactory);
+      }
     }
 
     [TestCase(DbDescriptions.EmptyConnection)]
     [TestCase(DbDescriptions.ConnectionWithInvalidConnectionStringName)]
-    [TestCase(DbDescriptions.ConnectionWithConnectionString)]
     [TestCase(DbDescriptions.ConnectionWithProviderName)]
     public void DescriptionWithInvalidConnectionThrows(string description)
     {

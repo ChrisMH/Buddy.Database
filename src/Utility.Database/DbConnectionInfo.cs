@@ -15,20 +15,20 @@ namespace Utility.Database
     {
       Name = copy.Name;
       ConnectionString = copy.ConnectionString;
-      Provider = copy.Provider; 
+      Provider = copy.Provider;
     }
 
     public DbConnectionInfo(string connectionStringName)
     {
       if (string.IsNullOrEmpty(connectionStringName))
         throw new ArgumentException("Connection string name not provided", "connectionStringName");
-      if(ConfigurationManager.ConnectionStrings[connectionStringName] == null)
+      if (ConfigurationManager.ConnectionStrings[connectionStringName] == null)
         throw new ArgumentException(string.Format("Connection string name '{0}' not found in the configuration", connectionStringName), "connectionStringName");
 
       Name = connectionStringName;
-      ConnectionString = new DbConnectionStringBuilder {ConnectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString}.ConnectionString;
+      ConnectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
       Provider = ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName;
-      if(string.IsNullOrEmpty(Provider))
+      if (string.IsNullOrEmpty(Provider))
       {
         Provider = null;
       }
@@ -37,6 +37,7 @@ namespace Utility.Database
     public string Name { get; set; }
     public string ConnectionString { get; set; }
     public string Provider { get; set; }
+
     public DbProviderFactory ProviderFactory
     {
       get
@@ -64,11 +65,10 @@ namespace Utility.Database
             }
 
             return (DbProviderFactory) instanceField.GetValue(null);
-
           }
           catch (Exception e)
           {
-            if(e is ArgumentException) throw;
+            if (e is ArgumentException) throw;
             throw new ArgumentException(string.Format("Could not load a provider factory for '{0}'", Provider), "Provider");
           }
         }

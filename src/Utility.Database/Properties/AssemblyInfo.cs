@@ -6,4 +6,3 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyConfiguration("")]
 
 [assembly: InternalsVisibleTo("Utility.Database.Test")]
-[assembly: InternalsVisibleTo("Utility.Database.PostgreSql.Test")]

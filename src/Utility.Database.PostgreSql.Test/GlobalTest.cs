@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data.Common;
 using NUnit.Framework;
-using Utility.Database.Management.PostgreSql;
 using Utility.Logging;
 using Utility.Logging.NLog;
 

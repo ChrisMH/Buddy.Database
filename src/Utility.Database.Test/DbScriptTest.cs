@@ -2,7 +2,6 @@
 using System.Resources;
 using System.Xml.Linq;
 using NUnit.Framework;
-using Utility.Database.Management;
 
 namespace Utility.Database.Test
 {

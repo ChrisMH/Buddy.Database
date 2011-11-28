@@ -52,20 +52,11 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Management\DbDescription.cs" />
-    <Compile Include="Management\DbScript.cs" />
+    <Compile Include="DbDescription.cs" />
+    <Compile Include="DbScript.cs" />
     <Compile Include="DbConnectionInfo.cs" />
     <Compile Include="IDbConnectionInfo.cs" />
-    <Compile Include="Management\IDbManager.cs" />
-    <Compile Include="Management\PostgreSql\PgDbDescription.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Management\PostgreSql\PgDbManager.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Management\PostgreSql\PgSuperuser.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="IDbManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
