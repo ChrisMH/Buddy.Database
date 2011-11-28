@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Utility.Database.MongoDb</id>
+    <version>$version$</version>
+    <title>Utility.Database.MongoDb</title>
+    <authors>Chris Hogan</authors>
+    <owners>Chris Hogan</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Utility.Database MongoDB-specific implementation</description>
+    <copyright>Copyright 2011</copyright>
+    <dependencies>
+      <dependency id="Utility.Database" version="$version$"/>
+      <dependency id="mongocsharpdriver" version="1.3"/>
+    </dependencies>
+  </metadata>
+</package>
