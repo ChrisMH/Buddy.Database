@@ -52,11 +52,12 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="DbDescription.cs" />
+    <Compile Include="GenericDbDescription.cs" />
     <Compile Include="DbScript.cs" />
-    <Compile Include="DbConnectionInfo.cs" />
+    <Compile Include="GenericDbConnectionInfo.cs" />
     <Compile Include="IDbConnectionInfo.cs" />
     <Compile Include="IDbManager.cs" />
+    <Compile Include="IDbProviderInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -76,11 +76,11 @@ namespace Utility.Database.PostgreSql.Test
       Assert.AreEqual("connectionInfo",
                       Assert.Throws<ArgumentNullException>(() => PgDbManager.CreateDatabaseConnectionString(null, new PgSuperuser())).ParamName);
       Assert.AreEqual("superuser",
-                      Assert.Throws<ArgumentNullException>(() => PgDbManager.CreateDatabaseConnectionString(new DbConnectionInfo(), null)).ParamName);
+                      Assert.Throws<ArgumentNullException>(() => PgDbManager.CreateDatabaseConnectionString(new GenericDbConnectionInfo(), null)).ParamName);
       Assert.AreEqual("connectionInfo.ConnectionString",
-                      Assert.Throws<ArgumentException>(() => PgDbManager.CreateDatabaseConnectionString(new DbConnectionInfo {ConnectionString = null}, new PgSuperuser())).ParamName);
+                      Assert.Throws<ArgumentException>(() => PgDbManager.CreateDatabaseConnectionString(new GenericDbConnectionInfo {ConnectionString = null}, new PgSuperuser())).ParamName);
       Assert.AreEqual("connectionInfo.ConnectionString",
-                      Assert.Throws<ArgumentException>(() => PgDbManager.CreateDatabaseConnectionString(new DbConnectionInfo {ConnectionString = ""}, new PgSuperuser())).ParamName);
+                      Assert.Throws<ArgumentException>(() => PgDbManager.CreateDatabaseConnectionString(new GenericDbConnectionInfo {ConnectionString = ""}, new PgSuperuser())).ParamName);
     }
 
     [Test]
@@ -89,11 +89,11 @@ namespace Utility.Database.PostgreSql.Test
       Assert.AreEqual("connectionInfo",
                       Assert.Throws<ArgumentNullException>(() => PgDbManager.CreateContentConnectionString(null, new PgSuperuser())).ParamName);
       Assert.AreEqual("superuser",
-                      Assert.Throws<ArgumentNullException>(() => PgDbManager.CreateContentConnectionString(new DbConnectionInfo(), null)).ParamName);
+                      Assert.Throws<ArgumentNullException>(() => PgDbManager.CreateContentConnectionString(new GenericDbConnectionInfo(), null)).ParamName);
       Assert.AreEqual("connectionInfo.ConnectionString",
-                      Assert.Throws<ArgumentException>(() => PgDbManager.CreateContentConnectionString(new DbConnectionInfo {ConnectionString = null}, new PgSuperuser())).ParamName);
+                      Assert.Throws<ArgumentException>(() => PgDbManager.CreateContentConnectionString(new GenericDbConnectionInfo {ConnectionString = null}, new PgSuperuser())).ParamName);
       Assert.AreEqual("connectionInfo.ConnectionString",
-                      Assert.Throws<ArgumentException>(() => PgDbManager.CreateContentConnectionString(new DbConnectionInfo {ConnectionString = ""}, new PgSuperuser())).ParamName);
+                      Assert.Throws<ArgumentException>(() => PgDbManager.CreateContentConnectionString(new GenericDbConnectionInfo {ConnectionString = ""}, new PgSuperuser())).ParamName);
     }
 
 
@@ -121,15 +121,15 @@ namespace Utility.Database.PostgreSql.Test
       Assert.AreEqual("Description.ConnectionInfo",
                       Assert.Throws<ArgumentNullException>(() => action.Invoke(manager)).ParamName);
 
-      manager = new PgDbManager(new PgDbDescription {ConnectionInfo = new DbConnectionInfo()});
+      manager = new PgDbManager(new PgDbDescription {ConnectionInfo = new GenericDbConnectionInfo()});
       Assert.AreEqual("Description.ConnectionInfo.ConnectionString",
                       Assert.Throws<ArgumentException>(() => action.Invoke(manager)).ParamName);
 
-      manager = new PgDbManager(new PgDbDescription {ConnectionInfo = new DbConnectionInfo {ConnectionString = ""}});
+      manager = new PgDbManager(new PgDbDescription {ConnectionInfo = new GenericDbConnectionInfo {ConnectionString = ""}});
       Assert.AreEqual("Description.ConnectionInfo.ConnectionString",
                       Assert.Throws<ArgumentException>(() => action.Invoke(manager)).ParamName);
 
-      manager = new PgDbManager(new PgDbDescription {ConnectionInfo = new DbConnectionInfo {ConnectionString = "database=database"}});
+      manager = new PgDbManager(new PgDbDescription {ConnectionInfo = new GenericDbConnectionInfo {ConnectionString = "database=database"}});
       Assert.AreEqual("Description.ConnectionInfo.ProviderFactory",
                       Assert.Throws<ArgumentException>(() => action.Invoke(manager)).ParamName);
     }

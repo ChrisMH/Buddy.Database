@@ -46,23 +46,23 @@ namespace Utility.Database.MongoDb.Test
 
     private void InvalidParameterTests(Action<MongoDbManager> action)
     {
-      var manager = new MongoDbManager(new DbDescription());
+      var manager = new MongoDbManager(new GenericDbDescription());
       Assert.AreEqual("connectionInfo",
                       Assert.Throws<ArgumentNullException>(() => action.Invoke(manager)).ParamName);
 
-      manager = new MongoDbManager(new DbDescription {ConnectionInfo = new DbConnectionInfo()});
+      manager = new MongoDbManager(new GenericDbDescription {ConnectionInfo = new GenericDbConnectionInfo()});
       Assert.AreEqual("connectionInfo.ConnectionString",
                       Assert.Throws<ArgumentException>(() => action.Invoke(manager)).ParamName);
 
-      manager = new MongoDbManager(new DbDescription {ConnectionInfo = new DbConnectionInfo {ConnectionString = ""}});
+      manager = new MongoDbManager(new GenericDbDescription {ConnectionInfo = new GenericDbConnectionInfo {ConnectionString = ""}});
       Assert.AreEqual("connectionInfo.ConnectionString",
                       Assert.Throws<ArgumentException>(() => action.Invoke(manager)).ParamName);
                       
-      manager = new MongoDbManager(new DbDescription {ConnectionInfo = new DbConnectionInfo {ConnectionString = "invalid"}});
+      manager = new MongoDbManager(new GenericDbDescription {ConnectionInfo = new GenericDbConnectionInfo {ConnectionString = "invalid"}});
       Assert.AreEqual("connectionInfo.ConnectionString",
                       Assert.Throws<ArgumentException>(() => action.Invoke(manager)).ParamName);
 
-      manager = new MongoDbManager(new DbDescription {ConnectionInfo = new DbConnectionInfo {ConnectionString = "mongodb://localhost"}});
+      manager = new MongoDbManager(new GenericDbDescription {ConnectionInfo = new GenericDbConnectionInfo {ConnectionString = "mongodb://localhost"}});
       Assert.AreEqual("connectionInfo.ConnectionString",
                       Assert.Throws<ArgumentException>(() => action.Invoke(manager)).ParamName);
       

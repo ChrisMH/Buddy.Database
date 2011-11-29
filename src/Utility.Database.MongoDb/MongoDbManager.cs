@@ -9,9 +9,8 @@ namespace Utility.Database.Management.MongoDb
 {
   public class MongoDbManager : IDbManager
   {
-    private const string ConnectionStringRegex = @"mongodb://((?<UserId>[^:]+):(?<Password>[^@]+)@)?(?<ServerName>[^/]+)/(?<DatabaseName>[^/]+)/?";
 
-    public MongoDbManager(DbDescription description)
+    public MongoDbManager(GenericDbDescription description)
     {
       if (description == null) throw new ArgumentNullException("description");
       Description = description;
@@ -63,7 +62,7 @@ namespace Utility.Database.Management.MongoDb
       get { return Description.ConnectionInfo; }
     }
 
-    public DbDescription Description { get; private set; }
+    public GenericDbDescription Description { get; private set; }
 
     internal static dynamic ParseConnectionString(IDbConnectionInfo connectionInfo)
     {

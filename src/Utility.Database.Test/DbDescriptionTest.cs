@@ -13,7 +13,7 @@ namespace Utility.Database.Test
     {
       var desc = XElement.Parse(DbDescriptions.Empty);
 
-      var result = new DbDescription(desc);
+      var result = new GenericDbDescription(desc);
 
       Assert.Null(result.ConnectionInfo);
     }
@@ -27,7 +27,7 @@ namespace Utility.Database.Test
     {
       var desc = XElement.Parse(description);
 
-      var result = new DbDescription(desc);
+      var result = new GenericDbDescription(desc);
 
       Assert.NotNull(result.ConnectionInfo);
       Assert.AreEqual(connectionString, result.ConnectionInfo.ConnectionString);
@@ -45,7 +45,7 @@ namespace Utility.Database.Test
     {
       var desc = XElement.Parse(description);
 
-      var result = Assert.Throws<ArgumentException>(() => new DbDescription(desc));
+      var result = Assert.Throws<ArgumentException>(() => new GenericDbDescription(desc));
       Assert.AreEqual("Connection", result.ParamName);
       Debug.WriteLine(result.Message);
     }
@@ -55,7 +55,7 @@ namespace Utility.Database.Test
     {
       var desc = XElement.Parse(DbDescriptions.Empty);
 
-      var result = new DbDescription(desc);
+      var result = new GenericDbDescription(desc);
 
       Assert.AreEqual(0, result.Schemas.Count());
     }
@@ -65,7 +65,7 @@ namespace Utility.Database.Test
     {
       var desc = XElement.Parse(DbDescriptions.Empty);
 
-      var result = new DbDescription(desc);
+      var result = new GenericDbDescription(desc);
 
       Assert.AreEqual(0, result.Seeds.Count());
     }
@@ -76,7 +76,7 @@ namespace Utility.Database.Test
     {
       var desc = XElement.Parse(script);
 
-      var result = new DbDescription(desc);
+      var result = new GenericDbDescription(desc);
 
       Assert.AreEqual(1, result.Schemas.Count());
     }
@@ -87,7 +87,7 @@ namespace Utility.Database.Test
     {
       var desc = XElement.Parse(script);
 
-      var result = new DbDescription(desc);
+      var result = new GenericDbDescription(desc);
 
       Assert.AreEqual(1, result.Seeds.Count());
     }
@@ -97,7 +97,7 @@ namespace Utility.Database.Test
     {
       var desc = XElement.Parse(DbDescriptions.SchemasAndSeeds);
 
-      var result = new DbDescription(desc);
+      var result = new GenericDbDescription(desc);
 
       Assert.AreEqual(2, result.Schemas.Count());
       Assert.AreEqual(2, result.Seeds.Count());
@@ -108,7 +108,7 @@ namespace Utility.Database.Test
     {
       var root = XElement.Parse(DbDescriptions.SingleFileSchema);
 
-      var result = new DbDescription(root);
+      var result = new GenericDbDescription(root);
 
       Assert.AreEqual(AppDomain.CurrentDomain.BaseDirectory, result.Schemas[0].BaseDirectory);
     }
@@ -118,7 +118,7 @@ namespace Utility.Database.Test
     {
       var root = XElement.Parse(DbDescriptions.RelativeFileSchema);
 
-      var result = new DbDescription(root, "d:\\DevP\\Utility.Database\\src\\Utility.Database.Test");
+      var result = new GenericDbDescription(root, "d:\\DevP\\Utility.Database\\src\\Utility.Database.Test");
 
       Assert.AreEqual("schema", result.Schemas.First().Load());
       Assert.AreEqual("seed", result.Seeds.First().Load());
@@ -127,8 +127,8 @@ namespace Utility.Database.Test
     [Test]
     public void CopyOfDbConnectionInfoIsUsed()
     {
-      var connectionInfo = new DbConnectionInfo {ConnectionString = "schema=schema", Provider = "System.Data.SqlClient"};
-      var result = new DbDescription {ConnectionInfo = connectionInfo};
+      var connectionInfo = new GenericDbConnectionInfo {ConnectionString = "schema=schema", Provider = "System.Data.SqlClient"};
+      var result = new GenericDbDescription {ConnectionInfo = connectionInfo};
 
       connectionInfo.ConnectionString = "schema=other_schema";
 

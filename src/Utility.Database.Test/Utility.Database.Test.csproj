@@ -56,7 +56,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="DbConnectionTest.cs" />
+    <Compile Include="GenericDbConnectionInfoTest.cs" />
     <Compile Include="DbDescriptions.cs" />
     <Compile Include="DbDescriptionTest.cs" />
     <Compile Include="DbScripts.cs" />

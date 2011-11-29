@@ -77,7 +77,7 @@ namespace Utility.Database.PostgreSql.Test
 
       var managerT = new PgDbManager(new PgDbDescription
                                      {
-                                       ConnectionInfo = new DbConnectionInfo
+                                       ConnectionInfo = new GenericDbConnectionInfo
                                                         {
                                                           ConnectionString = csBuilderT.ConnectionString,
                                                           Provider = GlobalTest.ConnectionInfo1.Provider

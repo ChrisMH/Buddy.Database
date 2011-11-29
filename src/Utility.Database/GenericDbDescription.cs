@@ -5,15 +5,15 @@ using System.Xml.Linq;
 
 namespace Utility.Database
 {
-  public class DbDescription
+  public class GenericDbDescription
   {
-    public DbDescription()
+    public GenericDbDescription()
     {
       Schemas = new List<DbScript>();
       Seeds = new List<DbScript>();
     }
 
-    public DbDescription(XElement root, string baseDirectory = null)
+    public GenericDbDescription(XElement root, string baseDirectory = null)
       : this()
     {
       if (root.Element("Connection") != null)
@@ -24,11 +24,11 @@ namespace Utility.Database
 
           if (connectionElement.Element("ConnectionStringName") != null)
           {
-            ConnectionInfo = new DbConnectionInfo(connectionElement.Element("ConnectionStringName").Value);
+            ConnectionInfo = new GenericDbConnectionInfo(connectionElement.Element("ConnectionStringName").Value);
           }
           else if (connectionElement.Element("ConnectionString") != null)
           {
-            ConnectionInfo = new DbConnectionInfo
+            ConnectionInfo = new GenericDbConnectionInfo
                          {
                            ConnectionString = connectionElement.Element("ConnectionString").Value,
                            Provider = connectionElement.Element("Provider") == null ? null : connectionElement.Element("Provider").Value
@@ -56,13 +56,13 @@ namespace Utility.Database
 
     public virtual IDbConnectionInfo ConnectionInfo
     {
-      get { return connectionInfo == null ? null : new DbConnectionInfo(connectionInfo); }
-      set { connectionInfo = value == null ? null : new DbConnectionInfo(value); }
+      get { return connectionInfo == null ? null : new GenericDbConnectionInfo(connectionInfo); }
+      set { connectionInfo = value == null ? null : new GenericDbConnectionInfo(value); }
     }
 
     public List<DbScript> Schemas { get; set; }
     public List<DbScript> Seeds { get; set; }
 
-    private DbConnectionInfo connectionInfo;
+    private GenericDbConnectionInfo connectionInfo;
   }
 }

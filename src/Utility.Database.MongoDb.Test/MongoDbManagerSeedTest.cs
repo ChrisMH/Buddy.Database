@@ -26,7 +26,7 @@ namespace Utility.Database.MongoDb.Test
     [Test]
     public void SeedFromLiteralSeedsDatabase()
     {
-          var manager = new MongoDbManager(new DbDescription
+          var manager = new MongoDbManager(new GenericDbDescription
                                        {
                                          ConnectionInfo = GlobalTest.ConnectionInfo1,
                                          Schemas = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = LiteralSchema}},

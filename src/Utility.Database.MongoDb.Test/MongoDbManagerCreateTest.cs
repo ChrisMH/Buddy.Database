@@ -25,7 +25,7 @@ namespace Utility.Database.MongoDb.Test
     [Test]
     public void CreateCreatesDatabase()
     {
-      var manager = new MongoDbManager(new DbDescription {ConnectionInfo = GlobalTest.ConnectionInfo1});
+      var manager = new MongoDbManager(new GenericDbDescription {ConnectionInfo = GlobalTest.ConnectionInfo1});
 
       manager.Create();
 
@@ -37,7 +37,7 @@ namespace Utility.Database.MongoDb.Test
     [Test]
     public void CreateWithLiteralSchemaCreatesSchema()
     {
-      var manager = new MongoDbManager(new DbDescription
+      var manager = new MongoDbManager(new GenericDbDescription
                                        {
                                          ConnectionInfo = GlobalTest.ConnectionInfo1,
                                          Schemas = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = LiteralSchema}}

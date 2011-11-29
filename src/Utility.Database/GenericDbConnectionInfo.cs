@@ -5,28 +5,35 @@ using System.Reflection;
 
 namespace Utility.Database
 {
-  public class DbConnectionInfo : IDbConnectionInfo
+  /// <summary>
+  /// Generic implementation assuming that the connection is provider based and 
+  /// the connection string consists of key-value pairs that can be decoded using DbConnectionStringBuilder
+  /// </summary>
+  public class GenericDbConnectionInfo : IDbConnectionInfo, IDbProviderInfo
   {
-    public DbConnectionInfo()
+    public GenericDbConnectionInfo()
     {
     }
 
-    public DbConnectionInfo(IDbConnectionInfo copy)
+    public GenericDbConnectionInfo(IDbConnectionInfo copy)
     {
       Name = copy.Name;
       ConnectionString = copy.ConnectionString;
-      Provider = copy.Provider;
+      if(copy is IDbProviderInfo)
+      {
+        Provider = ((IDbProviderInfo) copy).Provider;
+      }
     }
 
-    public DbConnectionInfo(string connectionStringName)
+    public GenericDbConnectionInfo(string connectionStringName)
     {
-      if (string.IsNullOrEmpty(connectionStringName))
+      if (string.IsNullOrWhiteSpace(connectionStringName))
         throw new ArgumentException("Connection string name not provided", "connectionStringName");
       if (ConfigurationManager.ConnectionStrings[connectionStringName] == null)
         throw new ArgumentException(string.Format("Connection string name '{0}' not found in the configuration", connectionStringName), "connectionStringName");
 
       Name = connectionStringName;
-      ConnectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
+      connectionString = new DbConnectionStringBuilder { ConnectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString };
       Provider = ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName;
       if (string.IsNullOrEmpty(Provider))
       {
@@ -35,7 +42,12 @@ namespace Utility.Database
     }
 
     public string Name { get; set; }
-    public string ConnectionString { get; set; }
+    public string ConnectionString
+    {
+      get { return connectionString == null ? null : connectionString.ConnectionString; }
+      set { connectionString = new DbConnectionStringBuilder {ConnectionString = value}; }
+    }
+    
     public string Provider { get; set; }
 
     public DbProviderFactory ProviderFactory
@@ -74,5 +86,12 @@ namespace Utility.Database
         }
       }
     }
+
+    public object this[string key]
+    {
+      get { return new DbConnectionStringBuilder {ConnectionString = ConnectionString}[key]; }
+    }
+
+    private DbConnectionStringBuilder connectionString;
   }
 }

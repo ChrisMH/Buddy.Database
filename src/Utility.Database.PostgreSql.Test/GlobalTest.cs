@@ -20,12 +20,12 @@ namespace Utility.Database.PostgreSql.Test
       try
       {
         Logger = new NLogLoggerFactory().GetCurrentClassLogger();
-        ConnectionInfo1 = new DbConnectionInfo("Test1");
+        ConnectionInfo1 = new GenericDbConnectionInfo("Test1");
         var csBuilder = new DbConnectionStringBuilder {ConnectionString = ConnectionInfo1.ConnectionString};
         csBuilder["pooling"] = "false";
         ConnectionInfo1.ConnectionString = csBuilder.ConnectionString;
 
-        ConnectionInfo2 = new DbConnectionInfo("Test2");
+        ConnectionInfo2 = new GenericDbConnectionInfo("Test2");
         csBuilder = new DbConnectionStringBuilder {ConnectionString = ConnectionInfo2.ConnectionString};
         csBuilder["pooling"] = "false";
         ConnectionInfo2.ConnectionString = csBuilder.ConnectionString;

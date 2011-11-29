@@ -21,8 +21,8 @@ namespace Utility.Database.MongoDb.Test
     {
       try
       {
-        ConnectionInfo1 = new DbConnectionInfo("Test1");
-        ConnectionInfo2 = new DbConnectionInfo("Test2");
+        ConnectionInfo1 = new GenericDbConnectionInfo("Test1");
+        ConnectionInfo2 = new GenericDbConnectionInfo("Test2");
       }
       catch (Exception e)
       {
