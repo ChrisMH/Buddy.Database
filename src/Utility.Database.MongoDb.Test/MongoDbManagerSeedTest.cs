@@ -8,7 +8,7 @@ namespace Utility.Database.MongoDb.Test
 {
   public class MongoDbManagerSeedTest
   {
-    public const string LiteralSchema = "db.c1.ensureIndex({name: 1}, {unique: true});db.c2.ensureIndex({username: 1}, {unique: true});";
+    public const string LiteralSchema = "db.createCollection('c1');db.createCollection('c2');";
     public const string LiteralSeed = "db.c1.insert({name: 'Fred'});db.c1.insert({name: 'Jim', age: 39});db.c2.insert({username: 'fred', identity: 'abaadd'});";
     
     [SetUp]

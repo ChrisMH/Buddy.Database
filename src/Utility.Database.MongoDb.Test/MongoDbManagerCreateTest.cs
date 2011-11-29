@@ -8,7 +8,7 @@ namespace Utility.Database.MongoDb.Test
 {
   public class MongoDbManagerCreateTest
   {
-    public const string LiteralSchema = "db.c1.ensureIndex({name: 1}, {unique: true});db.c2.ensureIndex({username: 1}, {unique: true});";
+    public const string LiteralSchema = "db.createCollection('c1');db.createCollection('c2');";
 
     [SetUp]
     public void SetUp()
