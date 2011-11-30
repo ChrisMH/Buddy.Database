@@ -15,8 +15,10 @@ namespace Utility.Database
     {
     }
 
-    public GenericDbConnectionInfo(IDbConnectionInfo copy)
+    public IDbConnectionInfo Copy()
     {
+      var copy = new GenericDbConnectionInfo();
+
       Name = copy.Name;
       ConnectionString = copy.ConnectionString;
       if(copy is IDbProviderInfo)

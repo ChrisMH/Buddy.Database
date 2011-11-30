@@ -46,23 +46,23 @@ namespace Utility.Database.MongoDb.Test
 
     private void InvalidParameterTests(Action<MongoDbManager> action)
     {
-      var manager = new MongoDbManager(new GenericDbDescription());
+      var manager = new MongoDbManager(new DbDescription());
       Assert.AreEqual("connectionInfo",
                       Assert.Throws<ArgumentNullException>(() => action.Invoke(manager)).ParamName);
 
-      manager = new MongoDbManager(new GenericDbDescription {ConnectionInfo = new GenericDbConnectionInfo()});
+      manager = new MongoDbManager(new DbDescription {ConnectionInfo = new GenericDbConnectionInfo()});
       Assert.AreEqual("connectionInfo.ConnectionString",
                       Assert.Throws<ArgumentException>(() => action.Invoke(manager)).ParamName);
 
-      manager = new MongoDbManager(new GenericDbDescription {ConnectionInfo = new GenericDbConnectionInfo {ConnectionString = ""}});
+      manager = new MongoDbManager(new DbDescription {ConnectionInfo = new GenericDbConnectionInfo {ConnectionString = ""}});
       Assert.AreEqual("connectionInfo.ConnectionString",
                       Assert.Throws<ArgumentException>(() => action.Invoke(manager)).ParamName);
                       
-      manager = new MongoDbManager(new GenericDbDescription {ConnectionInfo = new GenericDbConnectionInfo {ConnectionString = "invalid"}});
+      manager = new MongoDbManager(new DbDescription {ConnectionInfo = new GenericDbConnectionInfo {ConnectionString = "invalid"}});
       Assert.AreEqual("connectionInfo.ConnectionString",
                       Assert.Throws<ArgumentException>(() => action.Invoke(manager)).ParamName);
 
-      manager = new MongoDbManager(new GenericDbDescription {ConnectionInfo = new GenericDbConnectionInfo {ConnectionString = "mongodb://localhost"}});
+      manager = new MongoDbManager(new DbDescription {ConnectionInfo = new GenericDbConnectionInfo {ConnectionString = "mongodb://localhost"}});
       Assert.AreEqual("connectionInfo.ConnectionString",
                       Assert.Throws<ArgumentException>(() => action.Invoke(manager)).ParamName);
       

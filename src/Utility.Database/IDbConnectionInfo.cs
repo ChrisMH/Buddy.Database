@@ -2,7 +2,12 @@
 {
   public interface IDbConnectionInfo
   {
-    string Name { get; set; }
+    /// <summary>
+    /// Loads connection information using the connection string name
+    /// as typically set in a web.config or app.config file
+    /// </summary>
+    string ConnectionStringName { get; set; }
+
     string ConnectionString { get; set; }
 
     /// <summary>
@@ -11,5 +16,7 @@
     /// <param name="key"></param>
     /// <returns></returns>
     object this[string key] { get; }
+
+    IDbConnectionInfo Copy();
   }
 }

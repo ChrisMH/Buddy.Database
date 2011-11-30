@@ -10,7 +10,7 @@ namespace Utility.Database.Management.MongoDb
   public class MongoDbManager : IDbManager
   {
 
-    public MongoDbManager(GenericDbDescription description)
+    public MongoDbManager(DbDescription description)
     {
       if (description == null) throw new ArgumentNullException("description");
       Description = description;
@@ -62,7 +62,7 @@ namespace Utility.Database.Management.MongoDb
       get { return Description.ConnectionInfo; }
     }
 
-    public GenericDbDescription Description { get; private set; }
+    public DbDescription Description { get; private set; }
 
     internal static dynamic ParseConnectionString(IDbConnectionInfo connectionInfo)
     {

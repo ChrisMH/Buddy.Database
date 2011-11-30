@@ -20,7 +20,7 @@ namespace Utility.Database.MongoDb.Test
     [Test]
     public void DestroyDestroysDatabase()
     {
-      var manager = new MongoDbManager(new GenericDbDescription {ConnectionInfo = GlobalTest.ConnectionInfo1});
+      var manager = new MongoDbManager(new DbDescription {ConnectionInfo = GlobalTest.ConnectionInfo1});
 
       manager.Create();
       manager.Destroy();

@@ -5,15 +5,16 @@ using System.Xml.Linq;
 
 namespace Utility.Database
 {
-  public class GenericDbDescription
+  public class DbDescription<TConnectionInfo>
+    where TConnectionInfo : IDbConnectionInfo, new()
   {
-    public GenericDbDescription()
+    public DbDescription()
     {
       Schemas = new List<DbScript>();
       Seeds = new List<DbScript>();
     }
 
-    public GenericDbDescription(XElement root, string baseDirectory = null)
+    public DbDescription(XElement root, string baseDirectory = null)
       : this()
     {
       if (root.Element("Connection") != null)
@@ -24,7 +25,7 @@ namespace Utility.Database
 
           if (connectionElement.Element("ConnectionStringName") != null)
           {
-            ConnectionInfo = new GenericDbConnectionInfo(connectionElement.Element("ConnectionStringName").Value);
+            ConnectionInfo = new TConnectionInfo(connectionElement.Element("ConnectionStringName").Value);
           }
           else if (connectionElement.Element("ConnectionString") != null)
           {
@@ -54,7 +55,7 @@ namespace Utility.Database
       }
     }
 
-    public virtual IDbConnectionInfo ConnectionInfo
+    public IDbConnectionInfo ConnectionInfo
     {
       get { return connectionInfo == null ? null : new GenericDbConnectionInfo(connectionInfo); }
       set { connectionInfo = value == null ? null : new GenericDbConnectionInfo(value); }
@@ -63,6 +64,6 @@ namespace Utility.Database
     public List<DbScript> Schemas { get; set; }
     public List<DbScript> Seeds { get; set; }
 
-    private GenericDbConnectionInfo connectionInfo;
+    private TConnectionInfo connectionInfo;
   }
 }
