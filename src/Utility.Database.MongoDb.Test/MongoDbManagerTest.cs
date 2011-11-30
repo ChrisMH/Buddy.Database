@@ -1,6 +1,5 @@
 ﻿using System;
 using NUnit.Framework;
-using Utility.Database.Management.MongoDb;
 
 namespace Utility.Database.MongoDb.Test
 {
@@ -17,15 +16,7 @@ namespace Utility.Database.MongoDb.Test
     {
       
     }
-
-    [Test]
-    public void MongoDbManagerCreatedWithNullDescriptionThrows()
-    {
-      var result = Assert.Throws<ArgumentNullException>(() => new MongoDbManager(null));
-      Assert.AreEqual("description", result.ParamName);
-    }
-
-
+    
     [Test]
     public void CreateThrowsWhenParametersAreInvalid()
     {
@@ -46,26 +37,13 @@ namespace Utility.Database.MongoDb.Test
 
     private void InvalidParameterTests(Action<MongoDbManager> action)
     {
-      var manager = new MongoDbManager(new DbDescription());
-      Assert.AreEqual("connectionInfo",
+      var manager = new MongoDbManager();
+      Assert.AreEqual("Description",
                       Assert.Throws<ArgumentNullException>(() => action.Invoke(manager)).ParamName);
 
-      manager = new MongoDbManager(new DbDescription {ConnectionInfo = new GenericDbConnectionInfo()});
-      Assert.AreEqual("connectionInfo.ConnectionString",
-                      Assert.Throws<ArgumentException>(() => action.Invoke(manager)).ParamName);
-
-      manager = new MongoDbManager(new DbDescription {ConnectionInfo = new GenericDbConnectionInfo {ConnectionString = ""}});
-      Assert.AreEqual("connectionInfo.ConnectionString",
-                      Assert.Throws<ArgumentException>(() => action.Invoke(manager)).ParamName);
-                      
-      manager = new MongoDbManager(new DbDescription {ConnectionInfo = new GenericDbConnectionInfo {ConnectionString = "invalid"}});
-      Assert.AreEqual("connectionInfo.ConnectionString",
-                      Assert.Throws<ArgumentException>(() => action.Invoke(manager)).ParamName);
-
-      manager = new MongoDbManager(new DbDescription {ConnectionInfo = new GenericDbConnectionInfo {ConnectionString = "mongodb://localhost"}});
-      Assert.AreEqual("connectionInfo.ConnectionString",
-                      Assert.Throws<ArgumentException>(() => action.Invoke(manager)).ParamName);
-      
+      manager = new MongoDbManager { Description = new MongoDbDescription() };
+      Assert.AreEqual("Description.ConnectionInfo",
+                      Assert.Throws<ArgumentNullException>(() => action.Invoke(manager)).ParamName);
     }
   }
 }

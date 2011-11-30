@@ -10,8 +10,8 @@ namespace Utility.Database.Test
     {
       var result = new GenericDbConnectionInfo();
 
-      Assert.IsAssignableFrom<IDbConnectionInfo>(result);
-      Assert.IsAssignableFrom<IDbProviderInfo>(result);
+      Assert.IsInstanceOf<IDbConnectionInfo>(result);
+      Assert.IsInstanceOf<IDbProviderInfo>(result);
     }
 
     [Test]
@@ -74,7 +74,7 @@ namespace Utility.Database.Test
     [Test]
     public void CanCreateFromConnectionStringName()
     {
-      var result = new GenericDbConnectionInfo("Valid");
+      var result = new GenericDbConnectionInfo {ConnectionStringName = "Valid"};
 
       Assert.NotNull(result);
       Assert.AreEqual("server=server", result.ConnectionString);
@@ -85,29 +85,29 @@ namespace Utility.Database.Test
     [Test]
     public void CanCreateFromConnectionStringNameWithBlankProviderName()
     {
-      var result = new GenericDbConnectionInfo("BlankProviderName");
+      var result = new GenericDbConnectionInfo {ConnectionStringName = "BlankProviderName"};
 
       Assert.NotNull(result);
       Assert.AreEqual("server=server", result.ConnectionString);
-      Assert.Null(result.Provider);
+      Assert.AreEqual(string.Empty, result.Provider);
       Assert.Null(result.ProviderFactory);
     }
 
     [Test]
     public void CanCreateFromConnectionStringNameWithNoProviderName()
     {
-      var result = new GenericDbConnectionInfo("BlankProviderName");
+      var result = new GenericDbConnectionInfo {ConnectionStringName = "BlankProviderName"};
 
       Assert.NotNull(result);
       Assert.AreEqual("server=server", result.ConnectionString);
-      Assert.Null(result.Provider);
+      Assert.AreEqual(string.Empty, result.Provider);
       Assert.Null(result.ProviderFactory);
     }
 
     [Test]
     public void CanCreateFromConnectionStringNameWithBlankConnectionString()
     {
-      var result = new GenericDbConnectionInfo("BlankConnectionString");
+      var result = new GenericDbConnectionInfo {ConnectionStringName = "BlankConnectionString"};
 
       Assert.AreEqual("", result.ConnectionString);
       Assert.AreEqual("System.Data.SqlClient", result.Provider);
@@ -119,15 +119,15 @@ namespace Utility.Database.Test
     [TestCase("MissingConnectionStringName")]
     public void CreateFromInvalidConnectionStringNameThrows(string connectionStringName)
     {
-      var result = Assert.Throws<ArgumentException>(() => new GenericDbConnectionInfo(connectionStringName));
-      Assert.AreEqual("connectionStringName", result.ParamName);
+      var result = Assert.Throws<ArgumentException>(() => new GenericDbConnectionInfo {ConnectionStringName = connectionStringName});
+      Assert.AreEqual("ConnectionStringName", result.ParamName);
       Console.WriteLine(result.Message);
     }
 
     [Test]
     public void CanGetConnectionStringValueFromIndexer()
     {
-      var result = new GenericDbConnectionInfo("Valid");
+      var result = new GenericDbConnectionInfo {ConnectionStringName = "Valid"};
 
       Assert.NotNull(result);
       Assert.AreEqual("server", result["server"]);

@@ -1,6 +1,6 @@
 ﻿using System;
+using System.IO;
 using System.Resources;
-using System.Xml.Linq;
 using NUnit.Framework;
 
 namespace Utility.Database.Test
@@ -10,29 +10,22 @@ namespace Utility.Database.Test
     [Test]
     public void EmptyBaseDirectoryUsesAppDomainBaseDirectory()
     {
-      var root = XElement.Parse(DbScripts.RelativeFileSchema);
+      var result = new DbScript {XmlRoot = DbScripts.RelativeFileSchema};
 
-      var result = new DbScript(root);
-
-      Assert.AreEqual(AppDomain.CurrentDomain.BaseDirectory, result.BaseDirectory);
+      Assert.AreEqual(AppDomain.CurrentDomain.BaseDirectory, result.GetBaseDirectory.Invoke());
     }
 
     [Test]
     public void InvalidBaseDirectoryThrows()
     {
-      var root = XElement.Parse(DbScripts.RelativeFileSchema);
-
-      var e = Assert.Throws<ArgumentException>(() => new DbScript(root, "d:\\invalid"));
-      Assert.AreEqual("baseDirectory", e.ParamName);
-
+      var result = Assert.Throws<FileNotFoundException>(() => new DbScript {XmlRoot = DbScripts.RelativeFileSchema, GetBaseDirectory = () => "d:\\invalid"}.Load());
     }
+
     [TestCase(DbScripts.MissingSchemaType)]
     [TestCase(DbScripts.MissingSeedType)]
     public void MissingTypeThrows(string script)
     {
-      var root = XElement.Parse(script);
-
-      var e = Assert.Throws<ArgumentException>(() => new DbScript(root));
+      var e = Assert.Throws<ArgumentException>(() => new DbScript {XmlRoot = script});
       Assert.AreEqual("type", e.ParamName);
     }
 
@@ -40,9 +33,7 @@ namespace Utility.Database.Test
     [TestCase(DbScripts.InvalidSeedType)]
     public void InvalidTypeThrows(string script)
     {
-      var root = XElement.Parse(script);
-
-      var e = Assert.Throws<ArgumentException>(() => new DbScript(root));
+      var e = Assert.Throws<ArgumentException>(() => new DbScript {XmlRoot = script});
       Assert.AreEqual("type", e.ParamName);
     }
 
@@ -54,9 +45,7 @@ namespace Utility.Database.Test
     [TestCase(DbScripts.EmptyLiteralSeed, "Seed")]
     public void EmptyValueThrows(string script, string paramName)
     {
-      var root = XElement.Parse(script);
-
-      var e = Assert.Throws<ArgumentException>(() => new DbScript(root));
+      var e = Assert.Throws<ArgumentException>(() => new DbScript {XmlRoot = script});
       Assert.AreEqual(paramName, e.ParamName);
     }
 
@@ -70,9 +59,7 @@ namespace Utility.Database.Test
     [TestCase(DbScripts.LiteralSeed, ScriptType.Literal, "INSERT INTO literal.table VALUES(1);INSERT INTO literal.table VALUES(2);")]
     public void ScriptIsParsedCorrectly(string script, ScriptType scriptType, string scriptValue)
     {
-      var root = XElement.Parse(script);
-
-      var result = new DbScript(root);
+      var result = new DbScript {XmlRoot = script};
 
       Assert.AreEqual(scriptType, result.ScriptType);
       Assert.AreEqual(scriptValue, result.ScriptValue);
@@ -84,9 +71,7 @@ namespace Utility.Database.Test
     [TestCase(DbScripts.AbsoluteMissingFileSeed, "d:\\seed.txt")]
     public void MissingFileThrows(string script, string fileName)
     {
-      var root = XElement.Parse(script);
-
-      var result = new DbScript(root);
+      var result = new DbScript {XmlRoot = script};
 
       var e = Assert.Throws<System.IO.FileNotFoundException>(() => result.Load());
       Assert.AreEqual(fileName, e.FileName);
@@ -96,13 +81,11 @@ namespace Utility.Database.Test
     [TestCase(DbScripts.MissingResourceSeed)]
     public void MissingResourceThrows(string script)
     {
-      var root = XElement.Parse(script);
-
-      var result = new DbScript(root);
+      var result = new DbScript {XmlRoot = script};
 
       Assert.Throws<MissingManifestResourceException>(() => result.Load());
     }
-    
+
 
     [TestCase(DbScripts.RelativeFileSchema, "schema")]
     [TestCase(DbScripts.AbsoluteFileSchema, "schema")]
@@ -112,9 +95,7 @@ namespace Utility.Database.Test
     [TestCase(DbScripts.ResourceSeed, "seed")]
     public void ScriptIsLoaded(string script, string content)
     {
-      var root = XElement.Parse(script);
-
-      var result = new DbScript(root).Load();
+      var result = new DbScript {XmlRoot = script}.Load();
 
       Assert.AreEqual(content, result);
     }

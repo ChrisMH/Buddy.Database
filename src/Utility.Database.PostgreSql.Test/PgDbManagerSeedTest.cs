@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Xml.Linq;
 using NUnit.Framework;
 
 namespace Utility.Database.PostgreSql.Test
@@ -25,21 +24,22 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void SeedSeedsDatabase()
     {
-      var manager = new PgDbManager(
-        new PgDbDescription
-        {
-          ConnectionInfo = GlobalTest.ConnectionInfo1,
-          Schemas = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = TestSchema}},
-          Seeds = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = TestSeed}}
-        });
+      var manager = new PgDbManager
+                    {
+                      Description = new PgDbDescription
+                                    {
+                                      ConnectionInfo = GlobalTest.ConnectionInfo1,
+                                      Schemas = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = TestSchema}},
+                                      Seeds = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = TestSeed}}
+                                    }
+                    };
 
       manager.Create();
 
       manager.Seed();
 
-      using (var conn = GlobalTest.ConnectionInfo1.ProviderFactory.CreateConnection())
+      using (var conn = manager.CreateContentConnection())
       {
-        conn.ConnectionString = PgDbManager.CreateContentConnectionString(GlobalTest.ConnectionInfo1, GlobalTest.Superuser);
         conn.Open();
 
         using (var cmd = conn.CreateCommand())
@@ -53,14 +53,13 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void SeedFromDescriptionSeedsDatabase()
     {
-      var manager = new PgDbManager(new PgDbDescription(XElement.Parse(Resources.TestDescription)));
+      var manager = new PgDbManager {Description = new PgDbDescription {XmlRoot = Resources.TestDescription}};
 
       manager.Create();
       manager.Seed();
 
-      using (var conn = GlobalTest.ConnectionInfo1.ProviderFactory.CreateConnection())
+      using (var conn = manager.CreateContentConnection())
       {
-        conn.ConnectionString = PgDbManager.CreateContentConnectionString(GlobalTest.ConnectionInfo1, GlobalTest.Superuser);
         conn.Open();
 
         using (var cmd = conn.CreateCommand())

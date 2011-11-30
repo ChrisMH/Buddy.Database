@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Xml.Linq;
 using NUnit.Framework;
 
 namespace Utility.Database.PostgreSql.Test
@@ -72,12 +71,10 @@ namespace Utility.Database.PostgreSql.Test
       Assert.AreEqual("schema=schema;pooling=false", result.ConnectionInfo.ConnectionString);
     }
 
-        [Test]
+    [Test]
     public void DescriptionMissingTemplateNameReturnsNullTemplateName()
     {
-      var desc = XElement.Parse(Empty);
-
-      var result = new PgDbDescription(desc);
+      var result = new PgDbDescription {XmlRoot = Empty};
 
       Assert.Null(result.TemplateName);
     }
@@ -85,9 +82,7 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void DescriptionMissingTemplateNameThrows()
     {
-      var desc = XElement.Parse(MinimumValidWithInvalidTemplateName);
-
-      var e = Assert.Throws<ArgumentException>(() => new PgDbDescription(desc));
+      var e = Assert.Throws<ArgumentException>(() => new PgDbDescription {XmlRoot = MinimumValidWithInvalidTemplateName});
 
       Assert.AreEqual("TemplateName", e.ParamName);
     }
@@ -95,9 +90,7 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void DescriptionLoadsTemplateName()
     {
-      var desc = XElement.Parse(MinimumValidWithTemplateName);
-
-      var result = new PgDbDescription(desc);
+      var result = new PgDbDescription {XmlRoot = MinimumValidWithTemplateName};
 
       Assert.AreEqual("template_postgis", result.TemplateName);
     }

@@ -10,59 +10,43 @@ namespace Utility.Database.PostgreSql
     internal const string UserIdKey = "user id";
     internal const string PasswordKey = "password";
 
-    public PgDbManager(PgDbDescription description)
-      : this(description, new PgSuperuser())
+    public PgDbManager()
     {
+      Superuser = new PgSuperuser();
     }
-
-    public PgDbManager(PgDbDescription description, PgSuperuser superuser)
-    {
-      if (description == null) throw new ArgumentNullException("description");
-
-      Description = description;
-      Superuser = superuser ?? new PgSuperuser();
-    }
-
+    
     public void Create()
     {
-      if (Description.ConnectionInfo == null) throw new ArgumentNullException("Description.ConnectionInfo");
-      if (string.IsNullOrEmpty(Description.ConnectionInfo.ConnectionString)) throw new ArgumentException("Connection information is missing a connection string", "Description.ConnectionInfo.ConnectionString");
-      if (Description.ConnectionInfo.ProviderFactory == null) throw new ArgumentException("Connection information is missing a provider factory", "Description.ConnectionInfo.ProviderFactory");
-      
       Destroy();
       
-      var csBuilder = new DbConnectionStringBuilder {ConnectionString = Description.ConnectionInfo.ConnectionString};
-
-      using (var conn = ConnectionInfo.ProviderFactory.CreateConnection())
+      using (var conn = CreateDatabaseConnection())
       {
-        conn.ConnectionString = CreateDatabaseConnectionString(Description.ConnectionInfo, Superuser);
         conn.Open();
 
         using (var cmd = conn.CreateCommand())
         {
 
-          cmd.CommandText = string.Format("CREATE DATABASE \"{0}\"", csBuilder[DatabaseKey]);
+          cmd.CommandText = string.Format("CREATE DATABASE \"{0}\"", Description.ConnectionInfo[DatabaseKey]);
           if (!string.IsNullOrEmpty(Description.TemplateName))
           {
             cmd.CommandText += string.Format(" TEMPLATE \"{0}\"", Description.TemplateName);
           }
           cmd.ExecuteNonQuery();
 
-          if (csBuilder.ContainsKey(UserIdKey) && csBuilder.ContainsKey(PasswordKey))
+          if (Description.ConnectionInfo.ContainsKey(UserIdKey) && Description.ConnectionInfo.ContainsKey(PasswordKey))
           {
-            cmd.CommandText = string.Format("SELECT COUNT(*) FROM pg_catalog.pg_user WHERE usename='{0}'", csBuilder[UserIdKey]);
+            cmd.CommandText = string.Format("SELECT COUNT(*) FROM pg_catalog.pg_user WHERE usename='{0}'", Description.ConnectionInfo[UserIdKey]);
             if (Convert.ToInt64(cmd.ExecuteScalar()) == 0)
             {
-              cmd.CommandText = string.Format("CREATE ROLE \"{0}\" LOGIN ENCRYPTED PASSWORD '{1}' NOINHERIT", csBuilder[UserIdKey], csBuilder[PasswordKey]);
+              cmd.CommandText = string.Format("CREATE ROLE \"{0}\" LOGIN ENCRYPTED PASSWORD '{1}' NOINHERIT", Description.ConnectionInfo[UserIdKey], Description.ConnectionInfo[PasswordKey]);
               cmd.ExecuteNonQuery();
             }
           }
         }
       }
 
-      using (var conn = ConnectionInfo.ProviderFactory.CreateConnection())
+      using (var conn = CreateContentConnection())
       {
-        conn.ConnectionString = CreateContentConnectionString(Description.ConnectionInfo, Superuser);
         conn.Open();
 
         using (var cmd = conn.CreateCommand())
@@ -73,7 +57,7 @@ namespace Utility.Database.PostgreSql
             cmd.ExecuteNonQuery();
           }
 
-          if (csBuilder.ContainsKey(UserIdKey))
+          if (Description.ConnectionInfo.ContainsKey(UserIdKey))
           {
             cmd.CommandText = "SELECT nspname FROM pg_catalog.pg_namespace " +
                               "WHERE nspname NOT LIKE 'pg_%' " +
@@ -96,7 +80,7 @@ namespace Utility.Database.PostgreSql
                                                  "GRANT ALL ON ALL TABLES IN SCHEMA \"{0}\" TO \"{1}\";" +
                                                  "GRANT ALL ON ALL SEQUENCES IN SCHEMA \"{0}\" TO \"{1}\";" +
                                                  "GRANT ALL ON ALL FUNCTIONS IN SCHEMA \"{0}\" TO \"{1}\";",
-                                                 schema, csBuilder[UserIdKey]);
+                                                 schema, Description.ConnectionInfo[UserIdKey]);
               }
 
               cmd.ExecuteNonQuery();
@@ -108,33 +92,27 @@ namespace Utility.Database.PostgreSql
 
     public void Destroy()
     {
-      if (Description.ConnectionInfo == null) throw new ArgumentNullException("Description.ConnectionInfo");
-      if (string.IsNullOrEmpty(Description.ConnectionInfo.ConnectionString)) throw new ArgumentException("Connection information is missing a connection string", "Description.ConnectionInfo.ConnectionString");
-      if (Description.ConnectionInfo.ProviderFactory == null) throw new ArgumentException("Connection information is missing a provider factory", "Description.ConnectionInfo.ProviderFactory");
+      CheckPreconditions();
       
-
-      var csBuilder = new DbConnectionStringBuilder {ConnectionString = Description.ConnectionInfo.ConnectionString};
-
-      using (var conn = ConnectionInfo.ProviderFactory.CreateConnection())
+      using (var conn = CreateDatabaseConnection())
       {
-        conn.ConnectionString = CreateDatabaseConnectionString(Description.ConnectionInfo, Superuser);
         conn.Open();
 
         using (var cmd = conn.CreateCommand())
         {
-          cmd.CommandText = string.Format("DROP DATABASE IF EXISTS \"{0}\"", csBuilder[DatabaseKey]);
+          cmd.CommandText = string.Format("DROP DATABASE IF EXISTS \"{0}\"", Description.ConnectionInfo[DatabaseKey]);
           cmd.ExecuteNonQuery();
 
-          if(csBuilder.ContainsKey(UserIdKey) && !((string)csBuilder[UserIdKey]).Equals(Superuser.UserId, StringComparison.InvariantCultureIgnoreCase))
+          if(Description.ConnectionInfo.ContainsKey(UserIdKey) && !((string)Description.ConnectionInfo[UserIdKey]).Equals(Superuser.UserId, StringComparison.InvariantCultureIgnoreCase))
           {
             // Delete the role if it is not in use by any databases
             cmd.CommandText = string.Format("SELECT COUNT(*) FROM pg_catalog.pg_shdepend sd " +
                                             "JOIN pg_catalog.pg_roles r ON r.oid = sd.refobjid " +
-                                            "WHERE r.rolname='{0}' ", csBuilder[UserIdKey]);
+                                            "WHERE r.rolname='{0}' ", Description.ConnectionInfo[UserIdKey]);
 
             if (Convert.ToInt64(cmd.ExecuteScalar()) == 0)
             {
-              cmd.CommandText = string.Format("DROP ROLE IF EXISTS \"{0}\"", csBuilder[UserIdKey]);
+              cmd.CommandText = string.Format("DROP ROLE IF EXISTS \"{0}\"", Description.ConnectionInfo[UserIdKey]);
               cmd.ExecuteNonQuery();
             }
           }
@@ -144,14 +122,10 @@ namespace Utility.Database.PostgreSql
 
     public void Seed()
     {
-      if (Description.ConnectionInfo == null) throw new ArgumentNullException("Description.ConnectionInfo");
-      if (string.IsNullOrEmpty(Description.ConnectionInfo.ConnectionString)) throw new ArgumentException("Connection information is missing a connection string", "Description.ConnectionInfo.ConnectionString");
-      if (Description.ConnectionInfo.ProviderFactory == null) throw new ArgumentException("Connection information is missing a provider factory", "Description.ConnectionInfo.ProviderFactory");
-      
+      CheckPreconditions();
 
-      using (var conn = ConnectionInfo.ProviderFactory.CreateConnection())
+      using (var conn = CreateContentConnection())
       {
-        conn.ConnectionString = CreateContentConnectionString(Description.ConnectionInfo, Superuser);
         conn.Open();
 
         using (var cmd = conn.CreateCommand())
@@ -164,39 +138,52 @@ namespace Utility.Database.PostgreSql
         }
       }
     }
-
+    
     public IDbConnectionInfo ConnectionInfo
     {
-      get { return Description.ConnectionInfo; }
+      get { return Description == null ? null : Description.ConnectionInfo; }
     }
     
-    internal static string CreateDatabaseConnectionString(IDbConnectionInfo connectionInfo, PgSuperuser superuser)
+    public PgDbDescription Description { get; set; }
+    public PgSuperuser Superuser { get; set; }
+
+
+    internal DbConnection CreateDatabaseConnection()
     {
-      if (connectionInfo == null) throw new ArgumentNullException("connectionInfo");
-      if (superuser == null) throw new ArgumentNullException("superuser");
-      if (string.IsNullOrEmpty(connectionInfo.ConnectionString)) throw new ArgumentException("Connection information is missing a connection string", "connectionInfo.ConnectionString");
-         
-      var csBuilder = new DbConnectionStringBuilder {ConnectionString = connectionInfo.ConnectionString};
-      csBuilder[DatabaseKey] = superuser.Database;
-      csBuilder[UserIdKey] = superuser.UserId;
-      csBuilder[PasswordKey] = superuser.Password;
-      return csBuilder.ConnectionString;
+      CheckPreconditions();
+
+      var csBuilder = new DbConnectionStringBuilder {ConnectionString = Description.ConnectionInfo.ConnectionString};
+      csBuilder[DatabaseKey] = Superuser.Database;
+      csBuilder[UserIdKey] = Superuser.UserId;
+      csBuilder[PasswordKey] = Superuser.Password;
+
+      var conn = ((IDbProviderInfo)Description.ConnectionInfo).ProviderFactory.CreateConnection();
+      conn.ConnectionString = csBuilder.ConnectionString;
+
+      return conn;
     }
 
-    internal static string CreateContentConnectionString(IDbConnectionInfo connectionInfo, PgSuperuser superuser)
+    internal DbConnection CreateContentConnection()
     {
-      if (connectionInfo == null) throw new ArgumentNullException("connectionInfo");
-      if (superuser == null) throw new ArgumentNullException("superuser");
-      if (string.IsNullOrEmpty(connectionInfo.ConnectionString)) throw new ArgumentException("Connection information is missing a connection string", "connectionInfo.ConnectionString");
-         
-      var csBuilder = new DbConnectionStringBuilder {ConnectionString = connectionInfo.ConnectionString};
-      csBuilder[UserIdKey] = superuser.UserId;
-      csBuilder[PasswordKey] = superuser.Password;
-      return csBuilder.ConnectionString;
+      CheckPreconditions();
+
+      var csBuilder = new DbConnectionStringBuilder {ConnectionString = Description.ConnectionInfo.ConnectionString};
+      csBuilder[UserIdKey] = Superuser.UserId;
+      csBuilder[PasswordKey] = Superuser.Password;
+      
+      var conn = ((IDbProviderInfo)Description.ConnectionInfo).ProviderFactory.CreateConnection();
+      conn.ConnectionString = csBuilder.ConnectionString;
+
+      return conn;
     }
-
-    public PgDbDescription Description { get; private set; }
-    public PgSuperuser Superuser { get; private set; }
-
+    
+    protected void CheckPreconditions()
+    {
+      if (Superuser == null) throw new ArgumentNullException("Superuser");
+      if (Description == null) throw new ArgumentNullException("Description");
+      if (Description.ConnectionInfo == null) throw new ArgumentNullException("Description.ConnectionInfo");
+      if (string.IsNullOrEmpty(Description.ConnectionInfo.ConnectionString)) throw new ArgumentException("Connection information is missing a connection string", "Description.ConnectionInfo.ConnectionString");
+      if (((IDbProviderInfo) Description.ConnectionInfo).ProviderFactory == null) throw new ArgumentException("Connection information is missing a provider factory", "Description.ConnectionInfo.ProviderFactory");
+    }
   }
 }

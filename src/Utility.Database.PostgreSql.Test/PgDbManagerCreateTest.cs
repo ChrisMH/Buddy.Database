@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
-using System.Xml.Linq;
 using NUnit.Framework;
 
 namespace Utility.Database.PostgreSql.Test
@@ -25,19 +23,17 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void CreateCreatesDatabase()
     {
-      var manager = new PgDbManager(new PgDbDescription {ConnectionInfo = GlobalTest.ConnectionInfo1});
-      var csBuilder = new DbConnectionStringBuilder {ConnectionString = GlobalTest.ConnectionInfo1.ConnectionString};
+      var manager = new PgDbManager {Description = new PgDbDescription {ConnectionInfo = GlobalTest.ConnectionInfo1}};
 
       manager.Create();
 
-      using (var conn = manager.ConnectionInfo.ProviderFactory.CreateConnection())
+      using (var conn = manager.CreateDatabaseConnection())
       {
-        conn.ConnectionString = PgDbManager.CreateDatabaseConnectionString(GlobalTest.ConnectionInfo1, GlobalTest.Superuser);
         conn.Open();
 
         using (var cmd = conn.CreateCommand())
         {
-          cmd.CommandText = string.Format("SELECT COUNT(*) FROM pg_catalog.pg_database WHERE datname='{0}'", csBuilder[PgDbManager.DatabaseKey]);
+          cmd.CommandText = string.Format("SELECT COUNT(*) FROM pg_catalog.pg_database WHERE datname='{0}'", manager.ConnectionInfo[PgDbManager.DatabaseKey]);
           Assert.AreEqual(1, Convert.ToInt64(cmd.ExecuteScalar()));
         }
       }
@@ -47,17 +43,19 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void CreateWithTemplateCreatesDatabaseWithTemplate()
     {
-      var manager = new PgDbManager(new PgDbDescription
+      var manager = new PgDbManager
+                    {
+                      Description = new PgDbDescription
                                     {
                                       ConnectionInfo = GlobalTest.ConnectionInfo1,
                                       TemplateName = "template_postgis"
-                                    });
+                                    }
+                    };
 
       manager.Create();
 
-      using (var conn = manager.ConnectionInfo.ProviderFactory.CreateConnection())
+      using (var conn = manager.CreateContentConnection())
       {
-        conn.ConnectionString = PgDbManager.CreateContentConnectionString(GlobalTest.ConnectionInfo1, GlobalTest.Superuser);
         conn.Open();
 
         using (var cmd = conn.CreateCommand())
@@ -72,20 +70,18 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void CreateCreatesRole()
     {
-      var manager = new PgDbManager(new PgDbDescription {ConnectionInfo = GlobalTest.ConnectionInfo1});
-      var csBuilder = new DbConnectionStringBuilder {ConnectionString = GlobalTest.ConnectionInfo1.ConnectionString};
+      var manager = new PgDbManager {Description = new PgDbDescription {ConnectionInfo = GlobalTest.ConnectionInfo1}};
 
 
       manager.Create();
 
-      using (var conn = manager.ConnectionInfo.ProviderFactory.CreateConnection())
+      using (var conn = manager.CreateContentConnection())
       {
-        conn.ConnectionString = PgDbManager.CreateDatabaseConnectionString(GlobalTest.ConnectionInfo1, GlobalTest.Superuser);
         conn.Open();
 
         using (var cmd = conn.CreateCommand())
         {
-          cmd.CommandText = string.Format("SELECT COUNT(*) FROM pg_catalog.pg_user WHERE usename='{0}'", csBuilder[PgDbManager.UserIdKey]);
+          cmd.CommandText = string.Format("SELECT COUNT(*) FROM pg_catalog.pg_user WHERE usename='{0}'", manager.ConnectionInfo[PgDbManager.UserIdKey]);
           Assert.AreEqual(1, Convert.ToInt64(cmd.ExecuteScalar()));
         }
       }
@@ -94,19 +90,20 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void CreateWithSchemaCreatesSchema()
     {
-      var manager = new PgDbManager(
-        new PgDbDescription
-        {
-          ConnectionInfo = GlobalTest.ConnectionInfo1,
-          Schemas = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = TestSchema}}
-        });
-      var csBuilder = new DbConnectionStringBuilder {ConnectionString = GlobalTest.ConnectionInfo1.ConnectionString};
+      var manager = new PgDbManager
+                    {
+                      Description =
+                        new PgDbDescription
+                        {
+                          ConnectionInfo = GlobalTest.ConnectionInfo1,
+                          Schemas = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = TestSchema}}
+                        }
+                    };
 
       manager.Create();
 
-      using (var conn = manager.ConnectionInfo.ProviderFactory.CreateConnection())
+      using (var conn = manager.CreateContentConnection())
       {
-        conn.ConnectionString = PgDbManager.CreateContentConnectionString(GlobalTest.ConnectionInfo1, GlobalTest.Superuser);
         conn.Open();
 
         using (var cmd = conn.CreateCommand())
@@ -121,26 +118,27 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void CreateGrantsPermissionsOnPublicSchema()
     {
-      var manager = new PgDbManager(
-        new PgDbDescription
-        {
-          ConnectionInfo = GlobalTest.ConnectionInfo1,
-          Schemas = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = TestSchema}}
-        });
-      var csBuilder = new DbConnectionStringBuilder {ConnectionString = GlobalTest.ConnectionInfo1.ConnectionString};
+      var manager = new PgDbManager
+                    {
+                      Description =
+                        new PgDbDescription
+                        {
+                          ConnectionInfo = GlobalTest.ConnectionInfo1,
+                          Schemas = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = TestSchema}}
+                        }
+                    };
 
       manager.Create();
 
-      using (var conn = manager.ConnectionInfo.ProviderFactory.CreateConnection())
+      using (var conn = manager.CreateContentConnection())
       {
-        conn.ConnectionString = PgDbManager.CreateContentConnectionString(GlobalTest.ConnectionInfo1, GlobalTest.Superuser);
         conn.Open();
 
         using (var cmd = conn.CreateCommand())
         {
           cmd.CommandText = "SELECT nspacl FROM pg_catalog.pg_namespace WHERE nspname='public'";
           var result = Convert.ToString(cmd.ExecuteScalar());
-          Assert.That(result.Contains(string.Format("{0}=UC", csBuilder[PgDbManager.UserIdKey])));
+          Assert.That(result.Contains(string.Format("{0}=UC", manager.ConnectionInfo[PgDbManager.UserIdKey])));
         }
       }
     }
@@ -148,26 +146,27 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void CreateWithSchemaGrantsPermissionsOnSchema()
     {
-      var manager = new PgDbManager(
-        new PgDbDescription
-        {
-          ConnectionInfo = GlobalTest.ConnectionInfo1,
-          Schemas = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = TestSchema}}
-        });
-      var csBuilder = new DbConnectionStringBuilder {ConnectionString = GlobalTest.ConnectionInfo1.ConnectionString};
+      var manager = new PgDbManager
+                    {
+                      Description =
+                        new PgDbDescription
+                        {
+                          ConnectionInfo = GlobalTest.ConnectionInfo1,
+                          Schemas = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = TestSchema}}
+                        }
+                    };
 
       manager.Create();
 
-      using (var conn = manager.ConnectionInfo.ProviderFactory.CreateConnection())
+      using (var conn = manager.CreateContentConnection())
       {
-        conn.ConnectionString = PgDbManager.CreateContentConnectionString(GlobalTest.ConnectionInfo1, GlobalTest.Superuser);
         conn.Open();
 
         using (var cmd = conn.CreateCommand())
         {
           cmd.CommandText = "SELECT nspacl FROM pg_catalog.pg_namespace WHERE nspname='test_schema'";
           var result = Convert.ToString(cmd.ExecuteScalar());
-          Assert.That(result.Contains(string.Format("{0}=UC", csBuilder[PgDbManager.UserIdKey])));
+          Assert.That(result.Contains(string.Format("{0}=UC", manager.ConnectionInfo[PgDbManager.UserIdKey])));
         }
       }
     }
@@ -175,13 +174,12 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void CreateFromDescriptionWithTemplateCreatesDatabaseWithTemplate()
     {
-      var manager = new PgDbManager(new PgDbDescription(XElement.Parse(Resources.TestDescriptionWithTemplate)));
+      var manager = new PgDbManager {Description = new PgDbDescription {XmlRoot = Resources.TestDescriptionWithTemplate}};
 
       manager.Create();
 
-      using (var conn = manager.ConnectionInfo.ProviderFactory.CreateConnection())
+      using (var conn = manager.CreateContentConnection())
       {
-        conn.ConnectionString = PgDbManager.CreateContentConnectionString(GlobalTest.ConnectionInfo1, GlobalTest.Superuser);
         conn.Open();
 
         using (var cmd = conn.CreateCommand())
@@ -194,14 +192,16 @@ namespace Utility.Database.PostgreSql.Test
 
     [Test]
     public void CreateFromDescriptionCreatesSchema()
-    { 
-      var manager = new PgDbManager(new PgDbDescription(XElement.Parse(Resources.TestDescription)));
+    {
+      var manager = new PgDbManager
+                    {
+                      Description = new PgDbDescription {XmlRoot = Resources.TestDescription}
+                    };
 
       manager.Create();
 
-      using (var conn = GlobalTest.ConnectionInfo1.ProviderFactory.CreateConnection())
+      using (var conn = manager.CreateContentConnection())
       {
-        conn.ConnectionString = PgDbManager.CreateContentConnectionString(GlobalTest.ConnectionInfo1, GlobalTest.Superuser);
         conn.Open();
 
         using (var cmd = conn.CreateCommand())

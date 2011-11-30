@@ -16,26 +16,7 @@ namespace Utility.Database
   {
     public DbScript()
     {
-    }
-
-    public DbScript(XElement root, string baseDirectory = null)
-    {
-      BaseDirectory = baseDirectory;
-      if (string.IsNullOrEmpty(baseDirectory))
-      {
-        BaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-      }
-
-      if (!Directory.Exists(BaseDirectory)) throw new ArgumentException(string.Format("Directory '{0}' does not exist", BaseDirectory), "baseDirectory");
-
-      if (root.Attribute("type") == null) throw new ArgumentException("type attribute is missing", "type");
-
-      ScriptType scriptType;
-      if (!Enum.TryParse(root.Attribute("type").Value, false, out scriptType)) throw new ArgumentException(string.Format("type attribute value is invalid: {0}", root.Attribute("type")), "type");
-      ScriptType = scriptType;
-
-      ScriptValue = root.Value;
-      if (string.IsNullOrEmpty(ScriptValue)) throw new ArgumentException(string.Format("{0} element is empty", root.Name.LocalName), root.Name.LocalName);
+      GetBaseDirectory = () => AppDomain.CurrentDomain.BaseDirectory;
     }
 
     public string Load()
@@ -45,15 +26,17 @@ namespace Utility.Database
         case ScriptType.File:
         {
           var fileName = ScriptValue;
-          if (!File.Exists(fileName))
+          
+          if(Path.IsRelative(fileName))
           {
-            fileName = Path.Combine(BaseDirectory, ScriptValue);
-            if (!File.Exists(fileName))
-            {
-              throw new FileNotFoundException("File not found", ScriptValue);
-            }
+            fileName = Path.Combine(GetBaseDirectory.Invoke(), ScriptValue);
           }
 
+          if (!Path.FileExists(fileName))
+          {
+            throw new FileNotFoundException("File not found", ScriptValue);
+          }
+          
           using (var reader = new StreamReader(File.OpenRead(fileName)))
           {
             return reader.ReadToEnd();
@@ -91,8 +74,24 @@ namespace Utility.Database
       }
     }
 
-    public string BaseDirectory { get; set; }
+    public Func<string> GetBaseDirectory { get; set; }
     public ScriptType ScriptType { get; set; }
     public string ScriptValue { get; set; }
+
+    public string XmlRoot
+    {
+      set
+      {
+        var root = XElement.Parse(value);
+        if (root.Attribute("type") == null) throw new ArgumentException("type attribute is missing", "type");
+
+        ScriptType scriptType;
+        if (!Enum.TryParse(root.Attribute("type").Value, false, out scriptType)) throw new ArgumentException(string.Format("type attribute value is invalid: {0}", root.Attribute("type")), "type");
+        ScriptType = scriptType;
+
+        ScriptValue = root.Value;
+        if (string.IsNullOrEmpty(ScriptValue)) throw new ArgumentException(string.Format("{0} element is empty", root.Name.LocalName), root.Name.LocalName);
+      }
+    }
   }
 }

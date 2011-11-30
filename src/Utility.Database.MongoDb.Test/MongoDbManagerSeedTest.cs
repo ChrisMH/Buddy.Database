@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using MongoDB.Driver;
 using NUnit.Framework;
-using Utility.Database.Management.MongoDb;
 
 namespace Utility.Database.MongoDb.Test
 {
@@ -10,7 +7,7 @@ namespace Utility.Database.MongoDb.Test
   {
     public const string LiteralSchema = "db.createCollection('c1');db.createCollection('c2');";
     public const string LiteralSeed = "db.c1.insert({name: 'Fred'});db.c1.insert({name: 'Jim', age: 39});db.c2.insert({username: 'fred', identity: 'abaadd'});";
-    
+
     [SetUp]
     public void SetUp()
     {
@@ -26,22 +23,23 @@ namespace Utility.Database.MongoDb.Test
     [Test]
     public void SeedFromLiteralSeedsDatabase()
     {
-          var manager = new MongoDbManager(new DbDescription
-                                       {
-                                         ConnectionInfo = GlobalTest.ConnectionInfo1,
-                                         Schemas = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = LiteralSchema}},
-                                         Seeds = new List<DbScript> { new DbScript {ScriptType = ScriptType.Literal, ScriptValue = LiteralSeed}}
-                                       });
+      var manager = new MongoDbManager
+                    {
+                      Description = new MongoDbDescription
+                                    {
+                                      ConnectionInfo = GlobalTest.DbManager1.ConnectionInfo,
+                                      Schemas = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = LiteralSchema}},
+                                      Seeds = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = LiteralSeed}}
+                                    }
+                    };
 
       manager.Create();
       manager.Seed();
 
-      var connectionParams = MongoDbManager.ParseConnectionString(GlobalTest.ConnectionInfo1);
-      var server = MongoServer.Create(connectionParams.ConnectionString);
-      var db = server.GetDatabase(connectionParams.DatabaseName);
+      var db = manager.CreateDatabase();
 
-      Assert.That(((MongoCollection) db["c1"]).Count() == 2);
-      Assert.That(((MongoCollection) db["c2"]).Count() == 1);
+      Assert.That(db["c1"].Count() == 2);
+      Assert.That(db["c2"].Count() == 1);
     }
   }
 }

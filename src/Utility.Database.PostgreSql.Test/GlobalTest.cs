@@ -20,12 +20,12 @@ namespace Utility.Database.PostgreSql.Test
       try
       {
         Logger = new NLogLoggerFactory().GetCurrentClassLogger();
-        ConnectionInfo1 = new GenericDbConnectionInfo("Test1");
+        ConnectionInfo1 = new GenericDbConnectionInfo {ConnectionStringName = "Test1"};
         var csBuilder = new DbConnectionStringBuilder {ConnectionString = ConnectionInfo1.ConnectionString};
         csBuilder["pooling"] = "false";
         ConnectionInfo1.ConnectionString = csBuilder.ConnectionString;
 
-        ConnectionInfo2 = new GenericDbConnectionInfo("Test2");
+        ConnectionInfo2 = new GenericDbConnectionInfo {ConnectionStringName = "Test2"};
         csBuilder = new DbConnectionStringBuilder {ConnectionString = ConnectionInfo2.ConnectionString};
         csBuilder["pooling"] = "false";
         ConnectionInfo2.ConnectionString = csBuilder.ConnectionString;
@@ -53,59 +53,59 @@ namespace Utility.Database.PostgreSql.Test
 
     public static void DropTestDatabaseAndRole()
     {
-      using (var conn = ConnectionInfo1.ProviderFactory.CreateConnection())
+      var manager1 = new PgDbManager
       {
-        conn.ConnectionString = PgDbManager.CreateDatabaseConnectionString(ConnectionInfo1, Superuser);
+        Description = new PgDbDescription { ConnectionInfo = ConnectionInfo1 },
+        Superuser = Superuser
+        };
+        
+      var manager2 = new PgDbManager
+      {
+        Description = new PgDbDescription { ConnectionInfo = ConnectionInfo2 },
+        Superuser = Superuser
+        };
+
+      using (var conn = manager1.CreateDatabaseConnection())
+      {
         conn.Open();
 
         using (var cmd = conn.CreateCommand())
         {
-          var csBuilder = new DbConnectionStringBuilder {ConnectionString = ConnectionInfo1.ConnectionString};
-
-          cmd.CommandText = string.Format("DROP DATABASE IF EXISTS \"{0}\"", csBuilder[PgDbManager.DatabaseKey]);
+          cmd.CommandText = string.Format("DROP DATABASE IF EXISTS \"{0}\"", manager1.ConnectionInfo[PgDbManager.DatabaseKey]);
           cmd.ExecuteNonQuery();
         }
       }
 
-      using (var conn = ConnectionInfo2.ProviderFactory.CreateConnection())
+      using (var conn = manager2.CreateDatabaseConnection())
       {
-        conn.ConnectionString = PgDbManager.CreateDatabaseConnectionString(ConnectionInfo2, Superuser);
         conn.Open();
 
         using (var cmd = conn.CreateCommand())
         {
-          var csBuilder = new DbConnectionStringBuilder {ConnectionString = ConnectionInfo2.ConnectionString};
-
-          cmd.CommandText = string.Format("DROP DATABASE IF EXISTS \"{0}\"", csBuilder[PgDbManager.DatabaseKey]);
+          cmd.CommandText = string.Format("DROP DATABASE IF EXISTS \"{0}\"", manager2.ConnectionInfo[PgDbManager.DatabaseKey]);
           cmd.ExecuteNonQuery();
         }
       }
 
 
-      using (var conn = ConnectionInfo1.ProviderFactory.CreateConnection())
+      using (var conn = manager1.CreateDatabaseConnection())
       {
-        conn.ConnectionString = PgDbManager.CreateDatabaseConnectionString(ConnectionInfo1, Superuser);
         conn.Open();
 
         using (var cmd = conn.CreateCommand())
         {
-          var csBuilder = new DbConnectionStringBuilder {ConnectionString = ConnectionInfo1.ConnectionString};
-
-          cmd.CommandText = string.Format("DROP ROLE IF EXISTS \"{0}\"", csBuilder[PgDbManager.UserIdKey]);
+          cmd.CommandText = string.Format("DROP ROLE IF EXISTS \"{0}\"", manager1.ConnectionInfo[PgDbManager.UserIdKey]);
           cmd.ExecuteNonQuery();
         }
       }
 
-      using (var conn = ConnectionInfo2.ProviderFactory.CreateConnection())
+      using (var conn = manager2.CreateDatabaseConnection())
       {
-        conn.ConnectionString = PgDbManager.CreateDatabaseConnectionString(ConnectionInfo2, Superuser);
         conn.Open();
 
         using (var cmd = conn.CreateCommand())
         {
-          var csBuilder = new DbConnectionStringBuilder {ConnectionString = ConnectionInfo2.ConnectionString};
-
-          cmd.CommandText = string.Format("DROP ROLE IF EXISTS \"{0}\"", csBuilder[PgDbManager.UserIdKey]);
+          cmd.CommandText = string.Format("DROP ROLE IF EXISTS \"{0}\"", manager2.ConnectionInfo[PgDbManager.UserIdKey]);
           cmd.ExecuteNonQuery();
         }
       }

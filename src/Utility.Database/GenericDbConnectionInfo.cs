@@ -13,50 +13,38 @@ namespace Utility.Database
   {
     public GenericDbConnectionInfo()
     {
+      connectionString = new DbConnectionStringBuilder();
     }
 
-    public IDbConnectionInfo Copy()
+    public string ConnectionStringName
     {
-      var copy = new GenericDbConnectionInfo();
-
-      Name = copy.Name;
-      ConnectionString = copy.ConnectionString;
-      if(copy is IDbProviderInfo)
+      get { return connectionStringName; }
+      set
       {
-        Provider = ((IDbProviderInfo) copy).Provider;
+        if (string.IsNullOrWhiteSpace(value))
+          throw new ArgumentException("Connection string name not provided", "ConnectionStringName");
+        if (ConfigurationManager.ConnectionStrings[value] == null)
+          throw new ArgumentException(string.Format("Connection string name '{0}' not found in the configuration", connectionStringName), "ConnectionStringName");
+
+        connectionStringName = value;
+        connectionString = new DbConnectionStringBuilder {ConnectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString};
+        Provider = ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName;
       }
     }
 
-    public GenericDbConnectionInfo(string connectionStringName)
-    {
-      if (string.IsNullOrWhiteSpace(connectionStringName))
-        throw new ArgumentException("Connection string name not provided", "connectionStringName");
-      if (ConfigurationManager.ConnectionStrings[connectionStringName] == null)
-        throw new ArgumentException(string.Format("Connection string name '{0}' not found in the configuration", connectionStringName), "connectionStringName");
-
-      Name = connectionStringName;
-      connectionString = new DbConnectionStringBuilder { ConnectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString };
-      Provider = ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName;
-      if (string.IsNullOrEmpty(Provider))
-      {
-        Provider = null;
-      }
-    }
-
-    public string Name { get; set; }
     public string ConnectionString
     {
-      get { return connectionString == null ? null : connectionString.ConnectionString; }
-      set { connectionString = new DbConnectionStringBuilder {ConnectionString = value}; }
+      get { return connectionString.ConnectionString; }
+      set { connectionString = value == null ? new DbConnectionStringBuilder() : new DbConnectionStringBuilder {ConnectionString = value}; }
     }
-    
+
     public string Provider { get; set; }
 
     public DbProviderFactory ProviderFactory
     {
       get
       {
-        if (string.IsNullOrEmpty(Provider))
+        if (string.IsNullOrWhiteSpace(Provider))
         {
           return null;
         }
@@ -89,11 +77,27 @@ namespace Utility.Database
       }
     }
 
-    public object this[string key]
+    public bool ContainsKey(string key)
     {
-      get { return new DbConnectionStringBuilder {ConnectionString = ConnectionString}[key]; }
+      return connectionString.ContainsKey(key);
     }
 
+    public object this[string key]
+    {
+      get { return connectionString[key]; }
+    }
+
+    public IDbConnectionInfo Copy()
+    {
+      return new GenericDbConnectionInfo
+             {
+               connectionStringName = connectionStringName,
+               connectionString = connectionString == null ? null : new DbConnectionStringBuilder {ConnectionString = connectionString.ConnectionString},
+               Provider = Provider
+             };
+    }
+
+    private string connectionStringName;
     private DbConnectionStringBuilder connectionString;
   }
 }

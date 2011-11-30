@@ -54,6 +54,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="MongoDbConnectionInfo.cs" />
+    <Compile Include="MongoDbDescription.cs" />
     <Compile Include="MongoDbManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

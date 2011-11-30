@@ -14,56 +14,84 @@ namespace Utility.Database
       Seeds = new List<DbScript>();
     }
 
-    public DbDescription(XElement root, string baseDirectory = null)
-      : this()
+    public virtual IDbConnectionInfo ConnectionInfo
     {
-      if (root.Element("Connection") != null)
+      get { return connectionInfo == null ? null : connectionInfo.Copy(); }
+      set { connectionInfo = value == null ? null : value.Copy(); }
+    }
+
+    public string BaseDirectory
+    {
+      get { return string.IsNullOrWhiteSpace(baseDirectory) ? AppDomain.CurrentDomain.BaseDirectory : baseDirectory; }
+      set { baseDirectory = value; }
+    }
+
+    public virtual string XmlRoot
+    {
+      set
       {
         try
         {
-          var connectionElement = root.Element("Connection");
+          var root = XElement.Parse(value);
 
-          if (connectionElement.Element("ConnectionStringName") != null)
+          if (root.Element("Connection") != null)
           {
-            ConnectionInfo = new TConnectionInfo(connectionElement.Element("ConnectionStringName").Value);
+            var connectionElement = root.Element("Connection");
+
+            if (connectionElement.Element("ConnectionStringName") != null)
+            {
+              connectionInfo = new TConnectionInfo {ConnectionStringName = connectionElement.Element("ConnectionStringName").Value};
+            }
+            else if (connectionElement.Element("ConnectionString") != null)
+            {
+              connectionInfo = new TConnectionInfo {ConnectionString = connectionElement.Element("ConnectionString").Value};
+
+              if (connectionElement.Element("Provider") != null && connectionInfo is IDbProviderInfo)
+              {
+                ((IDbProviderInfo) connectionInfo).Provider = connectionElement.Element("Provider").Value;
+              }
+            }
+            else
+            {
+              throw new ArgumentException("Connection element must contain EITHER ConnectionStringName OR ConnectionString AND and optional Provider", "Connection");
+            }
           }
-          else if (connectionElement.Element("ConnectionString") != null)
+
+          if (root.Elements("Schema").Any())
           {
-            ConnectionInfo = new GenericDbConnectionInfo
-                         {
-                           ConnectionString = connectionElement.Element("ConnectionString").Value,
-                           Provider = connectionElement.Element("Provider") == null ? null : connectionElement.Element("Provider").Value
-                         };
+            Schemas = root.Elements("Schema")
+              .Select(e => new DbScript
+                           {
+                             XmlRoot = e.ToString(),
+                             GetBaseDirectory = () => BaseDirectory
+                           }
+              )
+              .ToList();
           }
-          else
+          if (root.Elements("Seed").Any())
           {
-            throw new ArgumentException("Connection element must contain EITHER ConnectionStringName OR ConnectionString AND and optional Provider", "Connection");
+            Seeds = root.Elements("Seed")
+              .Select(e => new DbScript
+                           {
+                             XmlRoot = e.ToString(),
+                             GetBaseDirectory = () => BaseDirectory
+                           }
+              )
+              .ToList();
           }
         }
-        catch(ArgumentException e)
+        catch (ArgumentException e)
         {
-          throw new ArgumentException(e.Message, "Connection", e);
+          throw new ArgumentException(e.Message, "XmlRoot", e);
         }
-      }
-      if(root.Elements("Schema").Any())
-      {
-        Schemas = root.Elements("Schema").Select(e => new DbScript(e, baseDirectory)).ToList();
-      }
-      if(root.Elements("Seed").Any())
-      {
-        Seeds = root.Elements("Seed").Select(e => new DbScript(e, baseDirectory)).ToList();
       }
     }
 
-    public IDbConnectionInfo ConnectionInfo
-    {
-      get { return connectionInfo == null ? null : new GenericDbConnectionInfo(connectionInfo); }
-      set { connectionInfo = value == null ? null : new GenericDbConnectionInfo(value); }
-    }
 
     public List<DbScript> Schemas { get; set; }
     public List<DbScript> Seeds { get; set; }
 
-    private TConnectionInfo connectionInfo;
+    private IDbConnectionInfo connectionInfo;
+    private string baseDirectory;
   }
 }

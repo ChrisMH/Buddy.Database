@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using Utility.Database.Management.MongoDb;
 
 namespace Utility.Database.MongoDb.Test
 {
@@ -20,14 +19,13 @@ namespace Utility.Database.MongoDb.Test
     [Test]
     public void DestroyDestroysDatabase()
     {
-      var manager = new MongoDbManager(new DbDescription {ConnectionInfo = GlobalTest.ConnectionInfo1});
+      var manager = new MongoDbManager {Description = new MongoDbDescription {ConnectionInfo = GlobalTest.DbManager1.ConnectionInfo}};
 
       manager.Create();
       manager.Destroy();
       
-      var connectionParams = MongoDbManager.ParseConnectionString(GlobalTest.ConnectionInfo1);
-      var server = MongoDB.Driver.MongoServer.Create(connectionParams.ConnectionString);
-      Assert.IsFalse(server.DatabaseExists(connectionParams.DatabaseName));
+      var server = manager.CreateServer();
+      Assert.IsFalse(server.DatabaseExists((string)manager.ConnectionInfo[MongoDbConnectionInfo.DatabaseNameKey]));
     }
   }
 }

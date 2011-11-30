@@ -4,29 +4,34 @@ using System.Xml.Linq;
 
 namespace Utility.Database.PostgreSql
 {
-  public class PgDbDescription : DbDescription
+  public class PgDbDescription : DbDescription<GenericDbConnectionInfo>
   {
     public PgDbDescription()
     {
       AllowPooling = false;
     }
-
-    public PgDbDescription(XElement root, string baseDirectory = null)
-      : base(root, baseDirectory)
-    {
-      if (root.Element("TemplateName") != null)
-      {
-        TemplateName = root.Element("TemplateName").Value;
-        if (string.IsNullOrEmpty(TemplateName)) throw new ArgumentException("TemplateName element is empty", "TemplateName");
-      }
-    }
-
+    
     public String TemplateName { get; set; }
     public bool AllowPooling { get; set; }
 
     public override IDbConnectionInfo ConnectionInfo
     {
       get { return AdjustConnectionInfoPooling(base.ConnectionInfo, AllowPooling); }
+    }
+
+    public override string XmlRoot
+    {
+      set
+      {
+        base.XmlRoot = value;
+
+        var root = XElement.Parse(value);
+        if (root.Element("TemplateName") != null)
+        {
+          TemplateName = root.Element("TemplateName").Value;
+          if (string.IsNullOrEmpty(TemplateName)) throw new ArgumentException("TemplateName element is empty", "TemplateName");
+        }
+      }
     }
 
     protected static IDbConnectionInfo AdjustConnectionInfoPooling(IDbConnectionInfo connectionInfo, bool allowPooling)

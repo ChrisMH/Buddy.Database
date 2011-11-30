@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
-using Utility;
 
-namespace Utility.Database.Management.MongoDb
+namespace Utility.Database.MongoDb
 {
   /// <summary>
   /// Connection string information for MongoDb
@@ -19,58 +18,72 @@ namespace Utility.Database.Management.MongoDb
   /// </summary>
   public class MongoDbConnectionInfo : IDbConnectionInfo
   {
+    internal const string ServerAddressKey = "ServerAddress";
+    internal const string ServerPortKey = "ServerPort";
+    internal const string DatabaseNameKey = "DatabaseName";
+    internal const string UserNameKey = "UserName";
+    internal const string PasswordKey = "Password";
+
     private const string ConnectionStringRegex = @"mongodb://((?<UserName>[^:]+):(?<Password>[^@]+)@)?(?<ServerAddress>[^/:]+)(:(?<ServerPort>[^/]+))?/(?<DatabaseName>[^/]+)/?";
-
-    public MongoDbConnectionInfo()
+    
+    public string ConnectionStringName
     {
+      get { return connectionStringName; }
+      set
+      {
+        if (string.IsNullOrWhiteSpace(value))
+          throw new ArgumentException("Connection string name not provided", "ConnectionStringName");
+        if (ConfigurationManager.ConnectionStrings[value] == null)
+          throw new ArgumentException(string.Format("Connection string name '{0}' not found in the configuration", connectionStringName), "ConnectionStringName");
+
+        connectionStringName = value;
+        ConnectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
+      }
     }
-
-    public MongoDbConnectionInfo(IDbConnectionInfo copy)
-    {
-      Name = copy.Name;
-      ConnectionString = copy.ConnectionString;
-    }
-
-    public MongoDbConnectionInfo(string connectionStringName)
-    {
-      if (string.IsNullOrWhiteSpace(connectionStringName))
-        throw new ArgumentException("Connection string name not provided", "connectionStringName");
-      if (ConfigurationManager.ConnectionStrings[connectionStringName] == null)
-        throw new ArgumentException(string.Format("Connection string name '{0}' not found in the configuration", connectionStringName), "connectionStringName");
-
-      Name = connectionStringName;
-      ConnectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
-    }
-
-    public string Name { get; set; }
 
     public string ConnectionString
     {
       get { return connectionString; }
       set
       {
+        if(string.IsNullOrWhiteSpace(value)) throw new ArgumentException("Connection string not provided", "ConnectionString");
+
+        var match = Regex.Match(value, ConnectionStringRegex);
+        if (!match.Success) throw new ArgumentException(string.Format("Invalid connection string format: '{0}'", value), "ConnectionString");
+          
         connectionString = value;
         connectionStringParts.Clear();
-        if(!string.IsNullOrWhiteSpace(connectionString))
-        {
-          var match = Regex.Match(connectionString, ConnectionStringRegex);
-          if(!match.Success) throw new ArgumentException(string.Format("Invalid connection string format: '{0}'", connectionString), "connectionString");
 
-          var enumerator = match.Groups.GetEnumerator();
-          while(enumerator.MoveNext())
-          {
-            Debug.WriteLine(enumerator.Current.ToString());
-          }
-        }
+        if(match.Groups[ServerAddressKey].Success) connectionStringParts[ServerAddressKey] = match.Groups[ServerAddressKey].Value;
+        if(match.Groups[ServerPortKey].Success) connectionStringParts[ServerPortKey] = match.Groups[ServerPortKey].Value;
+        if(match.Groups[DatabaseNameKey].Success) connectionStringParts[DatabaseNameKey] = match.Groups[DatabaseNameKey].Value;
+        if(match.Groups[UserNameKey].Success) connectionStringParts[UserNameKey] = match.Groups[UserNameKey].Value;
+        if(match.Groups[PasswordKey].Success) connectionStringParts[PasswordKey] = match.Groups[PasswordKey].Value;
+        
       }
+    }
+
+    public bool ContainsKey(string key)
+    {
+      return connectionStringParts.ContainsKey(key);
     }
 
     public object this[string key]
     {
-      get { throw new System.NotImplementedException(); }
+      get { return connectionStringParts.ContainsKey(key) ? connectionStringParts[key] : null; }
     }
 
+    public IDbConnectionInfo Copy()
+    {
+      return new MongoDbConnectionInfo
+                 {
+                   connectionStringName = connectionStringName,
+                   ConnectionString = ConnectionString
+                 };
+    }
+
+    private string connectionStringName;
     private string connectionString;
-    private Dictionary<string, object> connectionStringParts = new Dictionary<string, object>();
+    private readonly Dictionary<string, object> connectionStringParts = new Dictionary<string, object>();
   }
 }

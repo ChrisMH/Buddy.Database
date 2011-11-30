@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using MongoDB.Driver;
 using NUnit.Framework;
-using Utility.Database.Management.MongoDb;
 
 namespace Utility.Database.MongoDb.Test
 {
@@ -25,33 +23,32 @@ namespace Utility.Database.MongoDb.Test
     [Test]
     public void CreateCreatesDatabase()
     {
-      var manager = new MongoDbManager(new DbDescription {ConnectionInfo = GlobalTest.ConnectionInfo1});
+      var manager = new MongoDbManager {Description = new MongoDbDescription {ConnectionInfo = GlobalTest.DbManager1.ConnectionInfo}};
 
       manager.Create();
 
-      var connectionParams = MongoDbManager.ParseConnectionString(GlobalTest.ConnectionInfo1);
-      var server = MongoServer.Create(connectionParams.ConnectionString);
-      Assert.IsTrue(server.DatabaseExists(connectionParams.DatabaseName));
+      var server = manager.CreateServer();
+      Assert.IsTrue(server.DatabaseExists((string) manager.ConnectionInfo[MongoDbConnectionInfo.DatabaseNameKey]));
     }
 
     [Test]
     public void CreateWithLiteralSchemaCreatesSchema()
     {
-      var manager = new MongoDbManager(new DbDescription
-                                       {
-                                         ConnectionInfo = GlobalTest.ConnectionInfo1,
-                                         Schemas = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = LiteralSchema}}
-                                       });
+      var manager = new MongoDbManager
+                    {
+                      Description = new MongoDbDescription
+                                    {
+                                      ConnectionInfo = GlobalTest.DbManager1.ConnectionInfo,
+                                      Schemas = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = LiteralSchema}}
+                                    }
+                    };
 
       manager.Create();
-      
-      var connectionParams = MongoDbManager.ParseConnectionString(GlobalTest.ConnectionInfo1);
-      var server = MongoServer.Create(connectionParams.ConnectionString);
-      var db = server.GetDatabase(connectionParams.DatabaseName);
 
-      var result = ((MongoDatabase) db).GetCollectionNames().FirstOrDefault(c => c == "c1");
+      var db = manager.CreateDatabase();
+
+      var result = db.GetCollectionNames().FirstOrDefault(c => c == "c1");
       Assert.IsNotNull(result);
-
     }
   }
 }
