@@ -41,5 +41,19 @@ namespace Utility.Database.MongoDb.Test
       Assert.That(db["c1"].Count() == 2);
       Assert.That(db["c2"].Count() == 1);
     }
+
+    [Test]
+    public void SeedFromDescriptionSeedsDatabase()
+    {
+      var manager = new MongoDbManager
+                    {
+                      Description = new MongoDbDescription
+                                    {
+                                      XmlRoot = Resources.description
+                                    }
+                    };
+      manager.Create();
+      manager.Seed();
+    }
   }
 }

@@ -69,48 +69,33 @@ namespace Utility.Database.MongoDb.Test
     }
 
     [Test]
-    public void CanGetMinimumConnectionStringValuesFromIndexer()
+    public void CanGetMinimumConnectionStringValues()
     {
       var result = new MongoDbConnectionInfo
                    {
                      ConnectionString = "mongodb://localhost/database/"
                    };
 
-      Assert.IsTrue(result.ContainsKey(MongoDbConnectionInfo.ServerAddressKey));
-      Assert.AreEqual("localhost", result[MongoDbConnectionInfo.ServerAddressKey]);
-
-      Assert.IsFalse(result.ContainsKey(MongoDbConnectionInfo.ServerPortKey));
-
-      Assert.IsTrue(result.ContainsKey(MongoDbConnectionInfo.DatabaseNameKey));
-      Assert.AreEqual("database", result[MongoDbConnectionInfo.DatabaseNameKey]);
-
-      Assert.IsFalse(result.ContainsKey(MongoDbConnectionInfo.UserNameKey));
-
-      Assert.IsFalse(result.ContainsKey(MongoDbConnectionInfo.PasswordKey));
+      Assert.AreEqual("localhost", result.ServerAddress);
+      Assert.IsNull(result.ServerPort);
+      Assert.AreEqual("database", result.DatabaseName);
+      Assert.IsNull(result.UserName);
+      Assert.IsNull(result.Password);
     }
 
     [Test]
-    public void CanGetFullConnectionStringValuesFromIndexer()
+    public void CanGetFullConnectionStringValues()
     {
       var result = new MongoDbConnectionInfo
                    {
                      ConnectionString = "mongodb://username:password@localhost:8888/database/"
                    };
-
-      Assert.IsTrue(result.ContainsKey(MongoDbConnectionInfo.ServerAddressKey));
-      Assert.AreEqual("localhost", result[MongoDbConnectionInfo.ServerAddressKey]);
-
-      Assert.IsTrue(result.ContainsKey(MongoDbConnectionInfo.ServerPortKey));
-      Assert.AreEqual(8888, Convert.ToInt32(result[MongoDbConnectionInfo.ServerPortKey]));
-
-      Assert.IsTrue(result.ContainsKey(MongoDbConnectionInfo.DatabaseNameKey));
-      Assert.AreEqual("database", result[MongoDbConnectionInfo.DatabaseNameKey]);
-
-      Assert.IsTrue(result.ContainsKey(MongoDbConnectionInfo.UserNameKey));
-      Assert.AreEqual("username", result[MongoDbConnectionInfo.UserNameKey]);
-
-      Assert.IsTrue(result.ContainsKey(MongoDbConnectionInfo.PasswordKey));
-      Assert.AreEqual("password", result[MongoDbConnectionInfo.PasswordKey]);
+                   
+      Assert.AreEqual("localhost", result.ServerAddress);
+      Assert.AreEqual(8888, result.ServerPort);
+      Assert.AreEqual("database", result.DatabaseName);
+      Assert.AreEqual("username", result.UserName);
+      Assert.AreEqual("password", result.Password);
     }
   }
 }

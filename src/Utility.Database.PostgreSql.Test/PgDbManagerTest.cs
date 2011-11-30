@@ -21,11 +21,11 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void PgDbManagerCreatedWithNullSuperuserUsesDefaultSuperuser()
     {
-      var manager = new PgDbManager {Description = new PgDbDescription {ConnectionInfo = GlobalTest.ConnectionInfo1}};
+      var manager = new PgDbManager {Description = new PgDbDescription {ConnectionInfo = GlobalTest.Manager1.ConnectionInfo}};
 
       Assert.NotNull(manager.Superuser);
-      Assert.AreEqual("postgres", manager.Superuser.Database);
-      Assert.AreEqual("postgres", manager.Superuser.UserId);
+      Assert.AreEqual("postgres", manager.Superuser.DatabaseName);
+      Assert.AreEqual("postgres", manager.Superuser.UserName);
       Assert.AreEqual("postgres", manager.Superuser.Password);
     }
 
@@ -34,13 +34,13 @@ namespace Utility.Database.PostgreSql.Test
     {
       var manager = new PgDbManager
                     {
-                      Description = new PgDbDescription {ConnectionInfo = GlobalTest.ConnectionInfo1},
-                      Superuser = new PgSuperuser {Database = "sudb", UserId = "suid", Password = "supw"}
+                      Description = new PgDbDescription {ConnectionInfo = GlobalTest.Manager1.ConnectionInfo},
+                      Superuser = new PgSuperuser {DatabaseName = "sudb", UserName = "suid", Password = "supw"}
                     };
 
       Assert.NotNull(manager.Superuser);
-      Assert.AreEqual("sudb", manager.Superuser.Database);
-      Assert.AreEqual("suid", manager.Superuser.UserId);
+      Assert.AreEqual("sudb", manager.Superuser.DatabaseName);
+      Assert.AreEqual("suid", manager.Superuser.UserName);
       Assert.AreEqual("supw", manager.Superuser.Password);
     }
 
@@ -49,17 +49,17 @@ namespace Utility.Database.PostgreSql.Test
     {
       var manager = new PgDbManager
                     {
-                      Description = new PgDbDescription {ConnectionInfo = GlobalTest.ConnectionInfo1},
-                      Superuser = new PgSuperuser {Database = "sudb", UserId = "suid", Password = "supw"}
+                      Description = new PgDbDescription {ConnectionInfo = GlobalTest.Manager1.ConnectionInfo},
+                      Superuser = new PgSuperuser {DatabaseName = "sudb", UserName = "suid", Password = "supw"}
                     };
       
       using(var conn = manager.CreateDatabaseConnection())
       {
         var result = new DbConnectionStringBuilder {ConnectionString = conn.ConnectionString};
 
-        Assert.AreEqual("sudb", result[PgDbManager.DatabaseKey]);
-        Assert.AreEqual("suid", result[PgDbManager.UserIdKey]);
-        Assert.AreEqual("supw", result[PgDbManager.PasswordKey]);
+        Assert.AreEqual("sudb", result[PgDbConnectionInfo.DatabaseNameKey]);
+        Assert.AreEqual("suid", result[PgDbConnectionInfo.UserNameKey]);
+        Assert.AreEqual("supw", result[PgDbConnectionInfo.PasswordKey]);
       }
     }
 
@@ -68,17 +68,17 @@ namespace Utility.Database.PostgreSql.Test
     {
       var manager = new PgDbManager
                     {
-                      Description = new PgDbDescription {ConnectionInfo = GlobalTest.ConnectionInfo1},
-                      Superuser = new PgSuperuser {Database = "sudb", UserId = "suid", Password = "supw"}
+                      Description = new PgDbDescription {ConnectionInfo = GlobalTest.Manager1.ConnectionInfo},
+                      Superuser = new PgSuperuser {DatabaseName = "sudb", UserName = "suid", Password = "supw"}
                     };
                     
       using(var conn = manager.CreateContentConnection())
       {
         var result = new DbConnectionStringBuilder {ConnectionString = conn.ConnectionString};
 
-        Assert.AreEqual(manager.ConnectionInfo[PgDbManager.DatabaseKey], result[PgDbManager.DatabaseKey]);
-        Assert.AreEqual("suid", result[PgDbManager.UserIdKey]);
-        Assert.AreEqual("supw", result[PgDbManager.PasswordKey]);
+        Assert.AreEqual(manager.ConnectionInfo.DatabaseName, result[PgDbConnectionInfo.DatabaseNameKey]);
+        Assert.AreEqual("suid", result[PgDbConnectionInfo.UserNameKey]);
+        Assert.AreEqual("supw", result[PgDbConnectionInfo.PasswordKey]);
       }
     }
 

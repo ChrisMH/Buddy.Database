@@ -25,7 +25,7 @@ namespace Utility.Database.MongoDb.Test
       manager.Destroy();
       
       var server = manager.CreateServer();
-      Assert.IsFalse(server.DatabaseExists((string)manager.ConnectionInfo[MongoDbConnectionInfo.DatabaseNameKey]));
+      Assert.IsFalse(server.DatabaseExists(manager.ConnectionInfo.DatabaseName));
     }
   }
 }

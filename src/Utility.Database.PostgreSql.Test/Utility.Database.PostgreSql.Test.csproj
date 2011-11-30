@@ -69,6 +69,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="PgDbConnectionInfoTest.cs" />
     <Compile Include="PgDbDescriptionTest.cs" />
     <Compile Include="PgDbManagerCreateTest.cs" />
     <Compile Include="PgDbManagerDestroyTest.cs" />

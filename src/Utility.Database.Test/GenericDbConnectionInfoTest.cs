@@ -1,12 +1,12 @@
 ﻿using System;
 using NUnit.Framework;
 
-namespace Utility.Database.Test
+namespace Utility.Database.PostgreSql.Test
 {
   public class GenericDbConnectionInfoTest
   {
     [Test]
-    public void GenericDbConnectionInfoTestExposesExpectedInterfaces()
+    public void ExposesExpectedInterfaces()
     {
       var result = new GenericDbConnectionInfo();
 
@@ -125,12 +125,15 @@ namespace Utility.Database.Test
     }
 
     [Test]
-    public void CanGetConnectionStringValueFromIndexer()
+    public void SpecificConnectionStringNamesAreNull()
     {
       var result = new GenericDbConnectionInfo {ConnectionStringName = "Valid"};
 
-      Assert.NotNull(result);
-      Assert.AreEqual("server", result["server"]);
+      Assert.IsNull(result.ServerAddress);
+      Assert.IsNull(result.ServerPort);
+      Assert.IsNull(result.DatabaseName);
+      Assert.IsNull(result.UserName);
+      Assert.IsNull(result.Password);
     }
   }
 }

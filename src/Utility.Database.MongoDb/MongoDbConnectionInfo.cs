@@ -55,22 +55,37 @@ namespace Utility.Database.MongoDb
         connectionStringParts.Clear();
 
         if(match.Groups[ServerAddressKey].Success) connectionStringParts[ServerAddressKey] = match.Groups[ServerAddressKey].Value;
-        if(match.Groups[ServerPortKey].Success) connectionStringParts[ServerPortKey] = match.Groups[ServerPortKey].Value;
+        if(match.Groups[ServerPortKey].Success) connectionStringParts[ServerPortKey] = Convert.ToInt32(match.Groups[ServerPortKey].Value);
         if(match.Groups[DatabaseNameKey].Success) connectionStringParts[DatabaseNameKey] = match.Groups[DatabaseNameKey].Value;
         if(match.Groups[UserNameKey].Success) connectionStringParts[UserNameKey] = match.Groups[UserNameKey].Value;
         if(match.Groups[PasswordKey].Success) connectionStringParts[PasswordKey] = match.Groups[PasswordKey].Value;
         
       }
     }
-
-    public bool ContainsKey(string key)
+    
+    public string ServerAddress
     {
-      return connectionStringParts.ContainsKey(key);
+      get { return (string)connectionStringParts[ServerAddressKey]; }
     }
 
-    public object this[string key]
+    public int? ServerPort
     {
-      get { return connectionStringParts.ContainsKey(key) ? connectionStringParts[key] : null; }
+      get { return connectionStringParts.ContainsKey(ServerPortKey) ? (int?)connectionStringParts[ServerPortKey] : null; }
+    }
+
+    public string DatabaseName
+    {
+      get { return (string)connectionStringParts[DatabaseNameKey]; }
+    }
+
+    public string UserName
+    {
+      get { return connectionStringParts.ContainsKey(UserNameKey) ? (string)connectionStringParts[UserNameKey] : null; }
+    }
+
+    public string Password
+    {
+      get { return connectionStringParts.ContainsKey(PasswordKey) ? (string)connectionStringParts[PasswordKey] : null; }
     }
 
     public IDbConnectionInfo Copy()

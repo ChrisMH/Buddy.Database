@@ -56,11 +56,11 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="GenericDbConnectionInfoTest.cs" />
     <Compile Include="DbDescriptions.cs" />
     <Compile Include="DbDescriptionTest.cs" />
     <Compile Include="DbScripts.cs" />
     <Compile Include="DbScriptTest.cs" />
+    <Compile Include="GenericDbConnectionInfoTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

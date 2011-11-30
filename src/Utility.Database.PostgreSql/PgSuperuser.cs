@@ -4,13 +4,13 @@
   {
     public PgSuperuser()
     {
-      Database = "postgres";
-      UserId = "postgres";
+      DatabaseName = "postgres";
+      UserName = "postgres";
       Password = "postgres";
     }
 
-    public string Database { get; set; }
-    public string UserId { get; set; }
+    public string DatabaseName { get; set; }
+    public string UserName { get; set; }
     public string Password { get; set; }
   }
 }

@@ -6,10 +6,6 @@ namespace Utility.Database.PostgreSql
 {
   public class PgDbManager : IDbManager
   {
-    internal const string DatabaseKey = "database";
-    internal const string UserIdKey = "user id";
-    internal const string PasswordKey = "password";
-
     public PgDbManager()
     {
       Superuser = new PgSuperuser();
@@ -26,19 +22,19 @@ namespace Utility.Database.PostgreSql
         using (var cmd = conn.CreateCommand())
         {
 
-          cmd.CommandText = string.Format("CREATE DATABASE \"{0}\"", Description.ConnectionInfo[DatabaseKey]);
+          cmd.CommandText = string.Format("CREATE DATABASE \"{0}\"", Description.ConnectionInfo.DatabaseName);
           if (!string.IsNullOrEmpty(Description.TemplateName))
           {
             cmd.CommandText += string.Format(" TEMPLATE \"{0}\"", Description.TemplateName);
           }
           cmd.ExecuteNonQuery();
 
-          if (Description.ConnectionInfo.ContainsKey(UserIdKey) && Description.ConnectionInfo.ContainsKey(PasswordKey))
+          if (!string.IsNullOrWhiteSpace(Description.ConnectionInfo.UserName) && !string.IsNullOrWhiteSpace(Description.ConnectionInfo.Password))
           {
-            cmd.CommandText = string.Format("SELECT COUNT(*) FROM pg_catalog.pg_user WHERE usename='{0}'", Description.ConnectionInfo[UserIdKey]);
+            cmd.CommandText = string.Format("SELECT COUNT(*) FROM pg_catalog.pg_user WHERE usename='{0}'", Description.ConnectionInfo.UserName);
             if (Convert.ToInt64(cmd.ExecuteScalar()) == 0)
             {
-              cmd.CommandText = string.Format("CREATE ROLE \"{0}\" LOGIN ENCRYPTED PASSWORD '{1}' NOINHERIT", Description.ConnectionInfo[UserIdKey], Description.ConnectionInfo[PasswordKey]);
+              cmd.CommandText = string.Format("CREATE ROLE \"{0}\" LOGIN ENCRYPTED PASSWORD '{1}' NOINHERIT", Description.ConnectionInfo.UserName, Description.ConnectionInfo.Password);
               cmd.ExecuteNonQuery();
             }
           }
@@ -57,7 +53,7 @@ namespace Utility.Database.PostgreSql
             cmd.ExecuteNonQuery();
           }
 
-          if (Description.ConnectionInfo.ContainsKey(UserIdKey))
+          if (!string.IsNullOrWhiteSpace(Description.ConnectionInfo.UserName))
           {
             cmd.CommandText = "SELECT nspname FROM pg_catalog.pg_namespace " +
                               "WHERE nspname NOT LIKE 'pg_%' " +
@@ -80,7 +76,7 @@ namespace Utility.Database.PostgreSql
                                                  "GRANT ALL ON ALL TABLES IN SCHEMA \"{0}\" TO \"{1}\";" +
                                                  "GRANT ALL ON ALL SEQUENCES IN SCHEMA \"{0}\" TO \"{1}\";" +
                                                  "GRANT ALL ON ALL FUNCTIONS IN SCHEMA \"{0}\" TO \"{1}\";",
-                                                 schema, Description.ConnectionInfo[UserIdKey]);
+                                                 schema, Description.ConnectionInfo.UserName);
               }
 
               cmd.ExecuteNonQuery();
@@ -100,19 +96,19 @@ namespace Utility.Database.PostgreSql
 
         using (var cmd = conn.CreateCommand())
         {
-          cmd.CommandText = string.Format("DROP DATABASE IF EXISTS \"{0}\"", Description.ConnectionInfo[DatabaseKey]);
+          cmd.CommandText = string.Format("DROP DATABASE IF EXISTS \"{0}\"", Description.ConnectionInfo.DatabaseName);
           cmd.ExecuteNonQuery();
 
-          if(Description.ConnectionInfo.ContainsKey(UserIdKey) && !((string)Description.ConnectionInfo[UserIdKey]).Equals(Superuser.UserId, StringComparison.InvariantCultureIgnoreCase))
+          if(!string.IsNullOrWhiteSpace(Description.ConnectionInfo.UserName) && !Description.ConnectionInfo.UserName.Equals(Superuser.UserName, StringComparison.InvariantCultureIgnoreCase))
           {
             // Delete the role if it is not in use by any databases
             cmd.CommandText = string.Format("SELECT COUNT(*) FROM pg_catalog.pg_shdepend sd " +
                                             "JOIN pg_catalog.pg_roles r ON r.oid = sd.refobjid " +
-                                            "WHERE r.rolname='{0}' ", Description.ConnectionInfo[UserIdKey]);
+                                            "WHERE r.rolname='{0}' ", Description.ConnectionInfo.UserName);
 
             if (Convert.ToInt64(cmd.ExecuteScalar()) == 0)
             {
-              cmd.CommandText = string.Format("DROP ROLE IF EXISTS \"{0}\"", Description.ConnectionInfo[UserIdKey]);
+              cmd.CommandText = string.Format("DROP ROLE IF EXISTS \"{0}\"", Description.ConnectionInfo.UserName);
               cmd.ExecuteNonQuery();
             }
           }
@@ -153,9 +149,9 @@ namespace Utility.Database.PostgreSql
       CheckPreconditions();
 
       var csBuilder = new DbConnectionStringBuilder {ConnectionString = Description.ConnectionInfo.ConnectionString};
-      csBuilder[DatabaseKey] = Superuser.Database;
-      csBuilder[UserIdKey] = Superuser.UserId;
-      csBuilder[PasswordKey] = Superuser.Password;
+      csBuilder[PgDbConnectionInfo.DatabaseNameKey] = Superuser.DatabaseName;
+      csBuilder[PgDbConnectionInfo.UserNameKey] = Superuser.UserName;
+      csBuilder[PgDbConnectionInfo.PasswordKey] = Superuser.Password;
 
       var conn = ((IDbProviderInfo)Description.ConnectionInfo).ProviderFactory.CreateConnection();
       conn.ConnectionString = csBuilder.ConnectionString;
@@ -168,8 +164,8 @@ namespace Utility.Database.PostgreSql
       CheckPreconditions();
 
       var csBuilder = new DbConnectionStringBuilder {ConnectionString = Description.ConnectionInfo.ConnectionString};
-      csBuilder[UserIdKey] = Superuser.UserId;
-      csBuilder[PasswordKey] = Superuser.Password;
+      csBuilder[PgDbConnectionInfo.UserNameKey] = Superuser.UserName;
+      csBuilder[PgDbConnectionInfo.PasswordKey] = Superuser.Password;
       
       var conn = ((IDbProviderInfo)Description.ConnectionInfo).ProviderFactory.CreateConnection();
       conn.ConnectionString = csBuilder.ConnectionString;

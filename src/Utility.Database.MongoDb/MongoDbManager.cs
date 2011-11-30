@@ -19,14 +19,14 @@ namespace Utility.Database.MongoDb
       foreach (var schemaDefinition in Description.Schemas)
       {
         var command = new BsonJavaScript(schemaDefinition.Load());
-        db.Eval(command);
+        db.Eval(command); 
       }
     }
 
     public void Destroy()
     {
       var server = CreateServer();
-      server.DropDatabase((string)Description.ConnectionInfo[MongoDbConnectionInfo.DatabaseNameKey]);
+      server.DropDatabase(Description.ConnectionInfo.DatabaseName);
     }
 
     public void Seed()
@@ -57,7 +57,7 @@ namespace Utility.Database.MongoDb
     internal MongoDatabase CreateDatabase()
     {
       var server = CreateServer();
-      return server.GetDatabase((string) Description.ConnectionInfo[MongoDbConnectionInfo.DatabaseNameKey], SafeMode.True);
+      return server.GetDatabase(Description.ConnectionInfo.DatabaseName, SafeMode.True);
     }
 
     protected void CheckPreconditions()

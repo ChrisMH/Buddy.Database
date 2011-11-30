@@ -15,6 +15,7 @@
     /// </summary>
     string ConnectionString { get; set; }
 
+    /*
     /// <summary>
     /// Test if connection string piece is available
     /// </summary>
@@ -28,8 +29,13 @@
     /// <param name="key">Connection string piece</param>
     /// <returns>The key's value, or null if it does not have the requested value</returns>
     object this[string key] { get; }
+    */
 
-
+    string ServerAddress { get; }
+    int? ServerPort { get; }
+    string DatabaseName { get; }
+    string UserName { get; }
+    string Password { get; }
 
     /// <summary>
     /// Makes a copy of this instance

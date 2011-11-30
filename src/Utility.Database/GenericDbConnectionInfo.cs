@@ -76,28 +76,27 @@ namespace Utility.Database
         }
       }
     }
-
-    public bool ContainsKey(string key)
+    
+    public virtual string ServerAddress { get { return null; } }
+    public virtual int? ServerPort { get { return null; } }
+    public virtual string DatabaseName { get { return null; } }
+    public virtual string UserName { get { return null; } }
+    public virtual string Password { get { return null; } }
+    public virtual IDbConnectionInfo Copy()
     {
-      return connectionString.ContainsKey(key);
+      var copy = new GenericDbConnectionInfo();
+      InternalCopy(copy);
+      return copy;
     }
 
-    public object this[string key]
+    protected virtual void InternalCopy(GenericDbConnectionInfo copy)
     {
-      get { return connectionString[key]; }
-    }
-
-    public IDbConnectionInfo Copy()
-    {
-      return new GenericDbConnectionInfo
-             {
-               connectionStringName = connectionStringName,
-               connectionString = connectionString == null ? null : new DbConnectionStringBuilder {ConnectionString = connectionString.ConnectionString},
-               Provider = Provider
-             };
+      copy.connectionStringName = connectionStringName;
+      copy.connectionString = connectionString == null ? null : new DbConnectionStringBuilder {ConnectionString = connectionString.ConnectionString};
+      copy.Provider = Provider;
     }
 
     private string connectionStringName;
-    private DbConnectionStringBuilder connectionString;
+    protected DbConnectionStringBuilder connectionString;
   }
 }

@@ -21,7 +21,7 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void DestroyDropsDatabase()
     {
-      var manager = new PgDbManager {Description = new PgDbDescription {ConnectionInfo = GlobalTest.ConnectionInfo1}};
+      var manager = new PgDbManager {Description = new PgDbDescription {ConnectionInfo = GlobalTest.Manager1.ConnectionInfo}};
 
       manager.Create();
       manager.Destroy();
@@ -32,7 +32,7 @@ namespace Utility.Database.PostgreSql.Test
 
         using (var cmd = conn.CreateCommand())
         {
-          cmd.CommandText = string.Format("SELECT COUNT(*) FROM pg_catalog.pg_database WHERE datname='{0}'", manager.ConnectionInfo[PgDbManager.DatabaseKey]);
+          cmd.CommandText = string.Format("SELECT COUNT(*) FROM pg_catalog.pg_database WHERE datname='{0}'", manager.ConnectionInfo.DatabaseName);
           Assert.AreEqual(0, Convert.ToInt64(cmd.ExecuteScalar()));
         }
       }
@@ -41,7 +41,7 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void DestroyDropsRole()
     {
-      var manager = new PgDbManager {Description = new PgDbDescription {ConnectionInfo = GlobalTest.ConnectionInfo1}};
+      var manager = new PgDbManager {Description = new PgDbDescription {ConnectionInfo = GlobalTest.Manager1.ConnectionInfo}};
 
       manager.Create();
       manager.Destroy();
@@ -52,7 +52,7 @@ namespace Utility.Database.PostgreSql.Test
 
         using (var cmd = conn.CreateCommand())
         {
-          cmd.CommandText = string.Format("SELECT COUNT(*) FROM pg_catalog.pg_user WHERE usename='{0}'", manager.ConnectionInfo[PgDbManager.UserIdKey]);
+          cmd.CommandText = string.Format("SELECT COUNT(*) FROM pg_catalog.pg_user WHERE usename='{0}'", manager.ConnectionInfo.UserName);
           Assert.AreEqual(0, Convert.ToInt64(cmd.ExecuteScalar()));
         }
       }
@@ -61,22 +61,22 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void DestroyDoesNotDropRoleThatIsStillInUse()
     {
-      var manager2 = new PgDbManager {Description = new PgDbDescription {ConnectionInfo = GlobalTest.ConnectionInfo2}};
+      var manager2 = new PgDbManager {Description = new PgDbDescription {ConnectionInfo = GlobalTest.Manager2.ConnectionInfo}};
       manager2.Create();
 
       // Create a new manager for connection 1's database with connection 2's user
-      var csBuilderT = new DbConnectionStringBuilder {ConnectionString = GlobalTest.ConnectionInfo1.ConnectionString};
-      csBuilderT[PgDbManager.UserIdKey] = GlobalTest.ConnectionInfo2[PgDbManager.UserIdKey];
-      csBuilderT[PgDbManager.PasswordKey] = GlobalTest.ConnectionInfo2[PgDbManager.PasswordKey];
+      var csBuilderT = new DbConnectionStringBuilder {ConnectionString = GlobalTest.Manager1.ConnectionInfo.ConnectionString};
+      csBuilderT[PgDbConnectionInfo.UserNameKey] = GlobalTest.Manager2.ConnectionInfo.UserName;
+      csBuilderT[PgDbConnectionInfo.PasswordKey] = GlobalTest.Manager2.ConnectionInfo.Password;
 
       var managerT = new PgDbManager
                      {
                        Description = new PgDbDescription
                                      {
-                                       ConnectionInfo = new GenericDbConnectionInfo
+                                       ConnectionInfo = new PgDbConnectionInfo
                                                         {
                                                           ConnectionString = csBuilderT.ConnectionString,
-                                                          Provider = ((IDbProviderInfo) GlobalTest.ConnectionInfo1).Provider
+                                                          Provider = ((IDbProviderInfo) GlobalTest.Manager1.ConnectionInfo).Provider
                                                         }
                                      }
                      };
@@ -92,7 +92,7 @@ namespace Utility.Database.PostgreSql.Test
 
         using (var cmd = conn.CreateCommand())
         {
-          cmd.CommandText = string.Format("SELECT COUNT(*) FROM pg_catalog.pg_user WHERE usename='{0}'", csBuilderT[PgDbManager.UserIdKey]);
+          cmd.CommandText = string.Format("SELECT COUNT(*) FROM pg_catalog.pg_user WHERE usename='{0}'", csBuilderT[PgDbConnectionInfo.UserNameKey]);
           Assert.AreEqual(1, Convert.ToInt64(cmd.ExecuteScalar()));
         }
       }

@@ -4,7 +4,7 @@ using System.Xml.Linq;
 
 namespace Utility.Database.PostgreSql
 {
-  public class PgDbDescription : DbDescription<GenericDbConnectionInfo>
+  public class PgDbDescription : DbDescription<PgDbConnectionInfo>
   {
     public PgDbDescription()
     {
