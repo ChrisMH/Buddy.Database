@@ -53,8 +53,8 @@ namespace Utility.Database.MongoDb.Test
 
     public static void DropTestDatabaseAndRole()
     {
-      DbManager1.CreateServer().DropDatabase(DbManager1.ConnectionInfo.DatabaseName);
-      DbManager2.CreateServer().DropDatabase(DbManager2.ConnectionInfo.DatabaseName);
+      DbManager1.CreateServer().DropDatabase(DbManager1.Description.ConnectionInfo.DatabaseName);
+      DbManager2.CreateServer().DropDatabase(DbManager2.Description.ConnectionInfo.DatabaseName);
     }
   }
 }

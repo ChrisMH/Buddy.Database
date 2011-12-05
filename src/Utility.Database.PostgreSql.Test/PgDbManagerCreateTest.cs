@@ -23,7 +23,7 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void CreateCreatesDatabase()
     {
-      var manager = new PgDbManager {Description = new PgDbDescription {ConnectionInfo = GlobalTest.Manager1.ConnectionInfo}};
+      var manager = new PgDbManager { Description = new PgDbDescription { ConnectionInfo = GlobalTest.Manager1.Description.ConnectionInfo } };
 
       manager.Create();
 
@@ -33,7 +33,7 @@ namespace Utility.Database.PostgreSql.Test
 
         using (var cmd = conn.CreateCommand())
         {
-          cmd.CommandText = string.Format("SELECT COUNT(*) FROM pg_catalog.pg_database WHERE datname='{0}'", manager.ConnectionInfo.DatabaseName);
+          cmd.CommandText = string.Format("SELECT COUNT(*) FROM pg_catalog.pg_database WHERE datname='{0}'", manager.Description.ConnectionInfo.DatabaseName);
           Assert.AreEqual(1, Convert.ToInt64(cmd.ExecuteScalar()));
         }
       }
@@ -47,7 +47,7 @@ namespace Utility.Database.PostgreSql.Test
                     {
                       Description = new PgDbDescription
                                     {
-                                      ConnectionInfo = GlobalTest.Manager1.ConnectionInfo,
+                                      ConnectionInfo = GlobalTest.Manager1.Description.ConnectionInfo,
                                       TemplateName = "template_postgis"
                                     }
                     };
@@ -70,7 +70,7 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void CreateCreatesRole()
     {
-      var manager = new PgDbManager {Description = new PgDbDescription {ConnectionInfo = GlobalTest.Manager1.ConnectionInfo}};
+      var manager = new PgDbManager { Description = new PgDbDescription { ConnectionInfo = GlobalTest.Manager1.Description.ConnectionInfo } };
 
 
       manager.Create();
@@ -81,7 +81,7 @@ namespace Utility.Database.PostgreSql.Test
 
         using (var cmd = conn.CreateCommand())
         {
-          cmd.CommandText = string.Format("SELECT COUNT(*) FROM pg_catalog.pg_user WHERE usename='{0}'", manager.ConnectionInfo.UserName);
+          cmd.CommandText = string.Format("SELECT COUNT(*) FROM pg_catalog.pg_user WHERE usename='{0}'", manager.Description.ConnectionInfo.UserName);
           Assert.AreEqual(1, Convert.ToInt64(cmd.ExecuteScalar()));
         }
       }
@@ -95,7 +95,7 @@ namespace Utility.Database.PostgreSql.Test
                       Description =
                         new PgDbDescription
                         {
-                          ConnectionInfo = GlobalTest.Manager1.ConnectionInfo,
+                          ConnectionInfo = GlobalTest.Manager1.Description.ConnectionInfo,
                           Schemas = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = TestSchema}}
                         }
                     };
@@ -123,7 +123,7 @@ namespace Utility.Database.PostgreSql.Test
                       Description =
                         new PgDbDescription
                         {
-                          ConnectionInfo = GlobalTest.Manager1.ConnectionInfo,
+                          ConnectionInfo = GlobalTest.Manager1.Description.ConnectionInfo,
                           Schemas = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = TestSchema}}
                         }
                     };
@@ -138,7 +138,7 @@ namespace Utility.Database.PostgreSql.Test
         {
           cmd.CommandText = "SELECT nspacl FROM pg_catalog.pg_namespace WHERE nspname='public'";
           var result = Convert.ToString(cmd.ExecuteScalar());
-          Assert.That(result.Contains(string.Format("{0}=UC", manager.ConnectionInfo.UserName)));
+          Assert.That(result.Contains(string.Format("{0}=UC", manager.Description.ConnectionInfo.UserName)));
         }
       }
     }
@@ -151,7 +151,7 @@ namespace Utility.Database.PostgreSql.Test
                       Description =
                         new PgDbDescription
                         {
-                          ConnectionInfo = GlobalTest.Manager1.ConnectionInfo,
+                          ConnectionInfo = GlobalTest.Manager1.Description.ConnectionInfo,
                           Schemas = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = TestSchema}}
                         }
                     };
@@ -166,7 +166,7 @@ namespace Utility.Database.PostgreSql.Test
         {
           cmd.CommandText = "SELECT nspacl FROM pg_catalog.pg_namespace WHERE nspname='test_schema'";
           var result = Convert.ToString(cmd.ExecuteScalar());
-          Assert.That(result.Contains(string.Format("{0}=UC", manager.ConnectionInfo.UserName)));
+          Assert.That(result.Contains(string.Format("{0}=UC", manager.Description.ConnectionInfo.UserName)));
         }
       }
     }

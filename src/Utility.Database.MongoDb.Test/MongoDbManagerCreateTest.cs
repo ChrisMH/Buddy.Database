@@ -23,12 +23,12 @@ namespace Utility.Database.MongoDb.Test
     [Test]
     public void CreateCreatesDatabase()
     {
-      var manager = new MongoDbManager {Description = new MongoDbDescription {ConnectionInfo = GlobalTest.DbManager1.ConnectionInfo}};
+      var manager = new MongoDbManager { Description = new MongoDbDescription { ConnectionInfo = GlobalTest.DbManager1.Description.ConnectionInfo } };
 
       manager.Create();
 
       var server = manager.CreateServer();
-      Assert.IsTrue(server.DatabaseExists(manager.ConnectionInfo.DatabaseName));
+      Assert.IsTrue(server.DatabaseExists(manager.Description.ConnectionInfo.DatabaseName));
     }
 
     [Test]
@@ -38,7 +38,7 @@ namespace Utility.Database.MongoDb.Test
                     {
                       Description = new MongoDbDescription
                                     {
-                                      ConnectionInfo = GlobalTest.DbManager1.ConnectionInfo,
+                                      ConnectionInfo = GlobalTest.DbManager1.Description.ConnectionInfo,
                                       Schemas = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = LiteralSchema}}
                                     }
                     };

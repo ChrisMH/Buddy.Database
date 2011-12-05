@@ -61,7 +61,7 @@ namespace Utility.Database.PostgreSql.Test
 
         using (var cmd = conn.CreateCommand())
         {
-          cmd.CommandText = string.Format("DROP DATABASE IF EXISTS \"{0}\"", Manager1.ConnectionInfo.DatabaseName);
+          cmd.CommandText = string.Format("DROP DATABASE IF EXISTS \"{0}\"", Manager1.Description.ConnectionInfo.DatabaseName);
           cmd.ExecuteNonQuery();
         }
       }
@@ -72,7 +72,7 @@ namespace Utility.Database.PostgreSql.Test
 
         using (var cmd = conn.CreateCommand())
         {
-          cmd.CommandText = string.Format("DROP DATABASE IF EXISTS \"{0}\"", Manager2.ConnectionInfo.DatabaseName);
+          cmd.CommandText = string.Format("DROP DATABASE IF EXISTS \"{0}\"", Manager2.Description.ConnectionInfo.DatabaseName);
           cmd.ExecuteNonQuery();
         }
       }
@@ -84,7 +84,7 @@ namespace Utility.Database.PostgreSql.Test
 
         using (var cmd = conn.CreateCommand())
         {
-          cmd.CommandText = string.Format("DROP ROLE IF EXISTS \"{0}\"", Manager2.ConnectionInfo.UserName);
+          cmd.CommandText = string.Format("DROP ROLE IF EXISTS \"{0}\"", Manager2.Description.ConnectionInfo.UserName);
           cmd.ExecuteNonQuery();
         }
       }
@@ -95,7 +95,7 @@ namespace Utility.Database.PostgreSql.Test
 
         using (var cmd = conn.CreateCommand())
         {
-          cmd.CommandText = string.Format("DROP ROLE IF EXISTS \"{0}\"", Manager2.ConnectionInfo.UserName);
+          cmd.CommandText = string.Format("DROP ROLE IF EXISTS \"{0}\"", Manager2.Description.ConnectionInfo.UserName);
           cmd.ExecuteNonQuery();
         }
       }

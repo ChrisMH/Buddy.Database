@@ -19,13 +19,13 @@ namespace Utility.Database.MongoDb.Test
     [Test]
     public void DestroyDestroysDatabase()
     {
-      var manager = new MongoDbManager {Description = new MongoDbDescription {ConnectionInfo = GlobalTest.DbManager1.ConnectionInfo}};
+      var manager = new MongoDbManager { Description = new MongoDbDescription { ConnectionInfo = GlobalTest.DbManager1.Description.ConnectionInfo } };
 
       manager.Create();
       manager.Destroy();
       
       var server = manager.CreateServer();
-      Assert.IsFalse(server.DatabaseExists(manager.ConnectionInfo.DatabaseName));
+      Assert.IsFalse(server.DatabaseExists(manager.Description.ConnectionInfo.DatabaseName));
     }
   }
 }

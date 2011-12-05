@@ -21,7 +21,7 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void DestroyDropsDatabase()
     {
-      var manager = new PgDbManager {Description = new PgDbDescription {ConnectionInfo = GlobalTest.Manager1.ConnectionInfo}};
+      var manager = new PgDbManager {Description = new PgDbDescription {ConnectionInfo = GlobalTest.Manager1.Description.ConnectionInfo}};
 
       manager.Create();
       manager.Destroy();
@@ -32,7 +32,7 @@ namespace Utility.Database.PostgreSql.Test
 
         using (var cmd = conn.CreateCommand())
         {
-          cmd.CommandText = string.Format("SELECT COUNT(*) FROM pg_catalog.pg_database WHERE datname='{0}'", manager.ConnectionInfo.DatabaseName);
+          cmd.CommandText = string.Format("SELECT COUNT(*) FROM pg_catalog.pg_database WHERE datname='{0}'", manager.Description.ConnectionInfo.DatabaseName);
           Assert.AreEqual(0, Convert.ToInt64(cmd.ExecuteScalar()));
         }
       }
@@ -41,7 +41,7 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void DestroyDropsRole()
     {
-      var manager = new PgDbManager {Description = new PgDbDescription {ConnectionInfo = GlobalTest.Manager1.ConnectionInfo}};
+      var manager = new PgDbManager { Description = new PgDbDescription { ConnectionInfo = GlobalTest.Manager1.Description.ConnectionInfo } };
 
       manager.Create();
       manager.Destroy();
@@ -52,7 +52,7 @@ namespace Utility.Database.PostgreSql.Test
 
         using (var cmd = conn.CreateCommand())
         {
-          cmd.CommandText = string.Format("SELECT COUNT(*) FROM pg_catalog.pg_user WHERE usename='{0}'", manager.ConnectionInfo.UserName);
+          cmd.CommandText = string.Format("SELECT COUNT(*) FROM pg_catalog.pg_user WHERE usename='{0}'", manager.Description.ConnectionInfo.UserName);
           Assert.AreEqual(0, Convert.ToInt64(cmd.ExecuteScalar()));
         }
       }
@@ -61,13 +61,13 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void DestroyDoesNotDropRoleThatIsStillInUse()
     {
-      var manager2 = new PgDbManager {Description = new PgDbDescription {ConnectionInfo = GlobalTest.Manager2.ConnectionInfo}};
+      var manager2 = new PgDbManager { Description = new PgDbDescription { ConnectionInfo = GlobalTest.Manager2.Description.ConnectionInfo } };
       manager2.Create();
 
       // Create a new manager for connection 1's database with connection 2's user
-      var csBuilderT = new DbConnectionStringBuilder {ConnectionString = GlobalTest.Manager1.ConnectionInfo.ConnectionString};
-      csBuilderT[PgDbConnectionInfo.UserNameKey] = GlobalTest.Manager2.ConnectionInfo.UserName;
-      csBuilderT[PgDbConnectionInfo.PasswordKey] = GlobalTest.Manager2.ConnectionInfo.Password;
+      var csBuilderT = new DbConnectionStringBuilder { ConnectionString = GlobalTest.Manager1.Description.ConnectionInfo.ConnectionString };
+      csBuilderT[PgDbConnectionInfo.UserNameKey] = GlobalTest.Manager2.Description.ConnectionInfo.UserName;
+      csBuilderT[PgDbConnectionInfo.PasswordKey] = GlobalTest.Manager2.Description.ConnectionInfo.Password;
 
       var managerT = new PgDbManager
                      {
@@ -76,7 +76,7 @@ namespace Utility.Database.PostgreSql.Test
                                        ConnectionInfo = new PgDbConnectionInfo
                                                         {
                                                           ConnectionString = csBuilderT.ConnectionString,
-                                                          Provider = ((IDbProviderInfo) GlobalTest.Manager1.ConnectionInfo).Provider
+                                                          Provider = ((IDbProviderInfo)GlobalTest.Manager1.Description.ConnectionInfo).Provider
                                                         }
                                      }
                      };

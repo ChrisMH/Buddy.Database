@@ -5,7 +5,7 @@ using System.Xml.Linq;
 
 namespace Utility.Database
 {
-  public class DbDescription<TConnectionInfo>
+  public class DbDescription<TConnectionInfo> : IDbDescription 
     where TConnectionInfo : IDbConnectionInfo, new()
   {
     public DbDescription()

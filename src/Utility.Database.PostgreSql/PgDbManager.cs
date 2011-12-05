@@ -23,9 +23,9 @@ namespace Utility.Database.PostgreSql
         {
 
           cmd.CommandText = string.Format("CREATE DATABASE \"{0}\"", Description.ConnectionInfo.DatabaseName);
-          if (!string.IsNullOrEmpty(Description.TemplateName))
+          if (Description is PgDbDescription && !string.IsNullOrEmpty(((PgDbDescription)Description).TemplateName))
           {
-            cmd.CommandText += string.Format(" TEMPLATE \"{0}\"", Description.TemplateName);
+            cmd.CommandText += string.Format(" TEMPLATE \"{0}\"", ((PgDbDescription)Description).TemplateName);
           }
           cmd.ExecuteNonQuery();
 
@@ -135,12 +135,7 @@ namespace Utility.Database.PostgreSql
       }
     }
     
-    public IDbConnectionInfo ConnectionInfo
-    {
-      get { return Description == null ? null : Description.ConnectionInfo; }
-    }
-    
-    public PgDbDescription Description { get; set; }
+    public IDbDescription Description { get; set; }
     public PgSuperuser Superuser { get; set; }
 
 

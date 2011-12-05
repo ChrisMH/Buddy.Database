@@ -27,7 +27,7 @@ namespace Utility.Database.MongoDb.Test
                     {
                       Description = new MongoDbDescription
                                     {
-                                      ConnectionInfo = GlobalTest.DbManager1.ConnectionInfo,
+                                      ConnectionInfo = GlobalTest.DbManager1.Description.ConnectionInfo,
                                       Schemas = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = LiteralSchema}},
                                       Seeds = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = LiteralSeed}}
                                     }

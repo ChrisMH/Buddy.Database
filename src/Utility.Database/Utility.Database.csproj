@@ -56,6 +56,7 @@
     <Compile Include="DbScript.cs" />
     <Compile Include="GenericDbConnectionInfo.cs" />
     <Compile Include="IDbConnectionInfo.cs" />
+    <Compile Include="IDbDescription.cs" />
     <Compile Include="IDbManager.cs" />
     <Compile Include="IDbProviderInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -28,7 +28,7 @@ namespace Utility.Database.PostgreSql.Test
                     {
                       Description = new PgDbDescription
                                     {
-                                      ConnectionInfo = GlobalTest.Manager1.ConnectionInfo,
+                                      ConnectionInfo = GlobalTest.Manager1.Description.ConnectionInfo,
                                       Schemas = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = TestSchema}},
                                       Seeds = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = TestSeed}}
                                     }

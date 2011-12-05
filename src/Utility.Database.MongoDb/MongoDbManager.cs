@@ -40,13 +40,8 @@ namespace Utility.Database.MongoDb
       }
 
     }
-
-    public IDbConnectionInfo ConnectionInfo
-    {
-      get { return Description == null ? null : Description.ConnectionInfo; }
-    }
     
-    public MongoDbDescription Description { get; set; }
+    public IDbDescription Description { get; set; }
 
     internal MongoServer CreateServer()
     {
