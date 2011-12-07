@@ -2,7 +2,7 @@
 
 namespace Utility.Database.PostgreSql
 {
-  public class PgDbConnectionInfo : GenericDbConnectionInfo
+  public sealed class PgDbConnectionInfo : GenericDbConnectionInfo
   {
     internal const string ServerAddressKey = "host";
     internal const string ServerPortKey = "port";

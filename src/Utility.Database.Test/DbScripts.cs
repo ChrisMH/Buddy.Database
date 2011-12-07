@@ -31,5 +31,14 @@
     public const string ResourceSeed = "<Schema type=\"Resource\">Utility.Database.Test.Resources.seed.txt</Schema>";
     public const string LiteralSchema = "<Schema type=\"Literal\">CREATE SCHEMA literal;CREATE TABLE literal.table (id integer NOT NULL);</Schema>";
     public const string LiteralSeed = "<Seed type=\"Literal\">INSERT INTO literal.table VALUES(1);INSERT INTO literal.table VALUES(2);</Seed>";
+    public const string RunnableSchema = "<Schema type=\"Runnable\">Utility.Database.Test.Runnable, Utility.Database.Test</Schema>";
+    public const string RunnableSeed = "<Seed type=\"Runnable\">Utility.Database.Test.Runnable, Utility.Database.Test</Seed>";
+
+
+
+    public const string RunnableWithMissingClass = "<Schema type=\"Runnable\">Utility.Database.Test.RunnableWithMissingClass, Utility.Database.Test</Schema>";
+    public const string RunnableWithInvalidMethodName = "<Schema type=\"Runnable\">Utility.Database.Test.RunnableWithInvalidMethodName, Utility.Database.Test</Schema>";
+    public const string RunnableWithInvalidReturnType = "<Schema type=\"Runnable\">Utility.Database.Test.RunnableWithInvalidReturnType, Utility.Database.Test</Schema>";
+    public const string RunnableWithInvalidMethodSignature = "<Schema type=\"Runnable\">Utility.Database.Test.RunnableWithInvalidMethodSignature, Utility.Database.Test</Schema>";
   }
 }

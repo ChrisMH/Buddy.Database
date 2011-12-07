@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database.PostgreSql
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database.MongoDb", "Utility.Database.MongoDb\Utility.Database.MongoDb.csproj", "{74098C28-A72D-486D-A67F-5A35991249AE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database.Mock", "Utility.Database.Mock\Utility.Database.Mock.csproj", "{754F9D44-C135-4D75-90FA-02FD8A089F97}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database.Mock.Test", "Utility.Database.Mock.Test\Utility.Database.Mock.Test.csproj", "{B566649F-3A8D-4E75-A35C-720B62CCC79D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +53,14 @@ Global
 		{74098C28-A72D-486D-A67F-5A35991249AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{74098C28-A72D-486D-A67F-5A35991249AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{74098C28-A72D-486D-A67F-5A35991249AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{754F9D44-C135-4D75-90FA-02FD8A089F97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{754F9D44-C135-4D75-90FA-02FD8A089F97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{754F9D44-C135-4D75-90FA-02FD8A089F97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{754F9D44-C135-4D75-90FA-02FD8A089F97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B566649F-3A8D-4E75-A35C-720B62CCC79D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B566649F-3A8D-4E75-A35C-720B62CCC79D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B566649F-3A8D-4E75-A35C-720B62CCC79D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B566649F-3A8D-4E75-A35C-720B62CCC79D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

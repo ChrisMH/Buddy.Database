@@ -16,7 +16,7 @@ namespace Utility.Database.MongoDb
   /// UserName
   /// Password
   /// </summary>
-  public class MongoDbConnectionInfo : IDbConnectionInfo
+  public sealed class MongoDbConnectionInfo : IDbConnectionInfo
   {
     internal const string ServerAddressKey = "ServerAddress";
     internal const string ServerPortKey = "ServerPort";

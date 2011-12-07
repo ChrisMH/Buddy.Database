@@ -38,7 +38,6 @@ namespace Utility.Database.MongoDb
         var command = new BsonJavaScript(seedDefinition.Load());
         db.Eval(command);
       }
-
     }
     
     public IDbDescription Description { get; set; }
@@ -59,8 +58,6 @@ namespace Utility.Database.MongoDb
     {
       if(Description == null) throw new ArgumentNullException("Description", "Description is not set");
       if(Description.ConnectionInfo == null) throw new ArgumentNullException("Description.ConnectionInfo", "ConnectionInfo is not set");
-     
-     
     }
 
   }

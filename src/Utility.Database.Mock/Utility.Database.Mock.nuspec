@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Utility.Database.Mock</id>
+    <version>$version$</version>
+    <title>Utility.Database.Mock</title>
+    <authors>Chris Hogan</authors>
+    <owners>Chris Hogan</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Utility.Database Mock implementation</description>
+    <copyright>Copyright 2011</copyright>
+    <dependencies>
+      <dependency id="Utility.Database" version="$version$"/>
+    </dependencies>
+  </metadata>
+</package>

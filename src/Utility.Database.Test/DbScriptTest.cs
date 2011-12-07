@@ -18,7 +18,8 @@ namespace Utility.Database.Test
     [Test]
     public void InvalidBaseDirectoryThrows()
     {
-      var result = Assert.Throws<FileNotFoundException>(() => new DbScript {XmlRoot = DbScripts.RelativeFileSchema, GetBaseDirectory = () => "d:\\invalid"}.Load());
+      var result =
+        Assert.Throws<FileNotFoundException>(() => new DbScript {XmlRoot = DbScripts.RelativeFileSchema, GetBaseDirectory = () => "d:\\invalid"}.Load());
     }
 
     [TestCase(DbScripts.MissingSchemaType)]
@@ -57,6 +58,8 @@ namespace Utility.Database.Test
     [TestCase(DbScripts.ResourceSeed, ScriptType.Resource, "Utility.Database.Test.Resources.seed.txt")]
     [TestCase(DbScripts.LiteralSchema, ScriptType.Literal, "CREATE SCHEMA literal;CREATE TABLE literal.table (id integer NOT NULL);")]
     [TestCase(DbScripts.LiteralSeed, ScriptType.Literal, "INSERT INTO literal.table VALUES(1);INSERT INTO literal.table VALUES(2);")]
+    [TestCase(DbScripts.RunnableSchema, ScriptType.Runnable, "Utility.Database.Test.Runnable, Utility.Database.Test")]
+    [TestCase(DbScripts.RunnableSeed, ScriptType.Runnable, "Utility.Database.Test.Runnable, Utility.Database.Test")]
     public void ScriptIsParsedCorrectly(string script, ScriptType scriptType, string scriptValue)
     {
       var result = new DbScript {XmlRoot = script};
@@ -93,11 +96,52 @@ namespace Utility.Database.Test
     [TestCase(DbScripts.RelativeFileSeed, "seed")]
     [TestCase(DbScripts.AbsoluteFileSeed, "seed")]
     [TestCase(DbScripts.ResourceSeed, "seed")]
-    public void ScriptIsLoaded(string script, string content)
+    public void LoadableScriptIsLoaded(string script, string content)
     {
       var result = new DbScript {XmlRoot = script}.Load();
 
       Assert.AreEqual(content, result);
+    }
+
+    [TestCase(DbScripts.RelativeFileSchema, "schema")]
+    [TestCase(DbScripts.AbsoluteFileSchema, "schema")]
+    [TestCase(DbScripts.ResourceSchema, "schema")]
+    [TestCase(DbScripts.RelativeFileSeed, "seed")]
+    [TestCase(DbScripts.AbsoluteFileSeed, "seed")]
+    [TestCase(DbScripts.ResourceSeed, "seed")]
+    public void LoadableScriptThrowsIfRun(string script, string content)
+    {
+      var result = Assert.Throws<ArgumentException>(() => new DbScript {XmlRoot = script}.Run(new GenericDbConnectionInfo()));
+      Assert.AreEqual("ScriptType", result.ParamName);
+      Console.WriteLine(result.Message);
+    }
+
+    [TestCase(DbScripts.RunnableSchema)]
+    [TestCase(DbScripts.RunnableSeed)]
+    public void RunnableScriptIsRun(string script)
+    {
+      var result = Assert.Throws<ArgumentException>(() => new DbScript { XmlRoot = script}.Run(new GenericDbConnectionInfo()));
+      Assert.AreEqual("Method was called", result.InnerException.InnerException.Message);
+    }
+
+    [TestCase(DbScripts.RunnableSchema)]
+    [TestCase(DbScripts.RunnableSeed)]
+    public void RunnableScriptThrowsIfLoaded(string script)
+    {
+      var result = Assert.Throws<ArgumentException>(() => new DbScript { XmlRoot = script }.Load());
+      Assert.AreEqual("ScriptType", result.ParamName);
+      Console.WriteLine(result.Message);
+    }
+
+    [TestCase(DbScripts.RunnableWithMissingClass)]
+    [TestCase(DbScripts.RunnableWithInvalidMethodName)]
+    [TestCase(DbScripts.RunnableWithInvalidReturnType)]
+    [TestCase(DbScripts.RunnableWithInvalidMethodSignature)]
+    public void RunThrowsIfItCantBeRun(string script)
+    {
+      var result = Assert.Throws<ArgumentException>(() => new DbScript { XmlRoot = script }.Run(new GenericDbConnectionInfo()));
+      Assert.AreEqual("ScriptValue", result.ParamName);
+      Console.WriteLine(result.Message);
     }
   }
 }
