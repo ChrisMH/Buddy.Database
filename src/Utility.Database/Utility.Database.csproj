@@ -58,7 +58,9 @@
     <Compile Include="IDbConnectionInfo.cs" />
     <Compile Include="IDbDescription.cs" />
     <Compile Include="IDbManager.cs" />
-    <Compile Include="IDbProviderInfo.cs" />
+    <Compile Include="IDbProviderInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

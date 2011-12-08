@@ -37,7 +37,7 @@ namespace Utility.Database
       get { return connectionString.ConnectionString; }
       set { connectionString = value == null ? new DbConnectionStringBuilder() : new DbConnectionStringBuilder {ConnectionString = value}; }
     }
-
+    
     public string Provider { get; set; }
 
     public DbProviderFactory ProviderFactory
@@ -76,12 +76,13 @@ namespace Utility.Database
         }
       }
     }
-    
+
     public virtual string ServerAddress { get { return null; } }
     public virtual int? ServerPort { get { return null; } }
     public virtual string DatabaseName { get { return null; } }
     public virtual string UserName { get { return null; } }
     public virtual string Password { get { return null; } }
+
     public virtual IDbConnectionInfo Copy()
     {
       var copy = new GenericDbConnectionInfo();

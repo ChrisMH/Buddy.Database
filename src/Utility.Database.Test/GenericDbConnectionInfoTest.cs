@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 
-namespace Utility.Database.PostgreSql.Test
+namespace Utility.Database.Test
 {
   public class GenericDbConnectionInfoTest
   {

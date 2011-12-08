@@ -1,5 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
+using Npgsql;
 using Utility.Logging;
 using Utility.Logging.NLog;
 
@@ -55,6 +56,7 @@ namespace Utility.Database.PostgreSql.Test
 
     public static void DropTestDatabaseAndRole()
     {
+      NpgsqlConnection.ClearAllPools();
       using (var conn = Manager1.CreateDatabaseConnection())
       {
         conn.Open();

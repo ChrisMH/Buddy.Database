@@ -45,7 +45,7 @@ namespace Utility.Database
             else if (connectionElement.Element("ConnectionString") != null)
             {
               connectionInfo = new TConnectionInfo {ConnectionString = connectionElement.Element("ConnectionString").Value};
-
+              
               if (connectionElement.Element("Provider") != null && connectionInfo is IDbProviderInfo)
               {
                 ((IDbProviderInfo) connectionInfo).Provider = connectionElement.Element("Provider").Value;
@@ -53,7 +53,7 @@ namespace Utility.Database
             }
             else
             {
-              throw new ArgumentException("Connection element must contain EITHER ConnectionStringName OR ConnectionString AND and optional Provider", "Connection");
+              throw new ArgumentException("Connection element must contain EITHER ConnectionStringName OR ConnectionString", "Connection");
             }
           }
 

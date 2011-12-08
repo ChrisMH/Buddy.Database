@@ -6,18 +6,7 @@ namespace Utility.Database.PostgreSql
 {
   public class PgDbDescription : DbDescription<PgDbConnectionInfo>
   {
-    public PgDbDescription()
-    {
-      AllowPooling = false;
-    }
-    
     public String TemplateName { get; set; }
-    public bool AllowPooling { get; set; }
-
-    public override IDbConnectionInfo ConnectionInfo
-    {
-      get { return AdjustConnectionInfoPooling(base.ConnectionInfo, AllowPooling); }
-    }
 
     public override string XmlRoot
     {
@@ -32,20 +21,6 @@ namespace Utility.Database.PostgreSql
           if (string.IsNullOrEmpty(TemplateName)) throw new ArgumentException("TemplateName element is empty", "TemplateName");
         }
       }
-    }
-
-    protected static IDbConnectionInfo AdjustConnectionInfoPooling(IDbConnectionInfo connectionInfo, bool allowPooling)
-    {
-      if (connectionInfo != null && !allowPooling)
-      {
-        if(!string.IsNullOrEmpty(connectionInfo.ConnectionString))
-        {
-          var csBuilder = new DbConnectionStringBuilder {ConnectionString = connectionInfo.ConnectionString};
-          csBuilder["pooling"] = "false";
-          connectionInfo.ConnectionString = csBuilder.ConnectionString;
-        }
-      }
-      return connectionInfo;
     }
   }
 }

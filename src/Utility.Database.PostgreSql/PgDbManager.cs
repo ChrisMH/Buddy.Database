@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using Npgsql;
 
 namespace Utility.Database.PostgreSql
 {
@@ -90,6 +91,8 @@ namespace Utility.Database.PostgreSql
     {
       CheckPreconditions();
       
+      NpgsqlConnection.ClearAllPools();
+
       using (var conn = CreateDatabaseConnection())
       {
         conn.Open();
@@ -148,8 +151,7 @@ namespace Utility.Database.PostgreSql
       csBuilder[PgDbConnectionInfo.UserNameKey] = Superuser.UserName;
       csBuilder[PgDbConnectionInfo.PasswordKey] = Superuser.Password;
 
-      var conn = ((IDbProviderInfo)Description.ConnectionInfo).ProviderFactory.CreateConnection();
-      conn.ConnectionString = csBuilder.ConnectionString;
+      var conn = new NpgsqlConnection(csBuilder.ConnectionString);
 
       return conn;
     }
@@ -161,20 +163,18 @@ namespace Utility.Database.PostgreSql
       var csBuilder = new DbConnectionStringBuilder {ConnectionString = Description.ConnectionInfo.ConnectionString};
       csBuilder[PgDbConnectionInfo.UserNameKey] = Superuser.UserName;
       csBuilder[PgDbConnectionInfo.PasswordKey] = Superuser.Password;
-      
-      var conn = ((IDbProviderInfo)Description.ConnectionInfo).ProviderFactory.CreateConnection();
-      conn.ConnectionString = csBuilder.ConnectionString;
+
+      var conn = new NpgsqlConnection(csBuilder.ConnectionString);
 
       return conn;
     }
     
     protected void CheckPreconditions()
     {
-      if (Superuser == null) throw new ArgumentNullException("Superuser");
-      if (Description == null) throw new ArgumentNullException("Description");
-      if (Description.ConnectionInfo == null) throw new ArgumentNullException("Description.ConnectionInfo");
+      if (Superuser == null) throw new ArgumentException("Superuser is null", "Superuser");
+      if (Description == null) throw new ArgumentException("Description is null", "Description");
+      if (Description.ConnectionInfo == null) throw new ArgumentException("Description.ConnectionInfo is null", "Description.ConnectionInfo");
       if (string.IsNullOrEmpty(Description.ConnectionInfo.ConnectionString)) throw new ArgumentException("Connection information is missing a connection string", "Description.ConnectionInfo.ConnectionString");
-      if (((IDbProviderInfo) Description.ConnectionInfo).ProviderFactory == null) throw new ArgumentException("Connection information is missing a provider factory", "Description.ConnectionInfo.ProviderFactory");
     }
   }
 }

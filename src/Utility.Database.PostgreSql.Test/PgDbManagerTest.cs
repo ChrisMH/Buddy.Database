@@ -103,28 +103,29 @@ namespace Utility.Database.PostgreSql.Test
     private void InvalidParameterTests(Action<PgDbManager> action)
     {
       var manager = new PgDbManager();
-      Assert.AreEqual("Description",
-                      Assert.Throws<ArgumentNullException>(() => action.Invoke(manager)).ParamName);
-      
+      var result = Assert.Throws<ArgumentException>(() => action.Invoke(manager));
+      Assert.AreEqual("Description", result.ParamName);
+      Console.WriteLine(result.Message);
+
       manager = new PgDbManager { Superuser = null };
-      Assert.AreEqual("Superuser",
-                      Assert.Throws<ArgumentNullException>(() => action.Invoke(manager)).ParamName);
+      result = Assert.Throws<ArgumentException>(() => action.Invoke(manager));
+      Assert.AreEqual("Superuser", result.ParamName);
+      Console.WriteLine(result.Message);
 
-      manager = new PgDbManager {Description = new PgDbDescription()};
-      Assert.AreEqual("Description.ConnectionInfo",
-                      Assert.Throws<ArgumentNullException>(() => action.Invoke(manager)).ParamName);
+      manager = new PgDbManager { Description = new PgDbDescription() };
+      result = Assert.Throws<ArgumentException>(() => action.Invoke(manager));
+      Assert.AreEqual("Description.ConnectionInfo", result.ParamName);
+      Console.WriteLine(result.Message);
 
-      manager = new PgDbManager {Description = new PgDbDescription {ConnectionInfo = new GenericDbConnectionInfo()}};
-      Assert.AreEqual("Description.ConnectionInfo.ConnectionString",
-                      Assert.Throws<ArgumentException>(() => action.Invoke(manager)).ParamName);
+      manager = new PgDbManager { Description = new PgDbDescription { ConnectionInfo = new GenericDbConnectionInfo() } };
+      result = Assert.Throws<ArgumentException>(() => action.Invoke(manager));
+      Assert.AreEqual("Description.ConnectionInfo.ConnectionString", result.ParamName);
+      Console.WriteLine(result.Message);
 
-      manager = new PgDbManager {Description = new PgDbDescription {ConnectionInfo = new GenericDbConnectionInfo {ConnectionString = ""}}};
-      Assert.AreEqual("Description.ConnectionInfo.ConnectionString",
-                      Assert.Throws<ArgumentException>(() => action.Invoke(manager)).ParamName);
-
-      manager = new PgDbManager {Description = new PgDbDescription {ConnectionInfo = new GenericDbConnectionInfo {ConnectionString = "database=database"}}};
-      Assert.AreEqual("Description.ConnectionInfo.ProviderFactory",
-                      Assert.Throws<ArgumentException>(() => action.Invoke(manager)).ParamName);
+      manager = new PgDbManager { Description = new PgDbDescription { ConnectionInfo = new GenericDbConnectionInfo { ConnectionString = "" } } };
+      result = Assert.Throws<ArgumentException>(() => action.Invoke(manager));
+      Assert.AreEqual("Description.ConnectionInfo.ConnectionString", result.ParamName);
+      Console.WriteLine(result.Message);
     }
 
     [Test]
@@ -132,7 +133,9 @@ namespace Utility.Database.PostgreSql.Test
     {
       var manager = new PgDbManager {Description = new PgDbDescription {XmlRoot = Resources.TestDescriptionNoConnectionName}};
 
-      Assert.AreEqual("Description.ConnectionInfo", Assert.Throws<ArgumentNullException>(manager.Create).ParamName);
+      var result = Assert.Throws<ArgumentException>(manager.Create);
+      Assert.AreEqual("Description.ConnectionInfo", result.ParamName);
+      Console.WriteLine(result.Message);
     }
 
     [Test]
@@ -140,7 +143,9 @@ namespace Utility.Database.PostgreSql.Test
     {
       var manager = new PgDbManager {Description = new PgDbDescription {XmlRoot = Resources.TestDescriptionNoConnectionName}};
 
-      Assert.AreEqual("Description.ConnectionInfo", Assert.Throws<ArgumentNullException>(manager.Seed).ParamName);
+      var result = Assert.Throws<ArgumentException>(manager.Seed);
+      Assert.AreEqual("Description.ConnectionInfo", result.ParamName);
+      Console.WriteLine(result.Message);
     }
 
     [Test]
@@ -148,7 +153,9 @@ namespace Utility.Database.PostgreSql.Test
     {
       var manager = new PgDbManager {Description = new PgDbDescription {XmlRoot = Resources.TestDescriptionNoConnectionName}};
 
-      Assert.AreEqual("Description.ConnectionInfo", Assert.Throws<ArgumentNullException>(manager.Destroy).ParamName);
+      var result = Assert.Throws<ArgumentException>(manager.Destroy);
+      Assert.AreEqual("Description.ConnectionInfo", result.ParamName);
+      Console.WriteLine(result.Message);
     }
   }
 }
