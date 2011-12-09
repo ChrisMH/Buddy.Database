@@ -16,5 +16,20 @@ namespace Utility.Database.PostgreSql.Test
       Assert.AreEqual("username", result.UserName);
       Assert.AreEqual("pwd", result.Password);
     }
+
+    [Test]
+    public void CanCreateACopy()
+    {
+      var connectionInfo = (IDbConnectionInfo)new PgDbConnectionInfo { ConnectionStringName = "Test1" };
+
+      var result = connectionInfo.Copy();
+
+      Assert.NotNull(result);
+      Assert.IsInstanceOf<PgDbConnectionInfo>(result);
+      Assert.AreNotSame(connectionInfo, result);
+      Assert.AreEqual(connectionInfo.ConnectionString, result.ConnectionString);
+      Assert.AreEqual(((IDbProviderInfo)connectionInfo).Provider, ((IDbProviderInfo)result).Provider);
+      Assert.IsInstanceOf<Npgsql.NpgsqlFactory>(((IDbProviderInfo)result).ProviderFactory);
+    }
   }
 }

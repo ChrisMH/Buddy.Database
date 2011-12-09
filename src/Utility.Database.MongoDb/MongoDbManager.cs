@@ -50,8 +50,8 @@ namespace Utility.Database.MongoDb
 
     internal MongoDatabase CreateDatabase()
     {
-      var server = CreateServer();
-      return server.GetDatabase(Description.ConnectionInfo.DatabaseName, SafeMode.True);
+      CheckPreconditions();
+      return MongoDatabase.Create(Description.ConnectionInfo.ConnectionString);
     }
 
     protected void CheckPreconditions()

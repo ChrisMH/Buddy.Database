@@ -11,12 +11,7 @@ namespace Utility.Database
   /// </summary>
   public class GenericDbConnectionInfo : IDbConnectionInfo, IDbProviderInfo
   {
-    public GenericDbConnectionInfo()
-    {
-      connectionString = new DbConnectionStringBuilder();
-    }
-
-    public string ConnectionStringName
+    public virtual string ConnectionStringName
     {
       get { return connectionStringName; }
       set
@@ -27,20 +22,16 @@ namespace Utility.Database
           throw new ArgumentException(string.Format("Connection string name '{0}' not found in the configuration", connectionStringName), "ConnectionStringName");
 
         connectionStringName = value;
-        connectionString = new DbConnectionStringBuilder {ConnectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString};
+        ConnectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
         Provider = ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName;
       }
     }
 
-    public string ConnectionString
-    {
-      get { return connectionString.ConnectionString; }
-      set { connectionString = value == null ? new DbConnectionStringBuilder() : new DbConnectionStringBuilder {ConnectionString = value}; }
-    }
+    public virtual string ConnectionString { get; set; }
     
-    public string Provider { get; set; }
+    public virtual string Provider { get; set; }
 
-    public DbProviderFactory ProviderFactory
+    public virtual DbProviderFactory ProviderFactory
     {
       get
       {
@@ -83,21 +74,20 @@ namespace Utility.Database
     public virtual string UserName { get { return null; } }
     public virtual string Password { get { return null; } }
 
-    public virtual IDbConnectionInfo Copy()
+    public IDbConnectionInfo Copy()
     {
-      var copy = new GenericDbConnectionInfo();
+      var copy = (IDbConnectionInfo) GetType().Assembly.CreateInstance(GetType().FullName);
       InternalCopy(copy);
       return copy;
     }
 
-    protected virtual void InternalCopy(GenericDbConnectionInfo copy)
+    protected virtual void InternalCopy(IDbConnectionInfo copy)
     {
-      copy.connectionStringName = connectionStringName;
-      copy.connectionString = connectionString == null ? null : new DbConnectionStringBuilder {ConnectionString = connectionString.ConnectionString};
-      copy.Provider = Provider;
+      ((GenericDbConnectionInfo)copy).connectionStringName = connectionStringName;
+      ((GenericDbConnectionInfo)copy).ConnectionString = ConnectionString;
+      ((GenericDbConnectionInfo)copy).Provider = Provider;
     }
 
     private string connectionStringName;
-    protected DbConnectionStringBuilder connectionString;
   }
 }

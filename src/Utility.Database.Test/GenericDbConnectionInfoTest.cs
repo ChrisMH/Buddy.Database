@@ -135,5 +135,20 @@ namespace Utility.Database.Test
       Assert.IsNull(result.UserName);
       Assert.IsNull(result.Password);
     }
+
+    [Test]
+    public void CanCreateACopy()
+    {
+      var connectionInfo = (IDbConnectionInfo)new GenericDbConnectionInfo {ConnectionStringName = "Valid"};
+
+      var result = connectionInfo.Copy();
+
+      Assert.NotNull(result);
+      Assert.IsInstanceOf<GenericDbConnectionInfo>(result);
+      Assert.AreNotSame(connectionInfo, result);
+      Assert.AreEqual(connectionInfo.ConnectionString, result.ConnectionString);
+      Assert.AreEqual(((IDbProviderInfo)connectionInfo).Provider, ((IDbProviderInfo)result).Provider);
+      Assert.IsInstanceOf<System.Data.SqlClient.SqlClientFactory>(((IDbProviderInfo)result).ProviderFactory);
+    }
   }
 }

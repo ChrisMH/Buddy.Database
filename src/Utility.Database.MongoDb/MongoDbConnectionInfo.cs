@@ -24,7 +24,7 @@ namespace Utility.Database.MongoDb
     internal const string UserNameKey = "UserName";
     internal const string PasswordKey = "Password";
 
-    private const string ConnectionStringRegex = @"mongodb://((?<UserName>[^:]+):(?<Password>[^@]+)@)?(?<ServerAddress>[^/:]+)(:(?<ServerPort>[^/]+))?/(?<DatabaseName>[^/]+)/?";
+    private const string ConnectionStringRegex = @"mongodb://((?<UserName>[^:]+):(?<Password>[^@]+)@)?(?<ServerAddress>[^/:]+)(:(?<ServerPort>[^/]+))?/(?<DatabaseName>[^/]+)$";
     
     public string ConnectionStringName
     {

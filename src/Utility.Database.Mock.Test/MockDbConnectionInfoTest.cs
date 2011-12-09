@@ -30,6 +30,24 @@ namespace Utility.Database.Mock.Test
     }
 
     [Test]
+    public void CanCreateACopy()
+    {
+      var connectionInfo = (IDbConnectionInfo)new MockDbConnectionInfo
+      {
+        ConnectionStringName = "Test1",
+        MockDatabaseType = typeof(TestMockDatabase)
+      };
+
+      var result = connectionInfo.Copy();
+
+      Assert.NotNull(result);
+      Assert.IsInstanceOf<MockDbConnectionInfo>(result);
+      Assert.AreNotSame(connectionInfo, result);
+      Assert.AreEqual(connectionInfo.ConnectionStringName, result.ConnectionStringName);
+      Assert.AreEqual(((IDbMockTypeInfo)connectionInfo).MockDatabaseType, ((IDbMockTypeInfo)result).MockDatabaseType);
+    }
+
+    [Test]
     public void CreateWithConnectionStringThrows()
     {
       Assert.Throws<NotImplementedException>(() => new MockDbConnectionInfo { ConnectionString = "server=server" });

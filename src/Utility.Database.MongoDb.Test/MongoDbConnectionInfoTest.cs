@@ -22,7 +22,7 @@ namespace Utility.Database.MongoDb.Test
                    };
 
       Assert.NotNull(result);
-      Assert.AreEqual("mongodb://localhost/UtilityDatabaseTest1/", result.ConnectionString);
+      Assert.AreEqual("mongodb://localhost/UtilityDatabaseTest1", result.ConnectionString);
     }
 
     [Test]
@@ -30,13 +30,28 @@ namespace Utility.Database.MongoDb.Test
     {
       var result = new MongoDbConnectionInfo
                    {
-                     ConnectionString = "mongodb://localhost/database/"
+                     ConnectionString = "mongodb://localhost/database"
                    };
 
       Assert.NotNull(result);
-      Assert.AreEqual("mongodb://localhost/database/", result.ConnectionString);
+      Assert.AreEqual("mongodb://localhost/database", result.ConnectionString);
     }
 
+    [Test]
+    public void CanCreateACopy()
+    {
+      var connectionInfo = (IDbConnectionInfo)new MongoDbConnectionInfo
+      {
+        ConnectionStringName = "Test1"
+      };
+
+      var result = connectionInfo.Copy();
+
+      Assert.NotNull(result);
+      Assert.IsInstanceOf<MongoDbConnectionInfo>(result);
+      Assert.AreNotSame(connectionInfo, result);
+      Assert.AreEqual(connectionInfo.ConnectionString, result.ConnectionString);
+    }
 
     [TestCase(null)]
     [TestCase("")]
@@ -58,6 +73,7 @@ namespace Utility.Database.MongoDb.Test
     [TestCase("invalid")]
     [TestCase("mongodb:///database/")]
     [TestCase("mongodb://localhost/")]
+    [TestCase("mongodb://localhost/database/")]
     public void CreateFromInvalidConnectionStringThrows(string connectionString)
     {
       var result = Assert.Throws<ArgumentException>(() => new MongoDbConnectionInfo
@@ -73,7 +89,7 @@ namespace Utility.Database.MongoDb.Test
     {
       var result = new MongoDbConnectionInfo
                    {
-                     ConnectionString = "mongodb://localhost/database/"
+                     ConnectionString = "mongodb://localhost/database"
                    };
 
       Assert.AreEqual("localhost", result.ServerAddress);
@@ -88,7 +104,7 @@ namespace Utility.Database.MongoDb.Test
     {
       var result = new MongoDbConnectionInfo
                    {
-                     ConnectionString = "mongodb://username:password@localhost:8888/database/"
+                     ConnectionString = "mongodb://username:password@localhost:8888/database"
                    };
                    
       Assert.AreEqual("localhost", result.ServerAddress);
