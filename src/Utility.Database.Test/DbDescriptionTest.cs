@@ -10,7 +10,7 @@ namespace Utility.Database.Test
     [Test]
     public void DescriptionWithEmptyConnectionReturnsNullConnection()
     {
-      var result = new DbDescription<DbConnectionInfo> {XmlRoot = DbDescriptions.Empty};
+      var result = new DbDescription {XmlRoot = DbDescriptions.Empty};
 
       Assert.That(result.ConnectionInfo, Is.Null);
     }
@@ -22,7 +22,7 @@ namespace Utility.Database.Test
     [TestCase(DbDescriptions.ConnectionWithConnectionString, "server=server", null, null)]
     public void DescriptionWithValidConnectionLoadsConnection(string description, string connectionString, string provider, Type providerFactoryType)
     {
-      var result = new DbDescription<DbConnectionInfo> {XmlRoot = description};
+      var result = new DbDescription {XmlRoot = description};
 
       Assert.That(result.ConnectionInfo, Is.Not.Null);
       Assert.That(result.ConnectionInfo.ConnectionString, Is.EqualTo(connectionString));
@@ -38,14 +38,14 @@ namespace Utility.Database.Test
     [TestCase(DbDescriptions.ConnectionWithProviderName)]
     public void DescriptionWithInvalidConnectionThrows(string description)
     {
-      Assert.That(() => new DbDescription<DbConnectionInfo> {XmlRoot = description},
+      Assert.That(() => new DbDescription {XmlRoot = description},
         Throws.ArgumentException.With.Property("ParamName").EqualTo("XmlRoot"));
     }
 
     [Test]
     public void DescriptionMissingSchemaReturnsEmptySchemaCollection()
     {
-      var result = new DbDescription<DbConnectionInfo> {XmlRoot = DbDescriptions.Empty};
+      var result = new DbDescription {XmlRoot = DbDescriptions.Empty};
 
       Assert.That(result.Schemas.Count(), Is.EqualTo(0));
     }
@@ -53,7 +53,7 @@ namespace Utility.Database.Test
     [Test]
     public void DescriptionMissingSeedReturnsEmptySeedCollection()
     {
-      var result = new DbDescription<DbConnectionInfo> {XmlRoot = DbDescriptions.Empty};
+      var result = new DbDescription {XmlRoot = DbDescriptions.Empty};
 
       Assert.That(result.Seeds.Count(), Is.EqualTo(0));
     }
@@ -62,7 +62,7 @@ namespace Utility.Database.Test
     [TestCase(DbDescriptions.SingleResourceSchema)]
     public void CanLoadSingleSchema(string script)
     {
-      var result = new DbDescription<DbConnectionInfo> {XmlRoot = script};
+      var result = new DbDescription {XmlRoot = script};
 
       Assert.That(result.Schemas.Count(), Is.EqualTo(1));
     }
@@ -71,7 +71,7 @@ namespace Utility.Database.Test
     [TestCase(DbDescriptions.SingleResourceSeed)]
     public void CanLoadSingleSeed(string script)
     {
-      var result = new DbDescription<DbConnectionInfo> {XmlRoot = script};
+      var result = new DbDescription {XmlRoot = script};
 
       Assert.That(result.Seeds.Count(), Is.EqualTo(1));
     }
@@ -79,7 +79,7 @@ namespace Utility.Database.Test
     [Test]
     public void CanLoadSchemasAndSeeds()
     {
-      var result = new DbDescription<DbConnectionInfo> {XmlRoot = DbDescriptions.SchemasAndSeeds};
+      var result = new DbDescription {XmlRoot = DbDescriptions.SchemasAndSeeds};
 
       Assert.That(result.Schemas.Count(), Is.EqualTo(2));
       Assert.That(result.Seeds.Count(), Is.EqualTo(2));
@@ -88,7 +88,7 @@ namespace Utility.Database.Test
     [Test]
     public void EmptyBaseDirectoryUsesAppDomainBaseDirectory()
     {
-      var result = new DbDescription<DbConnectionInfo> {XmlRoot = DbDescriptions.SingleFileSchema};
+      var result = new DbDescription {XmlRoot = DbDescriptions.SingleFileSchema};
 
       Assert.That(result.Schemas[0].GetBaseDirectory(), Is.EqualTo(AppDomain.CurrentDomain.BaseDirectory));
     }
@@ -96,7 +96,7 @@ namespace Utility.Database.Test
     [Test]
     public void CanLoadRelativeFileScript()
     {
-      var result = new DbDescription<DbConnectionInfo>
+      var result = new DbDescription
                    {
                      XmlRoot = DbDescriptions.RelativeFileSchema,
                      BaseDirectory = "d:\\DevP\\Utility.Database\\src\\Utility.Database.Test"
@@ -110,7 +110,7 @@ namespace Utility.Database.Test
     public void CopyOfDbConnectionInfoIsUsed()
     {
       var connectionInfo = new DbConnectionInfo {ConnectionString = "schema=schema", Provider = "System.Data.SqlClient"};
-      var result = new DbDescription<DbConnectionInfo> {ConnectionInfo = connectionInfo};
+      var result = new DbDescription {ConnectionInfo = connectionInfo};
 
       connectionInfo.ConnectionString = "schema=other_schema";
 

@@ -22,14 +22,14 @@ namespace Utility.Database.Mock
 
     public void Destroy()
     {
-      CheckPreconditions();
+      VerifyProperties();
 
       MockDatabaseProvider.Destroy(Description.ConnectionInfo);
     }
 
     public void Seed()
     {
-      CheckPreconditions();
+      VerifyProperties();
 
       foreach (var seed in Description.Seeds)
       {
@@ -40,12 +40,16 @@ namespace Utility.Database.Mock
 
     public IDbDescription Description { get; set; }
 
-    protected void CheckPreconditions()
+    protected void VerifyProperties()
     {
-      if (Description == null) throw new ArgumentNullException("Description", "Description is not set");
-      if (Description.ConnectionInfo == null) throw new ArgumentNullException("Description.ConnectionInfo", "ConnectionInfo is not set");
+      if (Description == null) throw new ArgumentException("Description is null", "Description");
+      if (Description.ConnectionInfo == null) throw new ArgumentException("ConnectionInfo is null", "Description.ConnectionInfo");
+      if(string.IsNullOrWhiteSpace(Description.ConnectionInfo.ConnectionString)) throw new ArgumentException("Description.ConnectionInfo.ConnectionString not provided", "Description.ConnectionInfo.ConnectionString");
+
+      if(Description.ConnectionInfo.GetType() != typeof(MockDbConnectionInfo))
+      {
+        Description.ConnectionInfo = new MockDbConnectionInfo {ConnectionString = Description.ConnectionInfo.ConnectionString};
+      }
     }
-
-
   }
 }

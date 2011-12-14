@@ -7,6 +7,6 @@ namespace Utility.Database.Mock
 {
   public interface IDbMockTypeInfo
   {
-    Type MockDatabaseType { get; set; }
+    Type MockDatabaseType { get; }
   }
 }

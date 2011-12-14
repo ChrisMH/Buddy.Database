@@ -89,7 +89,7 @@ namespace Utility.Database.PostgreSql
 
     public void Destroy()
     {
-      CheckPreconditions();
+      VerifyProperties();
       
       NpgsqlConnection.ClearAllPools();
 
@@ -121,7 +121,7 @@ namespace Utility.Database.PostgreSql
 
     public void Seed()
     {
-      CheckPreconditions();
+      VerifyProperties();
 
       using (var conn = CreateContentConnection())
       {
@@ -144,7 +144,7 @@ namespace Utility.Database.PostgreSql
 
     internal DbConnection CreateDatabaseConnection()
     {
-      CheckPreconditions();
+      VerifyProperties();
 
       var csBuilder = new DbConnectionStringBuilder {ConnectionString = Description.ConnectionInfo.ConnectionString};
       csBuilder[PgDbConnectionInfo.DatabaseNameKey] = Superuser.DatabaseName;
@@ -158,7 +158,7 @@ namespace Utility.Database.PostgreSql
 
     internal DbConnection CreateContentConnection()
     {
-      CheckPreconditions();
+      VerifyProperties();
 
       var csBuilder = new DbConnectionStringBuilder {ConnectionString = Description.ConnectionInfo.ConnectionString};
       csBuilder[PgDbConnectionInfo.UserNameKey] = Superuser.UserName;
@@ -169,12 +169,21 @@ namespace Utility.Database.PostgreSql
       return conn;
     }
     
-    protected void CheckPreconditions()
+    protected void VerifyProperties()
     {
       if (Superuser == null) throw new ArgumentException("Superuser is null", "Superuser");
       if (Description == null) throw new ArgumentException("Description is null", "Description");
       if (Description.ConnectionInfo == null) throw new ArgumentException("Description.ConnectionInfo is null", "Description.ConnectionInfo");
       if (string.IsNullOrEmpty(Description.ConnectionInfo.ConnectionString)) throw new ArgumentException("Connection information is missing a connection string", "Description.ConnectionInfo.ConnectionString");
+
+      if(Description.ConnectionInfo.GetType() != typeof(PgDbConnectionInfo))
+      {
+        Description.ConnectionInfo = new PgDbConnectionInfo
+                                       {
+                                         ConnectionString = Description.ConnectionInfo.ConnectionString,
+                                         Provider = Description.ConnectionInfo.Provider
+                                       };
+      }
     }
   }
 }

@@ -5,12 +5,12 @@ namespace Utility.Database
   public interface IDbConnectionInfo
   {
     /// <summary>
-    /// Get or set the connection string name.
+    /// Set the connection string name.
     /// 
     /// When set, loads connection information ConfigurationManager.ConnectionStrings
     /// as typically specified in a web.config or app.config file
     /// </summary>
-    string ConnectionStringName { get; set; }
+    string ConnectionStringName { set; }
 
     /// <summary>
     /// Get or set the full connection string

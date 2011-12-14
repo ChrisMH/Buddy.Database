@@ -5,8 +5,7 @@ using System.Xml.Linq;
 
 namespace Utility.Database
 {
-  public class DbDescription<TConnectionInfo> : IDbDescription 
-    where TConnectionInfo : IDbConnectionInfo, new()
+  public class DbDescription : IDbDescription 
   {
     public DbDescription()
     {
@@ -19,6 +18,9 @@ namespace Utility.Database
       get { return connectionInfo == null ? null : connectionInfo.Copy(); }
       set { connectionInfo = value == null ? null : value.Copy(); }
     }
+
+    public List<DbScript> Schemas { get; set; }
+    public List<DbScript> Seeds { get; set; }
 
     public string BaseDirectory
     {
@@ -40,11 +42,11 @@ namespace Utility.Database
 
             if (connectionElement.Element("ConnectionStringName") != null)
             {
-              connectionInfo = new TConnectionInfo {ConnectionStringName = connectionElement.Element("ConnectionStringName").Value};
+              connectionInfo = new DbConnectionInfo {ConnectionStringName = connectionElement.Element("ConnectionStringName").Value};
             }
             else if (connectionElement.Element("ConnectionString") != null)
             {
-              connectionInfo = new TConnectionInfo {ConnectionString = connectionElement.Element("ConnectionString").Value};
+              connectionInfo = new DbConnectionInfo {ConnectionString = connectionElement.Element("ConnectionString").Value};
               
               if (connectionElement.Element("Provider") != null)
               {
@@ -53,7 +55,7 @@ namespace Utility.Database
             }
             else
             {
-              throw new ArgumentException("Connection element must contain EITHER ConnectionStringName OR ConnectionString", "Connection");
+              throw new ArgumentException("Connection element must contain EITHER ConnectionStringName OR ConnectionString (and optional Provider)", "Connection");
             }
           }
 
@@ -88,9 +90,7 @@ namespace Utility.Database
     }
 
 
-    public List<DbScript> Schemas { get; set; }
-    public List<DbScript> Seeds { get; set; }
-
+    
     private IDbConnectionInfo connectionInfo;
     private string baseDirectory;
   }

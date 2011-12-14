@@ -22,12 +22,12 @@ namespace Utility.Database.MongoDb.Test
    
         DbManager1 = new MongoDbManager
                      {
-                       Description = new MongoDbDescription {ConnectionInfo = new MongoDbConnectionInfo {ConnectionStringName = "Test1"}}
+                       Description = new DbDescription {ConnectionInfo = new DbConnectionInfo {ConnectionStringName = "Test1"}}
                      };
 
         DbManager2 = new MongoDbManager
                      {
-                       Description = new MongoDbDescription {ConnectionInfo = new MongoDbConnectionInfo {ConnectionStringName = "Test1"}}
+                       Description = new DbDescription {ConnectionInfo = new DbConnectionInfo {ConnectionStringName = "Test1"}}
                      };
       }
       catch (Exception e)

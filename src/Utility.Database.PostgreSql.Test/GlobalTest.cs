@@ -23,13 +23,13 @@ namespace Utility.Database.PostgreSql.Test
 
         Manager1 = new PgDbManager
                    {
-                     Description = new PgDbDescription {ConnectionInfo = new PgDbConnectionInfo {ConnectionStringName = "Test1"}},
+                     Description = new PgDbDescription {ConnectionInfo = new DbConnectionInfo {ConnectionStringName = "Test1"}},
                      Superuser = Superuser
                    };
 
         Manager2 = new PgDbManager
                    {
-                     Description = new PgDbDescription {ConnectionInfo = new PgDbConnectionInfo {ConnectionStringName = "Test2"}},
+                     Description = new PgDbDescription {ConnectionInfo = new DbConnectionInfo {ConnectionStringName = "Test2"}},
                      Superuser = Superuser
                    };
       }

@@ -6,29 +6,36 @@ using System.Reflection;
 namespace Utility.Database
 {
   /// <summary>
-  /// Generic implementation assuming that the connection is provider based and 
-  /// the connection string consists of key-value pairs that can be decoded using DbConnectionStringBuilder
+  ///   Generic implementation assuming that the connection is provider based and the connection string consists of key-value pairs that can be decoded using DbConnectionStringBuilder
   /// </summary>
   public class DbConnectionInfo : IDbConnectionInfo
   {
     public virtual string ConnectionStringName
     {
-      get { return connectionStringName; }
       set
       {
-        if (string.IsNullOrWhiteSpace(value))
-          throw new ArgumentException("Connection string name not provided", "ConnectionStringName");
+        if (string.IsNullOrWhiteSpace(value)) throw new ArgumentException("ConnectionStringName not provided", "ConnectionStringName");
         if (ConfigurationManager.ConnectionStrings[value] == null)
-          throw new ArgumentException(string.Format("Connection string name '{0}' not found in the configuration", connectionStringName), "ConnectionStringName");
+          throw new ArgumentException(string.Format("ConnectionStringName '{0}' not found in the configuration", value), "ConnectionStringName");
 
-        connectionStringName = value;
-        ConnectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
-        Provider = ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName;
+        ConnectionString = ConfigurationManager.ConnectionStrings[value].ConnectionString;
+        if(!string.IsNullOrWhiteSpace(ConfigurationManager.ConnectionStrings[value].ProviderName))
+        {
+          Provider = ConfigurationManager.ConnectionStrings[value].ProviderName;
+        }
       }
     }
 
-    public virtual string ConnectionString { get; set; }
-    
+    public virtual string ConnectionString
+    {
+      get { return connectionString; }
+      set
+      {
+        if (string.IsNullOrWhiteSpace(value)) throw new ArgumentException("ConnectionString not provided", "ConnectionString");
+        connectionString = value;
+      }
+    }
+
     public virtual string Provider { get; set; }
 
     public virtual DbProviderFactory ProviderFactory
@@ -68,26 +75,39 @@ namespace Utility.Database
       }
     }
 
-    public virtual string ServerAddress { get { return null; } }
-    public virtual int? ServerPort { get { return null; } }
-    public virtual string DatabaseName { get { return null; } }
-    public virtual string UserName { get { return null; } }
-    public virtual string Password { get { return null; } }
+    public virtual string ServerAddress
+    {
+      get { return null; }
+    }
+
+    public virtual int? ServerPort
+    {
+      get { return null; }
+    }
+
+    public virtual string DatabaseName
+    {
+      get { return null; }
+    }
+
+    public virtual string UserName
+    {
+      get { return null; }
+    }
+
+    public virtual string Password
+    {
+      get { return null; }
+    }
 
     public IDbConnectionInfo Copy()
     {
       var copy = (IDbConnectionInfo) GetType().Assembly.CreateInstance(GetType().FullName);
-      InternalCopy(copy);
+      if(connectionString != null) copy.ConnectionString = connectionString;
+      if(Provider != null) copy.Provider = Provider;
       return copy;
     }
 
-    protected virtual void InternalCopy(IDbConnectionInfo copy)
-    {
-      ((DbConnectionInfo)copy).connectionStringName = connectionStringName;
-      ((DbConnectionInfo)copy).ConnectionString = ConnectionString;
-      ((DbConnectionInfo)copy).Provider = Provider;
-    }
-
-    private string connectionStringName;
+    private string connectionString;
   }
 }

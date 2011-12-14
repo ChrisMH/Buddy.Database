@@ -20,7 +20,7 @@ namespace Utility.Database.Mock.Test
 
         DbManager1 = new MockDbManager
                        {
-                         Description = new MockDbDescription
+                         Description = new DbDescription
                                          {
                                            XmlRoot = DbDescriptions.Valid,
                                            ConnectionInfo = new MockDbConnectionInfo

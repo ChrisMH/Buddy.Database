@@ -117,12 +117,7 @@ namespace Utility.Database.PostgreSql.Test
       Assert.AreEqual("Description.ConnectionInfo", result.ParamName);
       Console.WriteLine(result.Message);
 
-      manager = new PgDbManager { Description = new PgDbDescription { ConnectionInfo = new GenericDbConnectionInfo() } };
-      result = Assert.Throws<ArgumentException>(() => action.Invoke(manager));
-      Assert.AreEqual("Description.ConnectionInfo.ConnectionString", result.ParamName);
-      Console.WriteLine(result.Message);
-
-      manager = new PgDbManager { Description = new PgDbDescription { ConnectionInfo = new GenericDbConnectionInfo { ConnectionString = "" } } };
+      manager = new PgDbManager { Description = new PgDbDescription { ConnectionInfo = new DbConnectionInfo() } };
       result = Assert.Throws<ArgumentException>(() => action.Invoke(manager));
       Assert.AreEqual("Description.ConnectionInfo.ConnectionString", result.ParamName);
       Console.WriteLine(result.Message);

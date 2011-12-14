@@ -28,8 +28,8 @@ namespace Utility.Database.PostgreSql.Test
       Assert.IsInstanceOf<PgDbConnectionInfo>(result);
       Assert.AreNotSame(connectionInfo, result);
       Assert.AreEqual(connectionInfo.ConnectionString, result.ConnectionString);
-      Assert.AreEqual(((IDbProviderInfo)connectionInfo).Provider, ((IDbProviderInfo)result).Provider);
-      Assert.IsInstanceOf<Npgsql.NpgsqlFactory>(((IDbProviderInfo)result).ProviderFactory);
+      Assert.AreEqual(connectionInfo.Provider, result.Provider);
+      Assert.IsInstanceOf<Npgsql.NpgsqlFactory>(result.ProviderFactory);
     }
   }
 }

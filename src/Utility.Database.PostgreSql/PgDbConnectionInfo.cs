@@ -18,7 +18,7 @@ namespace Utility.Database.PostgreSql
 	      try
         {
           base.ConnectionString = value;
-          connectionStringBuilder = (value == null ? new DbConnectionStringBuilder() : new DbConnectionStringBuilder { ConnectionString = value });
+          connectionStringBuilder = new DbConnectionStringBuilder { ConnectionString = base.ConnectionString };
 	      }
 	      catch (Exception e)
 	      {

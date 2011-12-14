@@ -14,14 +14,14 @@ namespace Utility.Database.Mock
     /// <returns></returns>
     public static IMockDatabase Open(IDbConnectionInfo connectionInfo)
     {
-      ValidateConnectionInfo(connectionInfo);
+      connectionInfo = VerifyConnectionInfo(connectionInfo);
 
       var databaseType = ((IDbMockTypeInfo) connectionInfo).MockDatabaseType;
 
       if (!mockDatabases.ContainsKey(databaseType)) throw new ArgumentException("Database does not exist", "connectionInfo");
-      if (!mockDatabases[databaseType].ContainsKey(connectionInfo.ConnectionStringName)) throw new ArgumentException("Database does not exist", "connectionInfo");
+      if (!mockDatabases[databaseType].ContainsKey(connectionInfo.DatabaseName)) throw new ArgumentException("Database does not exist", "connectionInfo");
 
-      return mockDatabases[databaseType][connectionInfo.ConnectionStringName];
+      return mockDatabases[databaseType][connectionInfo.DatabaseName];
     }
 
     /// <summary>
@@ -31,7 +31,7 @@ namespace Utility.Database.Mock
     /// <returns></returns>
     public static IMockDatabase Create(IDbConnectionInfo connectionInfo)
     {
-      ValidateConnectionInfo(connectionInfo);
+      connectionInfo = VerifyConnectionInfo(connectionInfo);
 
       var databaseType = ((IDbMockTypeInfo)connectionInfo).MockDatabaseType;
 
@@ -46,13 +46,13 @@ namespace Utility.Database.Mock
         mockDatabases.Add(databaseType, new Dictionary<string, IMockDatabase>());
       }
 
-      if (!mockDatabases[databaseType].ContainsKey(connectionInfo.ConnectionStringName))
+      if (!mockDatabases[databaseType].ContainsKey(connectionInfo.DatabaseName))
       {
         var ctor = databaseType.GetConstructor(Type.EmptyTypes);
-        mockDatabases[databaseType].Add(connectionInfo.ConnectionStringName, (IMockDatabase)ctor.Invoke(null));
+        mockDatabases[databaseType].Add(connectionInfo.DatabaseName, (IMockDatabase)ctor.Invoke(null));
       }
 
-      return mockDatabases[databaseType][connectionInfo.ConnectionStringName];
+      return mockDatabases[databaseType][connectionInfo.DatabaseName];
     }
 
     /// <summary>
@@ -62,13 +62,13 @@ namespace Utility.Database.Mock
     /// <returns></returns>
     public static void Destroy(IDbConnectionInfo connectionInfo)
     {
-      ValidateConnectionInfo(connectionInfo);
+      connectionInfo = VerifyConnectionInfo(connectionInfo);
 
       var databaseType = ((IDbMockTypeInfo)connectionInfo).MockDatabaseType;
 
       if(!mockDatabases.ContainsKey(databaseType)) return;
 
-      mockDatabases[databaseType].Remove(connectionInfo.ConnectionStringName);
+      mockDatabases[databaseType].Remove(connectionInfo.DatabaseName);
 
       if(mockDatabases[databaseType].Count == 0)
       {
@@ -76,16 +76,11 @@ namespace Utility.Database.Mock
       }
     }
 
-    private static void ValidateConnectionInfo(IDbConnectionInfo connectionInfo)
+    private static IDbConnectionInfo VerifyConnectionInfo(IDbConnectionInfo connectionInfo)
     {
       if (connectionInfo == null) throw new ArgumentException("connectionInfo not provided", "connectionInfo");
 
-      var mockTypeInfo = connectionInfo as IDbMockTypeInfo;
-      if (mockTypeInfo == null) throw new ArgumentException("Invalid connection info, does not implement IDbMockTypeInfo", "connectionInfo");
-
-      if (string.IsNullOrEmpty(connectionInfo.ConnectionStringName)) throw new ArgumentException("connectionInfo.ConnectionStringName not provided", "connectionInfo.ConnectionStringName");
-
-      if (mockTypeInfo.MockDatabaseType == null) throw new ArgumentException("connectionInfo.MockDatabaseType not provided", "connectionInfo.MockDatabaseType");
+      return new MockDbConnectionInfo {ConnectionString = connectionInfo.ConnectionString};
     }
 
 

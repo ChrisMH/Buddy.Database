@@ -1,17 +1,44 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Data.Common;
 
 namespace Utility.Database.Mock
 {
-  public sealed class MockDbConnectionInfo : IDbConnectionInfo, IDbMockTypeInfo
+  internal sealed class MockDbConnectionInfo : DbConnectionInfo, IDbMockTypeInfo
   {
-    public string ConnectionStringName { get; set; }
-    public Type MockDatabaseType { get; set; }
+    internal const string DatabaseNameKey = "database";
+    internal const string DatabaseTypeKey = "database type";
 
-    public string ConnectionString
+
+    public override string ConnectionString
     {
-      get { throw new NotImplementedException(); }
-      set { throw new NotImplementedException(); }
+      set
+      {
+        try
+        {
+          base.ConnectionString = value;
+          connectionStringBuilder = new DbConnectionStringBuilder { ConnectionString = base.ConnectionString };
+
+          if(!connectionStringBuilder.ContainsKey(DatabaseNameKey))
+            throw new ArgumentException(string.Format("ConnectionString does not contain required key '{0}'", DatabaseNameKey), "ConnectionString");
+          if (!connectionStringBuilder.ContainsKey(DatabaseTypeKey))
+            throw new ArgumentException(string.Format("ConnectionString does not contain required key '{0}'", DatabaseTypeKey), "ConnectionString");
+        }
+        catch (Exception e)
+        {
+          throw new ArgumentException(string.Format("Could not parse connection string : {0}", value), "ConnectionString", e);
+        }
+      }
+    }
+
+
+    public string DatabaseName
+    {
+      get { return connectionStringBuilder.ContainsKey(DatabaseNameKey) ? (string) connectionStringBuilder[DatabaseNameKey] : null; }
+    }
+
+    public Type MockDatabaseType
+    {
+      get { return connectionStringBuilder.ContainsKey(DatabaseTypeKey) ? new ReflectionType((string)connectionStringBuilder[DatabaseNameKey]).CreateType() : null; }
     }
 
     public string ServerAddress
@@ -20,11 +47,6 @@ namespace Utility.Database.Mock
     }
 
     public int? ServerPort
-    {
-      get { throw new NotImplementedException(); }
-    }
-
-    public string DatabaseName
     {
       get { throw new NotImplementedException(); }
     }
@@ -39,9 +61,6 @@ namespace Utility.Database.Mock
       get { throw new NotImplementedException(); }
     }
 
-    public IDbConnectionInfo Copy()
-    {
-      return new MockDbConnectionInfo {ConnectionStringName = ConnectionStringName, MockDatabaseType = MockDatabaseType};
-    }
+    private DbConnectionStringBuilder connectionStringBuilder = new DbConnectionStringBuilder();
   }
 }

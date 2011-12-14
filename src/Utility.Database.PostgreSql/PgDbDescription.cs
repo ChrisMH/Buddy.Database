@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Data.Common;
 using System.Xml.Linq;
 
 namespace Utility.Database.PostgreSql
 {
-  public class PgDbDescription : DbDescription<PgDbConnectionInfo>
+  public class PgDbDescription : DbDescription
   {
     public String TemplateName { get; set; }
 

@@ -73,10 +73,10 @@ namespace Utility.Database.PostgreSql.Test
                      {
                        Description = new PgDbDescription
                                      {
-                                       ConnectionInfo = new PgDbConnectionInfo
+                                       ConnectionInfo = new DbConnectionInfo
                                                         {
                                                           ConnectionString = csBuilderT.ConnectionString,
-                                                          Provider = ((IDbProviderInfo)GlobalTest.Manager1.Description.ConnectionInfo).Provider
+                                                          Provider = GlobalTest.Manager1.Description.ConnectionInfo.Provider
                                                         }
                                      }
                      };

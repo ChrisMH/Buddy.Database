@@ -23,7 +23,7 @@ namespace Utility.Database.MongoDb.Test
     [Test]
     public void CreateCreatesDatabase()
     {
-      var manager = new MongoDbManager { Description = new MongoDbDescription { ConnectionInfo = GlobalTest.DbManager1.Description.ConnectionInfo } };
+      var manager = new MongoDbManager { Description = new DbDescription { ConnectionInfo = GlobalTest.DbManager1.Description.ConnectionInfo } };
 
       manager.Create();
 
@@ -36,7 +36,7 @@ namespace Utility.Database.MongoDb.Test
     {
       var manager = new MongoDbManager
                     {
-                      Description = new MongoDbDescription
+                      Description = new DbDescription
                                     {
                                       ConnectionInfo = GlobalTest.DbManager1.Description.ConnectionInfo,
                                       Schemas = new List<DbScript> {new DbScript {ScriptType = ScriptType.Literal, ScriptValue = LiteralSchema}}

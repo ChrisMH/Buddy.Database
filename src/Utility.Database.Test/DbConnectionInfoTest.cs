@@ -79,7 +79,7 @@ namespace Utility.Database.Test
 
       Assert.That(result, Is.Not.Null);
       Assert.That(result.ConnectionString, Is.EqualTo("server=server"));
-      Assert.That(result.Provider, Is.EqualTo(string.Empty));
+      Assert.That(result.Provider, Is.Null);
       Assert.That(result.ProviderFactory, Is.Null);
     }
 
@@ -90,18 +90,15 @@ namespace Utility.Database.Test
 
       Assert.That(result, Is.Not.Null);
       Assert.That(result.ConnectionString, Is.EqualTo("server=server"));
-      Assert.That(result.Provider, Is.EqualTo(string.Empty));
+      Assert.That(result.Provider, Is.Null);
       Assert.That(result.ProviderFactory, Is.Null);
     }
 
     [Test]
-    public void CanCreateFromConnectionStringNameWithBlankConnectionString()
+    public void CreateFromConnectionStringNameWithBlankConnectionStringThrows()
     {
-      var result = new DbConnectionInfo {ConnectionStringName = "BlankConnectionString"};
-
-      Assert.That(result.ConnectionString, Is.EqualTo(string.Empty));
-      Assert.That(result.Provider, Is.EqualTo("System.Data.SqlClient"));
-      Assert.That(result.ProviderFactory, Is.InstanceOf<System.Data.SqlClient.SqlClientFactory>());
+      Assert.That(() => new DbConnectionInfo {ConnectionStringName = "BlankConnectionString"},
+                  Throws.ArgumentException.With.Property("ParamName").EqualTo("ConnectionString"));
     }
 
     [TestCase(null)]

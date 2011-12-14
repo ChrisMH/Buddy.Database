@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Text.RegularExpressions;
 using MongoDB.Bson;
 using MongoDB.Driver;
 
@@ -12,14 +9,14 @@ namespace Utility.Database.MongoDb
     public void Create()
     {
       Destroy();
-      
+
       var db = CreateDatabase();
       db.GetCollectionNames(); // Creation doesn't happen until a command is run against the database
 
       foreach (var schemaDefinition in Description.Schemas)
       {
         var command = new BsonJavaScript(schemaDefinition.Load());
-        db.Eval(command); 
+        db.Eval(command);
       }
     }
 
@@ -32,33 +29,39 @@ namespace Utility.Database.MongoDb
     public void Seed()
     {
       var db = CreateDatabase();
-      
+
       foreach (var seedDefinition in Description.Seeds)
       {
         var command = new BsonJavaScript(seedDefinition.Load());
         db.Eval(command);
       }
     }
-    
+
     public IDbDescription Description { get; set; }
 
     internal MongoServer CreateServer()
     {
-      CheckPreconditions();
+      VerifyProperties();
       return MongoServer.Create(Description.ConnectionInfo.ConnectionString);
     }
 
     internal MongoDatabase CreateDatabase()
     {
-      CheckPreconditions();
+      VerifyProperties();
       return MongoDatabase.Create(Description.ConnectionInfo.ConnectionString);
     }
 
-    protected void CheckPreconditions()
+    protected void VerifyProperties()
     {
-      if(Description == null) throw new ArgumentNullException("Description", "Description is not set");
-      if(Description.ConnectionInfo == null) throw new ArgumentNullException("Description.ConnectionInfo", "ConnectionInfo is not set");
-    }
+      if (Description == null) throw new ArgumentException("Description is null", "Description");
+      if (Description.ConnectionInfo == null) throw new ArgumentException("ConnectionInfo is null", "Description.ConnectionInfo");
+      if (string.IsNullOrWhiteSpace(Description.ConnectionInfo.ConnectionString))
+        throw new ArgumentException("Description.ConnectionInfo.ConnectionString not provided", "Description.ConnectionInfo.ConnectionString");
 
+      if (Description.ConnectionInfo.GetType() != typeof (MongoDbConnectionInfo))
+      {
+        Description.ConnectionInfo = new MongoDbConnectionInfo {ConnectionString = Description.ConnectionInfo.ConnectionString};
+      }
+    }
   }
 }
