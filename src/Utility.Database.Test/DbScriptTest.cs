@@ -12,30 +12,30 @@ namespace Utility.Database.Test
     {
       var result = new DbScript {XmlRoot = DbScripts.RelativeFileSchema};
 
-      Assert.AreEqual(AppDomain.CurrentDomain.BaseDirectory, result.GetBaseDirectory.Invoke());
+      Assert.That(result.GetBaseDirectory.Invoke(), Is.EqualTo(AppDomain.CurrentDomain.BaseDirectory));
     }
 
     [Test]
     public void InvalidBaseDirectoryThrows()
     {
-      var result =
-        Assert.Throws<FileNotFoundException>(() => new DbScript {XmlRoot = DbScripts.RelativeFileSchema, GetBaseDirectory = () => "d:\\invalid"}.Load());
+      Assert.That(() => new DbScript {XmlRoot = DbScripts.RelativeFileSchema, GetBaseDirectory = () => "d:\\invalid"}.Load(),
+                  Throws.InstanceOf<FileNotFoundException>());
     }
 
     [TestCase(DbScripts.MissingSchemaType)]
     [TestCase(DbScripts.MissingSeedType)]
     public void MissingTypeThrows(string script)
     {
-      var e = Assert.Throws<ArgumentException>(() => new DbScript {XmlRoot = script});
-      Assert.AreEqual("type", e.ParamName);
+      Assert.That(() => new DbScript {XmlRoot = script},
+                  Throws.ArgumentException.With.Property("ParamName").EqualTo("type"));
     }
 
     [TestCase(DbScripts.InvalidSchemaType)]
     [TestCase(DbScripts.InvalidSeedType)]
     public void InvalidTypeThrows(string script)
     {
-      var e = Assert.Throws<ArgumentException>(() => new DbScript {XmlRoot = script});
-      Assert.AreEqual("type", e.ParamName);
+      Assert.That(() => new DbScript {XmlRoot = script},
+                  Throws.ArgumentException.With.Property("ParamName").EqualTo("type"));
     }
 
     [TestCase(DbScripts.EmptyFileSchema, "Schema")]
@@ -46,8 +46,8 @@ namespace Utility.Database.Test
     [TestCase(DbScripts.EmptyLiteralSeed, "Seed")]
     public void EmptyValueThrows(string script, string paramName)
     {
-      var e = Assert.Throws<ArgumentException>(() => new DbScript {XmlRoot = script});
-      Assert.AreEqual(paramName, e.ParamName);
+      Assert.That(() => new DbScript {XmlRoot = script},
+                  Throws.ArgumentException.With.Property("ParamName").EqualTo(paramName));
     }
 
     [TestCase(DbScripts.RelativeFileSchema, ScriptType.File, "..\\..\\Resources\\schema.txt")]
@@ -64,8 +64,8 @@ namespace Utility.Database.Test
     {
       var result = new DbScript {XmlRoot = script};
 
-      Assert.AreEqual(scriptType, result.ScriptType);
-      Assert.AreEqual(scriptValue, result.ScriptValue);
+      Assert.That(result.ScriptType, Is.EqualTo(scriptType));
+      Assert.That(result.ScriptValue, Is.EqualTo(scriptValue));
     }
 
     [TestCase(DbScripts.RelativeMissingFileSchema, "schema.txt")]
@@ -76,8 +76,7 @@ namespace Utility.Database.Test
     {
       var result = new DbScript {XmlRoot = script};
 
-      var e = Assert.Throws<System.IO.FileNotFoundException>(() => result.Load());
-      Assert.AreEqual(fileName, e.FileName);
+      Assert.That(() => result.Load(), Throws.InstanceOf<FileNotFoundException>());
     }
 
     [TestCase(DbScripts.MissingResourceSchema)]
@@ -86,7 +85,7 @@ namespace Utility.Database.Test
     {
       var result = new DbScript {XmlRoot = script};
 
-      Assert.Throws<MissingManifestResourceException>(() => result.Load());
+      Assert.That(() => result.Load(), Throws.InstanceOf<MissingManifestResourceException>());
     }
 
 
@@ -100,7 +99,7 @@ namespace Utility.Database.Test
     {
       var result = new DbScript {XmlRoot = script}.Load();
 
-      Assert.AreEqual(content, result);
+      Assert.That(result, Is.EqualTo(content));
     }
 
     [TestCase(DbScripts.RelativeFileSchema, "schema")]
@@ -111,26 +110,24 @@ namespace Utility.Database.Test
     [TestCase(DbScripts.ResourceSeed, "seed")]
     public void LoadableScriptThrowsIfRun(string script, string content)
     {
-      var result = Assert.Throws<ArgumentException>(() => new DbScript {XmlRoot = script}.Run(new GenericDbConnectionInfo()));
-      Assert.AreEqual("ScriptType", result.ParamName);
-      Console.WriteLine(result.Message);
+      Assert.That(() => new DbScript {XmlRoot = script}.Run(new DbConnectionInfo()),
+                  Throws.ArgumentException.With.Property("ParamName").EqualTo("ScriptType"));
     }
 
     [TestCase(DbScripts.RunnableSchema)]
     [TestCase(DbScripts.RunnableSeed)]
     public void RunnableScriptIsRun(string script)
     {
-      var result = Assert.Throws<ArgumentException>(() => new DbScript { XmlRoot = script}.Run(new GenericDbConnectionInfo()));
-      Assert.AreEqual("Method was called", result.InnerException.InnerException.Message);
+      Assert.That((() => new DbScript {XmlRoot = script}.Run(new DbConnectionInfo())),
+                  Throws.ArgumentException.With.InnerException.InnerException.Message.EqualTo("Method was called"));
     }
 
     [TestCase(DbScripts.RunnableSchema)]
     [TestCase(DbScripts.RunnableSeed)]
     public void RunnableScriptThrowsIfLoaded(string script)
     {
-      var result = Assert.Throws<ArgumentException>(() => new DbScript { XmlRoot = script }.Load());
-      Assert.AreEqual("ScriptType", result.ParamName);
-      Console.WriteLine(result.Message);
+      Assert.That(() => new DbScript {XmlRoot = script}.Load(),
+                  Throws.ArgumentException.With.Property("ParamName").EqualTo("ScriptType"));
     }
 
     [TestCase(DbScripts.RunnableWithMissingClass)]
@@ -139,9 +136,8 @@ namespace Utility.Database.Test
     [TestCase(DbScripts.RunnableWithInvalidMethodSignature)]
     public void RunThrowsIfItCantBeRun(string script)
     {
-      var result = Assert.Throws<ArgumentException>(() => new DbScript { XmlRoot = script }.Run(new GenericDbConnectionInfo()));
-      Assert.AreEqual("ScriptValue", result.ParamName);
-      Console.WriteLine(result.Message);
+      Assert.That(() => new DbScript {XmlRoot = script}.Run(new DbConnectionInfo()),
+                  Throws.ArgumentException.With.Property("ParamName").EqualTo("ScriptValue"));
     }
   }
 }

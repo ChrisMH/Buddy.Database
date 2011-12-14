@@ -10,9 +10,9 @@ namespace Utility.Database.Test
     [Test]
     public void DescriptionWithEmptyConnectionReturnsNullConnection()
     {
-      var result = new DbDescription<GenericDbConnectionInfo> {XmlRoot = DbDescriptions.Empty};
+      var result = new DbDescription<DbConnectionInfo> {XmlRoot = DbDescriptions.Empty};
 
-      Assert.Null(result.ConnectionInfo);
+      Assert.That(result.ConnectionInfo, Is.Null);
     }
 
     [TestCase(DbDescriptions.ConnectionWithConnectionStringName, "server=server", "System.Data.SqlClient", typeof (System.Data.SqlClient.SqlClientFactory))]
@@ -22,14 +22,14 @@ namespace Utility.Database.Test
     [TestCase(DbDescriptions.ConnectionWithConnectionString, "server=server", null, null)]
     public void DescriptionWithValidConnectionLoadsConnection(string description, string connectionString, string provider, Type providerFactoryType)
     {
-      var result = new DbDescription<GenericDbConnectionInfo> {XmlRoot = description};
+      var result = new DbDescription<DbConnectionInfo> {XmlRoot = description};
 
-      Assert.NotNull(result.ConnectionInfo);
-      Assert.AreEqual(connectionString, result.ConnectionInfo.ConnectionString);
-      Assert.AreEqual(provider, ((IDbProviderInfo) result.ConnectionInfo).Provider);
+      Assert.That(result.ConnectionInfo, Is.Not.Null);
+      Assert.That(result.ConnectionInfo.ConnectionString, Is.EqualTo(connectionString));
+      Assert.That(result.ConnectionInfo.Provider, Is.EqualTo(provider));
       if (providerFactoryType != null)
       {
-        Assert.IsInstanceOf(providerFactoryType, ((IDbProviderInfo) result.ConnectionInfo).ProviderFactory);
+        Assert.That(result.ConnectionInfo.ProviderFactory, Is.InstanceOf(providerFactoryType));
       }
     }
 
@@ -38,84 +38,83 @@ namespace Utility.Database.Test
     [TestCase(DbDescriptions.ConnectionWithProviderName)]
     public void DescriptionWithInvalidConnectionThrows(string description)
     {
-      var result = Assert.Throws<ArgumentException>(() => new DbDescription<GenericDbConnectionInfo> {XmlRoot = description});
-      Assert.AreEqual("XmlRoot", result.ParamName);
-      Debug.WriteLine(result.Message);
+      Assert.That(() => new DbDescription<DbConnectionInfo> {XmlRoot = description},
+        Throws.ArgumentException.With.Property("ParamName").EqualTo("XmlRoot"));
     }
 
     [Test]
     public void DescriptionMissingSchemaReturnsEmptySchemaCollection()
     {
-      var result = new DbDescription<GenericDbConnectionInfo> {XmlRoot = DbDescriptions.Empty};
+      var result = new DbDescription<DbConnectionInfo> {XmlRoot = DbDescriptions.Empty};
 
-      Assert.AreEqual(0, result.Schemas.Count());
+      Assert.That(result.Schemas.Count(), Is.EqualTo(0));
     }
 
     [Test]
     public void DescriptionMissingSeedReturnsEmptySeedCollection()
     {
-      var result = new DbDescription<GenericDbConnectionInfo> {XmlRoot = DbDescriptions.Empty};
+      var result = new DbDescription<DbConnectionInfo> {XmlRoot = DbDescriptions.Empty};
 
-      Assert.AreEqual(0, result.Seeds.Count());
+      Assert.That(result.Seeds.Count(), Is.EqualTo(0));
     }
 
     [TestCase(DbDescriptions.SingleFileSchema)]
     [TestCase(DbDescriptions.SingleResourceSchema)]
     public void CanLoadSingleSchema(string script)
     {
-      var result = new DbDescription<GenericDbConnectionInfo> {XmlRoot = script};
+      var result = new DbDescription<DbConnectionInfo> {XmlRoot = script};
 
-      Assert.AreEqual(1, result.Schemas.Count());
+      Assert.That(result.Schemas.Count(), Is.EqualTo(1));
     }
 
     [TestCase(DbDescriptions.SingleFileSeed)]
     [TestCase(DbDescriptions.SingleResourceSeed)]
     public void CanLoadSingleSeed(string script)
     {
-      var result = new DbDescription<GenericDbConnectionInfo> {XmlRoot = script};
+      var result = new DbDescription<DbConnectionInfo> {XmlRoot = script};
 
-      Assert.AreEqual(1, result.Seeds.Count());
+      Assert.That(result.Seeds.Count(), Is.EqualTo(1));
     }
 
     [Test]
     public void CanLoadSchemasAndSeeds()
     {
-      var result = new DbDescription<GenericDbConnectionInfo> {XmlRoot = DbDescriptions.SchemasAndSeeds};
+      var result = new DbDescription<DbConnectionInfo> {XmlRoot = DbDescriptions.SchemasAndSeeds};
 
-      Assert.AreEqual(2, result.Schemas.Count());
-      Assert.AreEqual(2, result.Seeds.Count());
+      Assert.That(result.Schemas.Count(), Is.EqualTo(2));
+      Assert.That(result.Seeds.Count(), Is.EqualTo(2));
     }
 
     [Test]
     public void EmptyBaseDirectoryUsesAppDomainBaseDirectory()
     {
-      var result = new DbDescription<GenericDbConnectionInfo> {XmlRoot = DbDescriptions.SingleFileSchema};
+      var result = new DbDescription<DbConnectionInfo> {XmlRoot = DbDescriptions.SingleFileSchema};
 
-      Assert.AreEqual(AppDomain.CurrentDomain.BaseDirectory, result.Schemas[0].GetBaseDirectory.Invoke());
+      Assert.That(result.Schemas[0].GetBaseDirectory(), Is.EqualTo(AppDomain.CurrentDomain.BaseDirectory));
     }
 
     [Test]
     public void CanLoadRelativeFileScript()
     {
-      var result = new DbDescription<GenericDbConnectionInfo>
+      var result = new DbDescription<DbConnectionInfo>
                    {
                      XmlRoot = DbDescriptions.RelativeFileSchema,
                      BaseDirectory = "d:\\DevP\\Utility.Database\\src\\Utility.Database.Test"
                    };
 
-      Assert.AreEqual("schema", result.Schemas.First().Load());
-      Assert.AreEqual("seed", result.Seeds.First().Load());
+      Assert.That(result.Schemas.First().Load(), Is.EqualTo("schema"));
+      Assert.That(result.Seeds.First().Load(), Is.EqualTo("seed"));
     }
 
     [Test]
     public void CopyOfDbConnectionInfoIsUsed()
     {
-      var connectionInfo = new GenericDbConnectionInfo {ConnectionString = "schema=schema", Provider = "System.Data.SqlClient"};
-      var result = new DbDescription<GenericDbConnectionInfo> {ConnectionInfo = connectionInfo};
+      var connectionInfo = new DbConnectionInfo {ConnectionString = "schema=schema", Provider = "System.Data.SqlClient"};
+      var result = new DbDescription<DbConnectionInfo> {ConnectionInfo = connectionInfo};
 
       connectionInfo.ConnectionString = "schema=other_schema";
 
-      Assert.AreEqual("schema=schema", result.ConnectionInfo.ConnectionString);
+      Assert.That(result.ConnectionInfo.ConnectionString, Is.EqualTo("schema=schema"));
     }
   }
 }

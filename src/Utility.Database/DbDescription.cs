@@ -46,9 +46,9 @@ namespace Utility.Database
             {
               connectionInfo = new TConnectionInfo {ConnectionString = connectionElement.Element("ConnectionString").Value};
               
-              if (connectionElement.Element("Provider") != null && connectionInfo is IDbProviderInfo)
+              if (connectionElement.Element("Provider") != null)
               {
-                ((IDbProviderInfo) connectionInfo).Provider = connectionElement.Element("Provider").Value;
+                connectionInfo.Provider = connectionElement.Element("Provider").Value;
               }
             }
             else

@@ -1,4 +1,6 @@
-﻿namespace Utility.Database
+﻿using System.Data.Common;
+
+namespace Utility.Database
 {
   public interface IDbConnectionInfo
   {
@@ -15,21 +17,26 @@
     /// </summary>
     string ConnectionString { get; set; }
 
-    /*
     /// <summary>
-    /// Test if connection string piece is available
+    /// The provider factory used to create connections.
+    /// 
+    /// Valid for connection types supporting provider factories.
+    /// 
+    /// This can be either a registered provider name such as:
+    ///   System.Data.SqlClient
+    ///   Npgsql
+    /// or the type of the provider's factory as an assembly qualified name such as:
+    ///   System.Data.SqlClient.SqlClientFactory, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+    ///   Npgsql.NpgsqlFactory, Npgsql
     /// </summary>
-    /// <param name="key">Connection string piece</param>
-    /// <returns>True if the piece is availabe, False otherwise</returns>
-    bool ContainsKey(string key);
+    string Provider { get; set; }
 
     /// <summary>
-    /// Get individual pieces of the connection string
+    /// Creates and returns a provider factory instance based on the valud of the Provider attribute.
+    /// 
+    /// Valid for connection types supporting provider factories.
     /// </summary>
-    /// <param name="key">Connection string piece</param>
-    /// <returns>The key's value, or null if it does not have the requested value</returns>
-    object this[string key] { get; }
-    */
+    DbProviderFactory ProviderFactory { get; } 
 
     string ServerAddress { get; }
     int? ServerPort { get; }

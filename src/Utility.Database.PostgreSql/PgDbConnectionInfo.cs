@@ -3,7 +3,7 @@ using System.Data.Common;
 
 namespace Utility.Database.PostgreSql
 {
-  public sealed class PgDbConnectionInfo : GenericDbConnectionInfo
+  internal sealed class PgDbConnectionInfo : DbConnectionInfo
   {
     internal const string ServerAddressKey = "host";
     internal const string ServerPortKey = "port";
@@ -14,9 +14,16 @@ namespace Utility.Database.PostgreSql
     public override string ConnectionString
     {
 	    set 
-	    { 
-		    base.ConnectionString = value;
-	      connectionStringBuilder = (value == null ? new DbConnectionStringBuilder() : new DbConnectionStringBuilder {ConnectionString = value});
+	    {
+	      try
+        {
+          base.ConnectionString = value;
+          connectionStringBuilder = (value == null ? new DbConnectionStringBuilder() : new DbConnectionStringBuilder { ConnectionString = value });
+	      }
+	      catch (Exception e)
+	      {
+	        throw new ArgumentException(string.Format("Could not parse connection string : {0}", value), "ConnectionString", e);
+	      }
 	    }
     }
 

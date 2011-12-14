@@ -54,13 +54,10 @@
     </Compile>
     <Compile Include="DbDescription.cs" />
     <Compile Include="DbScript.cs" />
-    <Compile Include="GenericDbConnectionInfo.cs" />
+    <Compile Include="DbConnectionInfo.cs" />
     <Compile Include="IDbConnectionInfo.cs" />
     <Compile Include="IDbDescription.cs" />
     <Compile Include="IDbManager.cs" />
-    <Compile Include="IDbProviderInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

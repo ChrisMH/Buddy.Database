@@ -9,7 +9,7 @@ namespace Utility.Database
   /// Generic implementation assuming that the connection is provider based and 
   /// the connection string consists of key-value pairs that can be decoded using DbConnectionStringBuilder
   /// </summary>
-  public class GenericDbConnectionInfo : IDbConnectionInfo, IDbProviderInfo
+  public class DbConnectionInfo : IDbConnectionInfo
   {
     public virtual string ConnectionStringName
     {
@@ -83,9 +83,9 @@ namespace Utility.Database
 
     protected virtual void InternalCopy(IDbConnectionInfo copy)
     {
-      ((GenericDbConnectionInfo)copy).connectionStringName = connectionStringName;
-      ((GenericDbConnectionInfo)copy).ConnectionString = ConnectionString;
-      ((GenericDbConnectionInfo)copy).Provider = Provider;
+      ((DbConnectionInfo)copy).connectionStringName = connectionStringName;
+      ((DbConnectionInfo)copy).ConnectionString = ConnectionString;
+      ((DbConnectionInfo)copy).Provider = Provider;
     }
 
     private string connectionStringName;
