@@ -46,7 +46,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="IDbMockTypeInfo.cs" />
+    <Compile Include="IMockDbConnectionInfo.cs" />
     <Compile Include="IMockDatabase.cs" />
     <Compile Include="MockDatabaseProvider.cs" />
     <Compile Include="MockDbManager.cs" />

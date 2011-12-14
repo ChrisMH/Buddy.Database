@@ -16,7 +16,7 @@ namespace Utility.Database.Mock
     {
       connectionInfo = VerifyConnectionInfo(connectionInfo);
 
-      var databaseType = ((IDbMockTypeInfo) connectionInfo).MockDatabaseType;
+      var databaseType = ((IMockDbConnectionInfo) connectionInfo).DatabaseType;
 
       if (!mockDatabases.ContainsKey(databaseType)) throw new ArgumentException("Database does not exist", "connectionInfo");
       if (!mockDatabases[databaseType].ContainsKey(connectionInfo.DatabaseName)) throw new ArgumentException("Database does not exist", "connectionInfo");
@@ -33,15 +33,15 @@ namespace Utility.Database.Mock
     {
       connectionInfo = VerifyConnectionInfo(connectionInfo);
 
-      var databaseType = ((IDbMockTypeInfo)connectionInfo).MockDatabaseType;
+      var databaseType = ((IMockDbConnectionInfo)connectionInfo).DatabaseType;
 
       if (!mockDatabases.ContainsKey(databaseType))
       {
         // Check that the type is OK
         var interfaces = databaseType.FindInterfaces((type, criteria) => type == typeof(IMockDatabase), null);
-        if (interfaces.Length == 0) throw new ArgumentException(string.Format("Mock database type does not implement IMockDatabase : {0}", databaseType), "connectionInfo.MockDatabaseType");
+        if (interfaces.Length == 0) throw new ArgumentException(string.Format("Mock database type does not implement IMockDatabase : {0}", databaseType), "connectionInfo.DatabaseType");
 
-        if (databaseType.GetConstructor(Type.EmptyTypes) == null) throw new ArgumentException(string.Format("Mock database type does not have a parameterless constructor : {0}", databaseType), "connectionInfo.MockDatabaseType");
+        if (databaseType.GetConstructor(Type.EmptyTypes) == null) throw new ArgumentException(string.Format("Mock database type does not have a parameterless constructor : {0}", databaseType), "connectionInfo.DatabaseType");
 
         mockDatabases.Add(databaseType, new Dictionary<string, IMockDatabase>());
       }
@@ -64,7 +64,7 @@ namespace Utility.Database.Mock
     {
       connectionInfo = VerifyConnectionInfo(connectionInfo);
 
-      var databaseType = ((IDbMockTypeInfo)connectionInfo).MockDatabaseType;
+      var databaseType = ((IMockDbConnectionInfo)connectionInfo).DatabaseType;
 
       if(!mockDatabases.ContainsKey(databaseType)) return;
 

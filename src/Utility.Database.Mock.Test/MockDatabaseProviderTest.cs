@@ -22,8 +22,7 @@ namespace Utility.Database.Mock.Test
     {
       var connectionInfo = new MockDbConnectionInfo
                              {
-                               ConnectionStringName = "PTest1",
-                               MockDatabaseType = typeof (TestMockDatabase)
+                               ConnectionStringName = "Test1"
                              };
 
       var mockDatabase = MockDatabaseProvider.Create(connectionInfo);
@@ -36,8 +35,7 @@ namespace Utility.Database.Mock.Test
     {
       var connectionInfo = new MockDbConnectionInfo
       {
-        ConnectionStringName = "PTest1",
-        MockDatabaseType = typeof(TestMockDatabase)
+        ConnectionStringName = "Test1"
       };
 
       {
@@ -57,8 +55,7 @@ namespace Utility.Database.Mock.Test
     {
       var connectionInfo = new MockDbConnectionInfo
       {
-        ConnectionStringName = "PTest1",
-        MockDatabaseType = typeof(TestMockDatabase)
+        ConnectionStringName = "Test1"
       };
 
       var result = Assert.Throws<ArgumentException>(() => MockDatabaseProvider.Open(connectionInfo));
@@ -71,51 +68,24 @@ namespace Utility.Database.Mock.Test
     {
       var connectionInfo = new MockDbConnectionInfo
       {
-        ConnectionStringName = "PTest1",
-        MockDatabaseType = typeof(TestMockDatabase)
+        ConnectionStringName = "Test1"
       };
       MockDatabaseProvider.Create(connectionInfo);
 
-      connectionInfo.ConnectionStringName = "PTest2";
+      connectionInfo.ConnectionStringName = "Test2";
 
       var result = Assert.Throws<ArgumentException>(() => MockDatabaseProvider.Open(connectionInfo));
       Assert.AreEqual("connectionInfo", result.ParamName);
       Console.WriteLine(result.Message);
     }
 
-    [Test]
-    public void CreateThrowsIfConnectionInfoIsInvalid()
-    {
-      InvalidConnectionInfoTests(connectionInfo => MockDatabaseProvider.Create(connectionInfo));
-
-      var result =
-        Assert.Throws<ArgumentException>(() => MockDatabaseProvider.Create(new MockDbConnectionInfo
-                                                                           {
-                                                                             ConnectionStringName = "PTest1",
-                                                                             MockDatabaseType = typeof (TestMockDatabaseInvalidBaseInterface)
-                                                                           }));
-      Assert.AreEqual("connectionInfo.MockDatabaseType", result.ParamName);
-      Console.WriteLine(result.Message);
-      Console.WriteLine();
-
-      result =
-        Assert.Throws<ArgumentException>(() => MockDatabaseProvider.Create(new MockDbConnectionInfo
-                                                                           {
-                                                                             ConnectionStringName = "PTest1",
-                                                                             MockDatabaseType = typeof (TestMockDatabaseInvalidConstructor)
-                                                                           }));
-      Assert.AreEqual("connectionInfo.MockDatabaseType", result.ParamName);
-      Console.WriteLine(result.Message);
-      Console.WriteLine();
-    }
 
     [Test]
     public void DestroyDestroysDatabase()
     {
       var connectionInfo = new MockDbConnectionInfo
       {
-        ConnectionStringName = "PTest1",
-        MockDatabaseType = typeof(TestMockDatabase)
+        ConnectionStringName = "Test1"
       };
 
       MockDatabaseProvider.Create(connectionInfo);
@@ -125,6 +95,12 @@ namespace Utility.Database.Mock.Test
       Assert.Throws<ArgumentException>(() => MockDatabaseProvider.Open(connectionInfo));
     }
 
+
+    [Test]
+    public void CreateThrowsIfConnectionInfoIsInvalid()
+    {
+      InvalidConnectionInfoTests(connectionInfo => MockDatabaseProvider.Create(connectionInfo));
+    }
 
     [Test]
     public void DestroyThrowsIfConnectionInfoIsInvalid()
@@ -140,30 +116,9 @@ namespace Utility.Database.Mock.Test
 
     private void InvalidConnectionInfoTests(Action<IDbConnectionInfo> method)
     {
-      var result = Assert.Throws<ArgumentException>(() => method.Invoke(null));
-      Assert.AreEqual("connectionInfo", result.ParamName);
-      Console.WriteLine(result.Message);
-      Console.WriteLine();
+      Assert.That(() => method.Invoke(null), Throws.ArgumentException.With.Property("ParamName").EqualTo("connectionInfo"));
 
-      result = Assert.Throws<ArgumentException>(() => method.Invoke(new GenericDbConnectionInfo()));
-      Assert.AreEqual("connectionInfo", result.ParamName);
-      Console.WriteLine(result.Message);
-      Console.WriteLine();
-
-      result = Assert.Throws<ArgumentException>(() => method.Invoke(new MockDbConnectionInfo()));
-      Assert.AreEqual("connectionInfo.ConnectionStringName", result.ParamName);
-      Console.WriteLine(result.Message);
-      Console.WriteLine();
-
-      result = Assert.Throws<ArgumentException>(() => method.Invoke(new MockDbConnectionInfo { ConnectionStringName = "PTest1" }));
-      Assert.AreEqual("connectionInfo.MockDatabaseType", result.ParamName);
-      Console.WriteLine(result.Message);
-      Console.WriteLine();
-
-      result = Assert.Throws<ArgumentException>(() => method.Invoke(new MockDbConnectionInfo { MockDatabaseType = typeof(TestMockDatabase) }));
-      Assert.AreEqual("connectionInfo.ConnectionStringName", result.ParamName);
-      Console.WriteLine(result.Message);
-      Console.WriteLine();
+      Assert.That(() => method.Invoke(new DbConnectionInfo()), Throws.ArgumentException.With.Property("ParamName").EqualTo("ConnectionString"));
     }
   }
 }

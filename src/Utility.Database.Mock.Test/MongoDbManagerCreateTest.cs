@@ -24,7 +24,7 @@ namespace Utility.Database.Mock.Test
     {
       var manager = new MockDbManager
                       {
-                        Description = new MockDbDescription
+                        Description = new DbDescription
                                         {
                                           XmlRoot = DbDescriptions.Valid,
                                           ConnectionInfo = GlobalTest.DbManager1.Description.ConnectionInfo
@@ -41,7 +41,7 @@ namespace Utility.Database.Mock.Test
     {
       var manager = new MockDbManager
                       {
-                        Description = new MockDbDescription
+                        Description = new DbDescription
                                         {
                                           XmlRoot = DbDescriptions.InvalidSchemaType,
                                           ConnectionInfo = GlobalTest.DbManager1.Description.ConnectionInfo

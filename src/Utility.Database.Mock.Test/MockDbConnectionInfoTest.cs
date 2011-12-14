@@ -11,60 +11,102 @@ namespace Utility.Database.Mock.Test
     {
       var result = new MockDbConnectionInfo();
 
-      Assert.IsInstanceOf<IDbConnectionInfo>(result);
-      Assert.IsInstanceOf<IDbMockTypeInfo>(result);
+      Assert.That(result, Is.InstanceOf<IDbConnectionInfo>());
+      Assert.That(result, Is.InstanceOf<IMockDbConnectionInfo>());
     }
 
     [Test]
-    public void CanCreate()
+    public void CanCreateWithConnectionStringName()
     {
-      var result = new MockDbConnectionInfo
+      var result = (IDbConnectionInfo)new MockDbConnectionInfo
                    {
-                     ConnectionStringName = "Test1",
-                     MockDatabaseType = typeof(TestMockDatabase)
+                     ConnectionStringName = "Test1"
                    };
 
-      Assert.NotNull(result);
-      Assert.AreEqual("Test1", result.ConnectionStringName);
-      Assert.AreEqual(typeof(TestMockDatabase), result.MockDatabaseType);
+      Assert.That(result, Is.Not.Null);
+      Assert.That(result.ConnectionString, Is.EqualTo("database=UtilityDatabaseTest1;database type=Utility.Database.Mock.Test.TestMockDatabase, Utility.Database.Mock.Test"));
+      Assert.That(((IMockDbConnectionInfo)result).DatabaseType, Is.EqualTo(typeof(TestMockDatabase)));
     }
+
+    [Test]
+    public void CanCreateWithConnectionString()
+    {
+      var result = (IDbConnectionInfo)new MockDbConnectionInfo
+      {
+        ConnectionString = "database=UtilityDatabaseTest1;database type=Utility.Database.Mock.Test.TestMockDatabase, Utility.Database.Mock.Test"
+      };
+
+      Assert.That(result, Is.Not.Null);
+      Assert.That(result.ConnectionString, Is.EqualTo("database=UtilityDatabaseTest1;database type=Utility.Database.Mock.Test.TestMockDatabase, Utility.Database.Mock.Test"));
+      Assert.That(((IMockDbConnectionInfo)result).DatabaseType, Is.EqualTo(typeof(TestMockDatabase)));
+    }
+
 
     [Test]
     public void CanCreateACopy()
     {
       var connectionInfo = (IDbConnectionInfo)new MockDbConnectionInfo
       {
-        ConnectionStringName = "Test1",
-        MockDatabaseType = typeof(TestMockDatabase)
+        ConnectionStringName = "Test1"
       };
 
       var result = connectionInfo.Copy();
 
-      Assert.NotNull(result);
-      Assert.IsInstanceOf<MockDbConnectionInfo>(result);
-      Assert.AreNotSame(connectionInfo, result);
-      Assert.AreEqual(connectionInfo.ConnectionStringName, result.ConnectionStringName);
-      Assert.AreEqual(((IDbMockTypeInfo)connectionInfo).MockDatabaseType, ((IDbMockTypeInfo)result).MockDatabaseType);
+      Assert.That(result, Is.Not.Null);
+      Assert.That(result, Is.Not.SameAs(connectionInfo));
+      Assert.That(result, Is.InstanceOf<MockDbConnectionInfo>());
+      Assert.That(result.ConnectionString, Is.EqualTo(connectionInfo.ConnectionString));
+      Assert.That(((IMockDbConnectionInfo)result).DatabaseType, Is.EqualTo(((IMockDbConnectionInfo)result).DatabaseType));
     }
 
-    [Test]
-    public void CreateWithConnectionStringThrows()
+
+    [TestCase(null)]
+    [TestCase("")]
+    [TestCase("   ")]
+    [TestCase("MissingConnectionStringName")]
+    public void CreateFromInvalidConnectionStringNameThrows(string connectionStringName)
     {
-      Assert.Throws<NotImplementedException>(() => new MockDbConnectionInfo { ConnectionString = "server=server" });
+      Assert.That(() => new MockDbConnectionInfo {ConnectionStringName = connectionStringName},
+                  Throws.ArgumentException.With.Property("ParamName").EqualTo("ConnectionStringName"));
+    }
+
+    [TestCase(null)]
+    [TestCase("")]
+    [TestCase(" ")]
+    [TestCase("invalid")]
+    [TestCase("database=")]
+    [TestCase("database type=")]
+    [TestCase("database=;database type=")]
+    [TestCase("database=database;database type=")]
+    [TestCase("database=;database type=Utility.Database.Mock.Test.TestMockDatabase, Utility.Database.Mock.Test")]
+    public void CreateFromInvalidConnectionStringThrows(string connectionString)
+    {
+      Assert.That(() => new MockDbConnectionInfo { ConnectionString = connectionString },
+                  Throws.ArgumentException.With.Property("ParamName").EqualTo("ConnectionString"));
     }
 
     [Test]
-    public void GetParametersThrows()
+    public void CanGetConnectionStringValues()
+    {
+      var result = (IDbConnectionInfo)new MockDbConnectionInfo
+      {
+        ConnectionStringName = "Test1"
+      };
+
+      Assert.That(result.DatabaseName, Is.EqualTo("UtilityDatabaseTest1"));
+      Assert.That(((IMockDbConnectionInfo)result).DatabaseType, Is.EqualTo(typeof(TestMockDatabase)));
+    }
+    
+    [Test]
+    public void GetUnsupportedParametersThrows()
     {
       var connectionInfo = new MockDbConnectionInfo()
       {
-        ConnectionStringName = "Test1",
-        MockDatabaseType = typeof(TestMockDatabase)
+        ConnectionStringName = "Test1"
       };
-      Assert.Throws<NotImplementedException>(() => { var _ = connectionInfo.ConnectionString; });
+
       Assert.Throws<NotImplementedException>(() => { var _ = connectionInfo.ServerAddress; });
       Assert.Throws<NotImplementedException>(() => { var _ = connectionInfo.ServerPort; });
-      Assert.Throws<NotImplementedException>(() => { var _ = connectionInfo.DatabaseName; });
       Assert.Throws<NotImplementedException>(() => { var _ = connectionInfo.UserName; });
       Assert.Throws<NotImplementedException>(() => { var _ = connectionInfo.Password; });
     }

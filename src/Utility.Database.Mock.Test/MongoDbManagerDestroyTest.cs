@@ -22,7 +22,7 @@ namespace Utility.Database.Mock.Test
     {
       var manager = new MockDbManager
       {
-        Description = new MockDbDescription
+        Description = new DbDescription
         {
           XmlRoot = DbDescriptions.Valid,
           ConnectionInfo = GlobalTest.DbManager1.Description.ConnectionInfo

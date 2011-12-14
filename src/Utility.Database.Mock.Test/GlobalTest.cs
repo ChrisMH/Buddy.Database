@@ -25,8 +25,7 @@ namespace Utility.Database.Mock.Test
                                            XmlRoot = DbDescriptions.Valid,
                                            ConnectionInfo = new MockDbConnectionInfo
                                                               {
-                                                                ConnectionStringName = "Test1",
-                                                                MockDatabaseType = typeof (TestMockDatabase)
+                                                                ConnectionStringName = "Test1"
                                                               }
                                          }
                        };

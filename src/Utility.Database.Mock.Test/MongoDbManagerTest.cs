@@ -8,7 +8,6 @@ namespace Utility.Database.Mock.Test
     [SetUp]
     public void SetUp()
     {
-      
     }
 
     [TearDown]
@@ -38,12 +37,10 @@ namespace Utility.Database.Mock.Test
     private void InvalidParameterTests(Action<MockDbManager> action)
     {
       var manager = new MockDbManager();
-      Assert.AreEqual("Description",
-                      Assert.Throws<ArgumentNullException>(() => action.Invoke(manager)).ParamName);
+      Assert.That(() => action(manager), Throws.ArgumentException.With.Property("ParamName").EqualTo("Description"));
 
-      manager = new MockDbManager { Description = new MockDbDescription() };
-      Assert.AreEqual("Description.ConnectionInfo",
-                      Assert.Throws<ArgumentNullException>(() => action.Invoke(manager)).ParamName);
+      manager = new MockDbManager { Description = new DbDescription() };
+      Assert.That(() => action(manager), Throws.ArgumentException.With.Property("ParamName").EqualTo("Description.ConnectionInfo"));
     }
   }
 }
