@@ -18,7 +18,7 @@ namespace Utility.Database.MongoDb.Test
     {
       try
       {
-        Logger = new NLogLoggerFactory().GetCurrentClassLogger();
+        Logger = new NLogLoggerFactory().GetCurrentInstanceLogger();
    
         DbManager1 = new MongoDbManager
                      {

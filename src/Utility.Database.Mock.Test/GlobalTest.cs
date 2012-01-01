@@ -16,7 +16,7 @@ namespace Utility.Database.Mock.Test
     {
       try
       {
-        Logger = new NLogLoggerFactory().GetCurrentClassLogger();
+        Logger = new NLogLoggerFactory().GetCurrentInstanceLogger();
 
         DbManager1 = new MockDbManager
                        {

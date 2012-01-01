@@ -19,7 +19,7 @@ namespace Utility.Database.PostgreSql.Test
     {
       try
       {
-        Logger = new NLogLoggerFactory().GetCurrentClassLogger();
+        Logger = new NLogLoggerFactory().GetCurrentInstanceLogger();
 
         Manager1 = new PgDbManager
                    {
