@@ -17,7 +17,7 @@ namespace Utility.Database
     /// </summary>
     /// <param name="xmlRoot"></param>
     /// <returns></returns>
-    public static IDbManager Create(string xmlRoot)
+    public static IDbManager Create(string xmlRoot, string baseDirectory = null)
     {
       if (string.IsNullOrWhiteSpace(xmlRoot)) throw new ArgumentException("xmlRoot is invalid", "xmlRoot");
 
@@ -37,7 +37,7 @@ namespace Utility.Database
         throw new ArgumentException(string.Format("Could not create database manager type '{0}'", typeAttribute.Value), "xmlRoot", e);
       }
 
-      dbManager.Description = DbDescription.Create(root.FirstNode.ToString());
+      dbManager.Description = DbDescription.Create(root.FirstNode.ToString(), baseDirectory);
 
       return dbManager;
     }

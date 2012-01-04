@@ -108,7 +108,7 @@ namespace Utility.Database
     /// </summary>
     /// <param name="xmlRoot"></param>
     /// <returns></returns>
-    public static IDbDescription Create(string xmlRoot)
+    public static IDbDescription Create(string xmlRoot, string baseDirectory = null)
     {
       if (string.IsNullOrWhiteSpace(xmlRoot)) throw new ArgumentException("xmlRoot is invalid", "xmlRoot");
 
@@ -134,6 +134,10 @@ namespace Utility.Database
       }
 
       dbDescription.XmlRoot = xmlRoot;
+      if(baseDirectory != null)
+      {
+        dbDescription.baseDirectory = baseDirectory;
+      }
 
       return dbDescription;
     }
