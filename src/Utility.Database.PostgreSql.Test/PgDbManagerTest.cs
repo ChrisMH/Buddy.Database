@@ -126,7 +126,7 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void CreateFromDescriptionWithNoConnectionThrows()
     {
-      var manager = new PgDbManager {Description = new PgDbDescription {XmlRoot = Resources.TestDescriptionNoConnectionName}};
+      var manager = DbManager.Create(Resources.TestDescriptionNoConnectionName);
 
       var result = Assert.Throws<ArgumentException>(manager.Create);
       Assert.AreEqual("Description.ConnectionInfo", result.ParamName);
@@ -136,7 +136,7 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void SeedFromDescriptionWithNoConnectionThrows()
     {
-      var manager = new PgDbManager {Description = new PgDbDescription {XmlRoot = Resources.TestDescriptionNoConnectionName}};
+      var manager = DbManager.Create(Resources.TestDescriptionNoConnectionName);
 
       var result = Assert.Throws<ArgumentException>(manager.Seed);
       Assert.AreEqual("Description.ConnectionInfo", result.ParamName);
@@ -146,7 +146,7 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void DestroyFromDescriptionWithNoConnectionThrows()
     {
-      var manager = new PgDbManager {Description = new PgDbDescription {XmlRoot = Resources.TestDescriptionNoConnectionName}};
+      var manager = DbManager.Create(Resources.TestDescriptionNoConnectionName);
 
       var result = Assert.Throws<ArgumentException>(manager.Destroy);
       Assert.AreEqual("Description.ConnectionInfo", result.ParamName);

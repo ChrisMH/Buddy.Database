@@ -53,12 +53,12 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void SeedFromDescriptionSeedsDatabase()
     {
-      var manager = new PgDbManager {Description = new PgDbDescription {XmlRoot = Resources.TestDescription}};
+      var manager = DbManager.Create(Resources.TestDescription);
 
       manager.Create();
       manager.Seed();
 
-      using (var conn = manager.CreateContentConnection())
+      using (var conn = GlobalTest.Manager1.CreateContentConnection())
       {
         conn.Open();
 

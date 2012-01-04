@@ -62,14 +62,14 @@ namespace Utility.Database.PostgreSql.Test {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
-        ///&lt;DbDescription&gt;
-        ///  &lt;Connection&gt;
-        ///    &lt;ConnectionStringName&gt;Test1&lt;/ConnectionStringName&gt;
-        ///  &lt;/Connection&gt;
-        ///  &lt;Schema type=&quot;Resource&quot;&gt;Utility.Database.PostgreSql.Test.Resources.TestSchema.sql&lt;/Schema&gt;
-        ///  &lt;Seed type=&quot;Resource&quot;&gt;Utility.Database.PostgreSql.Test.Resources.TestSeed.sql&lt;/Seed&gt;
-        ///  &lt;Seed type=&quot;Literal&quot;&gt;INSERT INTO test_schema.test_table (name) VALUES(&apos;name3&apos;);&lt;/Seed&gt;
-        ///&lt;/DbDescription&gt;.
+        ///&lt;DbManager type=&quot;Utility.Database.PostgreSql.PgDbManager, Utility.Database.PostgreSql&quot;&gt;
+        ///  &lt;DbDescription type=&quot;Utility.Database.PostgreSql.PgDbDescription, Utility.Database.PostgreSql&quot;&gt;
+        ///    &lt;Connection&gt;
+        ///      &lt;ConnectionStringName&gt;Test1&lt;/ConnectionStringName&gt;
+        ///    &lt;/Connection&gt;
+        ///    &lt;Schema type=&quot;Resource&quot;&gt;Utility.Database.PostgreSql.Test.Resources.TestSchema.sql&lt;/Schema&gt;
+        ///    &lt;Seed type=&quot;Resource&quot;&gt;Utility.Database.PostgreSql.Test.Resources.TestSeed.sql&lt;/Seed&gt;
+        ///   [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string TestDescription {
             get {
@@ -79,11 +79,12 @@ namespace Utility.Database.PostgreSql.Test {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
-        ///&lt;DbDescription&gt;
-        ///  &lt;Schema type=&quot;Resource&quot;&gt;Utility.Database.PostgreSql.Test.Resources.TestSchema.sql&lt;/Schema&gt;
-        ///  &lt;Seed type=&quot;Resource&quot;&gt;Utility.Database.PostgreSql.Test.Resources.TestSeed.sql&lt;/Seed&gt;
-        ///  &lt;Seed type=&quot;Literal&quot;&gt;INSERT INTO test_schema.test_table (name) VALUES(&apos;name3&apos;);&lt;/Seed&gt;
-        ///&lt;/DbDescription&gt;.
+        ///&lt;DbManager type=&quot;Utility.Database.PostgreSql.PgDbManager, Utility.Database.PostgreSql&quot;&gt;
+        ///  &lt;DbDescription type=&quot;Utility.Database.PostgreSql.PgDbDescription, Utility.Database.PostgreSql&quot;&gt;
+        ///    &lt;Schema type=&quot;Resource&quot;&gt;Utility.Database.PostgreSql.Test.Resources.TestSchema.sql&lt;/Schema&gt;
+        ///    &lt;Seed type=&quot;Resource&quot;&gt;Utility.Database.PostgreSql.Test.Resources.TestSeed.sql&lt;/Seed&gt;
+        ///    &lt;Seed type=&quot;Literal&quot;&gt;INSERT INTO test_schema.test_table (name) VALUES(&apos;name3&apos;);&lt;/Seed&gt;
+        ///  &lt;/D [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string TestDescriptionNoConnectionName {
             get {
@@ -93,14 +94,14 @@ namespace Utility.Database.PostgreSql.Test {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
-        ///&lt;DbDescription&gt;
-        ///  &lt;Connection&gt;
-        ///    &lt;ConnectionStringName&gt;Test1&lt;/ConnectionStringName&gt;
-        ///  &lt;/Connection&gt;
-        ///  &lt;Schema type=&quot;Resource&quot;&gt;Utility.Database.PostgreSql.Test.Resources.TestSchema.sql&lt;/Schema&gt;
-        ///  &lt;Seed type=&quot;Resource&quot;&gt;Utility.Database.PostgreSql.Test.Resources.TestSeed.sql&lt;/Seed&gt;
-        ///  &lt;Seed type=&quot;Literal&quot;&gt;INSERT INTO test_schema.test_table (name) VALUES(&apos;name3&apos;);&lt;/Seed&gt;
-        ///&lt;/DbDescription&gt;.
+        ///&lt;DbManager type=&quot;Utility.Database.PostgreSql.PgDbManager, Utility.Database.PostgreSql&quot;&gt;
+        ///  &lt;DbDescription type=&quot;Utility.Database.PostgreSql.PgDbDescription, Utility.Database.PostgreSql&quot;&gt;
+        ///    &lt;Connection&gt;
+        ///      &lt;ConnectionStringName&gt;Test1&lt;/ConnectionStringName&gt;
+        ///    &lt;/Connection&gt;
+        ///    &lt;TemplateName&gt;template_postgis&lt;/TemplateName&gt;
+        ///    &lt;Schema type=&quot;Resource&quot;&gt;Utility.Database.PostgreSql.Test.Resources.TestSchema.sql&lt;/Schema&gt;
+        ///    &lt;Seed type=&quot;Resource&quot;&gt;Utility.Databas [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string TestDescriptionWithTemplate {
             get {

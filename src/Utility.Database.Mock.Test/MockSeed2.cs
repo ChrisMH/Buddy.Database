@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Utility.Database.Mock.Test
 {
@@ -10,9 +7,9 @@ namespace Utility.Database.Mock.Test
     public void Run(IDbConnectionInfo connectionInfo)
     {
       var db = MockDatabaseProvider.Open(connectionInfo) as TestMockDatabase;
-      if (db == null) throw new ArgumentException("Connection information is not a mock database", "connectionInfo");
+      if (db == null) throw new ArgumentException("Could not open mock database from supplied connectionInfo", "connectionInfo");
 
-      db.Table.Add(new TestMockDatabase.Row { Id = 3, RowName = "Three" });
+      db.Table.Add(new TestMockDatabase.Row {Id = 3, RowName = "Three"});
     }
   }
 }

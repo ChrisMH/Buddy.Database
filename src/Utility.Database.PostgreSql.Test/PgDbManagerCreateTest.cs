@@ -174,11 +174,11 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void CreateFromDescriptionWithTemplateCreatesDatabaseWithTemplate()
     {
-      var manager = new PgDbManager {Description = new PgDbDescription {XmlRoot = Resources.TestDescriptionWithTemplate}};
+      var manager = DbManager.Create(Resources.TestDescriptionWithTemplate);
 
       manager.Create();
 
-      using (var conn = manager.CreateContentConnection())
+      using (var conn = GlobalTest.Manager1.CreateContentConnection())
       {
         conn.Open();
 
@@ -193,14 +193,11 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void CreateFromDescriptionCreatesSchema()
     {
-      var manager = new PgDbManager
-                    {
-                      Description = new PgDbDescription {XmlRoot = Resources.TestDescription}
-                    };
+      var manager = DbManager.Create(Resources.TestDescription);
 
       manager.Create();
 
-      using (var conn = manager.CreateContentConnection())
+      using (var conn = GlobalTest.Manager1.CreateContentConnection())
       {
         conn.Open();
 

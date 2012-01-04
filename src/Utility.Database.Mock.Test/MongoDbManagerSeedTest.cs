@@ -37,7 +37,7 @@ namespace Utility.Database.Mock.Test
       var db = MockDatabaseProvider.Open(GlobalTest.DbManager1.Description.ConnectionInfo) as TestMockDatabase;
 
       var row = db.Table.SingleOrDefault(r => r.Id == 3);
-      Assert.IsNotNull(row);
+      Assert.That(row, Is.Not.Null);
     }
 
     [Test]
@@ -53,9 +53,8 @@ namespace Utility.Database.Mock.Test
       };
 
       manager.Create();
-      var result = Assert.Throws<ArgumentException>(manager.Seed);
-      Assert.AreEqual("ScriptType", result.ParamName);
-      Console.WriteLine(result.Message);
+
+      Assert.That(() => manager.Seed(), Throws.ArgumentException.With.Property("ParamName").EqualTo("ScriptType"));
     }
   }
 }

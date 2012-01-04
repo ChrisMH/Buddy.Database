@@ -18,12 +18,30 @@
                                                                         "</Connection>" +
                                                                         "</DbDescription>";
 
-    public const string ConnectionWithConnectionStringAndProviderType = "<DbDescription>" +
-                                                                        "<Connection>" +
-                                                                        "<ConnectionString>server=server</ConnectionString>" +
-                                                                        "<Provider>System.Data.SqlClient.SqlClientFactory, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</Provider>" +
-                                                                        "</Connection>" +
-                                                                        "</DbDescription>";
+    public const string ConnectionWithConnectionStringAndProviderType = 
+      "<DbDescription>" +
+        "<Connection>" +
+          "<ConnectionString>server=server</ConnectionString>" +
+          "<Provider>System.Data.SqlClient.SqlClientFactory, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</Provider>" +
+        "</Connection>" +
+      "</DbDescription>";
+              
+    
+    // DbDescription with type                                                                        
+    public const string ExplicitDbDescriptionType = 
+      "<DbDescription type=\"Utility.Database.Test.TestDbDescription, Utility.Database.Test\">" +
+        "<Connection>" +
+          "<ConnectionStringName>Valid</ConnectionStringName>" +
+        "</Connection>" +
+      "</DbDescription>";
+
+    public const string ImplicitDbDescriptionType =
+      "<DbDescription>" +
+        "<Connection>" +
+          "<ConnectionStringName>Valid</ConnectionStringName>" +
+        "</Connection>" +
+      "</DbDescription>";
+
     // Invalid Connection
     public const string EmptyConnection = "<DbDescription><Connection></Connection></DbDescription>";
 

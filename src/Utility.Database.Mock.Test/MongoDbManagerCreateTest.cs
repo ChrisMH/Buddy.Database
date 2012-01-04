@@ -1,5 +1,4 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace Utility.Database.Mock.Test
 {
@@ -33,7 +32,7 @@ namespace Utility.Database.Mock.Test
 
       manager.Create();
 
-      Assert.IsNotNull(MockDatabaseProvider.Open(GlobalTest.DbManager1.Description.ConnectionInfo));
+      Assert.That(MockDatabaseProvider.Open(GlobalTest.DbManager1.Description.ConnectionInfo), Is.Not.Null);
     }
 
     [Test]
@@ -47,9 +46,8 @@ namespace Utility.Database.Mock.Test
                                           ConnectionInfo = GlobalTest.DbManager1.Description.ConnectionInfo
                                         }
                       };
-      var result = Assert.Throws<ArgumentException>(manager.Create);
-      Assert.AreEqual("ScriptType", result.ParamName);
-      Console.WriteLine(result.Message);
+
+      Assert.That(() => manager.Create(), Throws.ArgumentException.With.Property("ParamName").EqualTo("ScriptType"));
     }
   }
 }

@@ -32,7 +32,8 @@ namespace Utility.Database.Mock.Test
       manager.Create();
       manager.Destroy();
 
-      Assert.Throws<ArgumentException>(() => MockDatabaseProvider.Open(GlobalTest.DbManager1.Description.ConnectionInfo));
+      Assert.That(() => MockDatabaseProvider.Open(GlobalTest.DbManager1.Description.ConnectionInfo),
+                  Throws.ArgumentException);
     }
   }
 }

@@ -116,5 +116,44 @@ namespace Utility.Database.Test
 
       Assert.That(result.ConnectionInfo.ConnectionString, Is.EqualTo("schema=schema"));
     }
+
+
+    [Test]
+    public void StaticCreateCreatesDbDescription()
+    {
+      var result = DbDescription.Create(DbDescriptions.ExplicitDbDescriptionType);
+
+      Assert.That(result, Is.Not.Null);
+      Assert.That(result, Is.AssignableTo<IDbDescription>());
+      Assert.That(result, Is.InstanceOf<TestDbDescription>());
+      Assert.That(result.ConnectionInfo.ConnectionString, Is.EqualTo("server=server"));
+    }
+
+    [Test]
+    public void StaticCreateCreatesWithDefaultTypeIfTypeIsNotSpecified()
+    {
+      var result = DbDescription.Create(DbDescriptions.ImplicitDbDescriptionType);
+
+      Assert.That(result, Is.Not.Null);
+      Assert.That(result, Is.AssignableTo<IDbDescription>());
+      Assert.That(result, Is.InstanceOf<DbDescription>());
+      Assert.That(result.ConnectionInfo.ConnectionString, Is.EqualTo("server=server"));
+    }
+
+
+    [TestCase(null)]
+    [TestCase("")]
+    [TestCase(" ")]
+    public void StaticCreateThrowsIfParameterIsInvalid(string xmlRoot)
+    {
+      Assert.That(() => DbDescription.Create(xmlRoot), Throws.ArgumentException.With.Property("ParamName").EqualTo("xmlRoot"));
+    }
+
+    [TestCase("<DbDescription type=\"\"></DbDescription>")]
+    [TestCase("<DbDescription type=\"Utility.Database.InvalidType, Utility.Database\"></DbDescription>")]
+    public void StaticCreateThrowsIfTypeIsInvalid(string xmlRoot)
+    {
+      Assert.That(() => DbDescription.Create(xmlRoot), Throws.ArgumentException.With.Property("ParamName").EqualTo("xmlRoot"));
+    }
   }
 }

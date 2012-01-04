@@ -85,17 +85,20 @@ namespace Utility.Database
       {
         var rType = new ReflectionType(ScriptValue);
         var runMethod = rType.CreateType().GetMethod("Run");
-        if (runMethod == null) throw new ArgumentException(string.Format("Could not find a method named 'Run' for ScriptValue : {0}", ScriptValue), "ScriptValue");
-        if (runMethod.ReturnType != typeof(void)) throw new ArgumentException(string.Format("Run method does not have return type 'void' for ScriptValue : {0}", ScriptValue), "ScriptValue");
+        if (runMethod == null)
+          throw new ArgumentException(string.Format("Could not find a method named 'Run' for ScriptValue : {0}", ScriptValue), "ScriptValue");
+        if (runMethod.ReturnType != typeof (void))
+          throw new ArgumentException(string.Format("Run method does not have return type 'void' for ScriptValue : {0}", ScriptValue), "ScriptValue");
         var parameters = runMethod.GetParameters();
-        if(parameters.Length != 1 || parameters[0].ParameterType != typeof(IDbConnectionInfo))
-          throw new ArgumentException(string.Format("Run method does not have a single parameter of type 'IDbConnectionInfo' for ScriptValue : {0}", ScriptValue), "ScriptValue");
+        if (parameters.Length != 1 || parameters[0].ParameterType != typeof (IDbConnectionInfo))
+          throw new ArgumentException(
+            string.Format("Run method does not have a single parameter of type 'IDbConnectionInfo' for ScriptValue : {0}", ScriptValue), "ScriptValue");
 
         runMethod.Invoke(rType.CreateObject(), BindingFlags.InvokeMethod, null, new object[] {connectionInfo}, null);
       }
       catch (Exception e)
       {
-        if(e.GetType() == typeof(ArgumentException)) throw;
+        if (e.GetType() == typeof (ArgumentException)) throw;
         throw new ArgumentException(string.Format("ScriptValue could not be run : {0} : {1} : {2}", ScriptValue, e.GetType(), e.Message), "ScriptValue", e);
       }
     }

@@ -7,7 +7,7 @@ namespace Utility.Database.Mock.Test
     public void Run(IDbConnectionInfo connectionInfo)
     {
       var db = MockDatabaseProvider.Open(connectionInfo) as TestMockDatabase;
-      if (db == null) throw new ArgumentException("Connection information is not a mock database", "connectionInfo");
+      if (db == null) throw new ArgumentException("Could not open mock database from supplied connectionInfo", "connectionInfo");
 
       // Schema already defined in TestMockDatabase
 

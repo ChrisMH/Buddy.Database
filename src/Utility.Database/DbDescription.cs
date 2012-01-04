@@ -28,6 +28,9 @@ namespace Utility.Database
       set { baseDirectory = value; }
     }
 
+    /// <summary>
+    /// XML description of the database 
+    /// </summary>
     public virtual string XmlRoot
     {
       set
@@ -90,8 +93,49 @@ namespace Utility.Database
     }
 
 
-    
     private IDbConnectionInfo connectionInfo;
     private string baseDirectory;
+
+    
+    /// <summary>
+    /// Create from a DbDescription node containing a type
+    /// 
+    /// &lt;DbDescription type="assembly.class, assembly"&gt;
+    ///   ...
+    /// &lt;/DbDescription&gt;
+    /// 
+    /// If the DbDescription element does not have an explicit 'type' attribute, Utility.Database.DbDescription is used
+    /// </summary>
+    /// <param name="xmlRoot"></param>
+    /// <returns></returns>
+    public static IDbDescription Create(string xmlRoot)
+    {
+      if (string.IsNullOrWhiteSpace(xmlRoot)) throw new ArgumentException("xmlRoot is invalid", "xmlRoot");
+
+      var root = XElement.Parse(xmlRoot);
+
+      DbDescription dbDescription;
+
+      var typeAttribute = root.Attribute("type");
+      if (typeAttribute == null)
+      {
+        dbDescription = new DbDescription();
+      }
+      else
+      {
+        try
+        {
+          dbDescription = new ReflectionType(typeAttribute.Value).CreateObject<DbDescription>();
+        }
+        catch (Exception e)
+        {
+          throw new ArgumentException(string.Format("Could not create database description type '{0}'", typeAttribute.Value), "xmlRoot", e);
+        }
+      }
+
+      dbDescription.XmlRoot = xmlRoot;
+
+      return dbDescription;
+    }
   }
 }

@@ -6,6 +6,6 @@
     void Destroy();
     void Seed();
 
-    IDbDescription Description { get; }
+    IDbDescription Description { get; set; }
   }
 }

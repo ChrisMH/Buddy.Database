@@ -56,6 +56,8 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="DbManagers.cs" />
+    <Compile Include="DbManagerTest.cs" />
     <Compile Include="Runnable.cs" />
     <Compile Include="DbDescriptions.cs" />
     <Compile Include="DbDescriptionTest.cs" />
@@ -63,6 +65,8 @@
     <Compile Include="DbScriptTest.cs" />
     <Compile Include="DbConnectionInfoTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestDbDescription.cs" />
+    <Compile Include="TestDbManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

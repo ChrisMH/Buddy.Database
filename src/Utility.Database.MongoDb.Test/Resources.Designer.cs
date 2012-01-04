@@ -61,7 +61,16 @@ namespace Utility.Database.MongoDb.Test {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+        ///&lt;DbManager type=&quot;Utility.Database.MongoDb.MongoDbManager,Utility.Database.MongoDb&quot;&gt;
+        ///  &lt;DbDescription&gt;
+        ///    &lt;Connection&gt;
+        ///      &lt;ConnectionStringName&gt;Test1&lt;/ConnectionStringName&gt;
+        ///    &lt;/Connection&gt;
+        ///    &lt;Schema type=&quot;Resource&quot;&gt;Utility.Database.MongoDb.Test.Resources.schema.js&lt;/Schema&gt;
+        ///    &lt;Seed type=&quot;Resource&quot;&gt;Utility.Database.MongoDb.Test.Resources.seed1.js&lt;/Seed&gt;
+        ///    &lt;Seed type=&quot;Resource&quot;&gt;Utility.Database.MongoDb.Test.Resources.seed2.js&lt;/Seed&gt;
+        ///  &lt;/DbDescription&gt; [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string description {
             get {
