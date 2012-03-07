@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<DbDescription>
-  <Schema type="Resource">Utility.Database.MongoDb.Test.Resources.schema.js</Schema>
-  <Seed type="Resource">Utility.Database.MongoDb.Test.Resources.seed1.js</Seed>
-  <Seed type="Resource">Utility.Database.MongoDb.Test.Resources.seed2.js</Seed>
-</DbDescription>

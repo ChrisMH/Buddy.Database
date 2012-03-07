@@ -38,9 +38,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Utility, Version=0.6.1.1, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Utility, Version=0.7.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Utility.0.6.1.1\lib\net40\Utility.dll</HintPath>
+      <HintPath>..\packages\Utility.0.7.1.0\lib\net40\Utility.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
