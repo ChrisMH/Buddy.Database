@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Utility.Database.PostgreSql</id>
+    <version>$version$</version>
+    <title>Utility.Database.PostgreSql</title>
+    <authors>Chris Hogan</authors>
+    <owners>Chris Hogan</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Utility.Database PostgreSql-specific implementation</description>
+    <copyright>Copyright 2011</copyright>
+    <dependencies>
+      <dependency id="Npgsql" version="2.0.11" />
+      <dependency id="Utility" version="0.7.1" />
+      <dependency id="Utility.Database" version="$version$"/>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\src\Utility.Database.PostgreSql\bin\Release\Utility.Database.PostgreSql.dll" target ="lib\net40"/>
+    <file src="..\src\Utility.Database.PostgreSql\bin\Release\Utility.Database.PostgreSql.pdb" target ="lib\net40"/>
+  </files>
+</package>

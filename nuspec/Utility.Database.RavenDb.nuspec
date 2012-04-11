@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Utility.Database.RavenDb</id>
+    <version>$version$</version>
+    <title>Utility.Database.RavenDb</title>
+    <authors>Chris Hogan</authors>
+    <owners>Chris Hogan</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Utility.Database RavenDB-specific implementation</description>
+    <copyright>Copyright 2011</copyright>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" version="4.0.8" />
+      <dependency id="NLog" version="2.0.0.2000" />
+      <dependency id="RavenDB" version="1.0.705-Unstable" />
+      <dependency id="Utility" version="0.7.1.0" />
+      <dependency id="Utility.Database" version="$version$"/>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\src\Utility.Database.RavenDb\bin\Release\Utility.Database.RavenDb.dll" target ="lib\net40"/>
+    <file src="..\src\Utility.Database.RavenDb\bin\Release\Utility.Database.RavenDb.pdb" target ="lib\net40"/>
+  </files>
+</package>

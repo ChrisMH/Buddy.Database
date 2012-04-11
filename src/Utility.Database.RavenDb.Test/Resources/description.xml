@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<DbManager type="Utility.Database.MongoDb.MongoDbManager,Utility.Database.MongoDb">
+  <DbDescription>
+    <Connection>
+      <ConnectionStringName>Test1</ConnectionStringName>
+    </Connection>
+    <Schema type="Resource">Utility.Database.MongoDb.Test.Resources.schema.js</Schema>
+    <Seed type="Resource">Utility.Database.MongoDb.Test.Resources.seed1.js</Seed>
+    <Seed type="Resource">Utility.Database.MongoDb.Test.Resources.seed2.js</Seed>
+  </DbDescription>
+</DbManager>
