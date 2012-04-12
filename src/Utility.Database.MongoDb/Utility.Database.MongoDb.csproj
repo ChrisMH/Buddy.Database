@@ -59,6 +59,7 @@
     <Compile Include="MongoDbConnectionInfo.cs" />
     <Compile Include="MongoDbManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReflectionTypeSerializer.cs" />
     <Compile Include="StringIdGenerator.cs" />
     <Compile Include="StringIdSerializer.cs" />
   </ItemGroup>
