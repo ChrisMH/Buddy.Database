@@ -23,10 +23,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database.Mock", "Ut
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database.Mock.Test", "Utility.Database.Mock.Test\Utility.Database.Mock.Test.csproj", "{B566649F-3A8D-4E75-A35C-720B62CCC79D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database.RavenDb", "Utility.Database.RavenDb\Utility.Database.RavenDb.csproj", "{929D7ACF-CE00-4C83-BAF6-C1516C5D669B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database.RavenDb.Test", "Utility.Database.RavenDb.Test\Utility.Database.RavenDb.Test.csproj", "{541F0067-816D-49EE-B52A-69EB8A2A9878}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuspec", "nuspec", "{E08805D5-13BA-45D5-A2D9-F9028BE3F142}"
 	ProjectSection(SolutionItems) = preProject
 		..\nuspec\Utility.Database.Mock.nuspec = ..\nuspec\Utility.Database.Mock.nuspec
@@ -74,14 +70,6 @@ Global
 		{B566649F-3A8D-4E75-A35C-720B62CCC79D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B566649F-3A8D-4E75-A35C-720B62CCC79D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B566649F-3A8D-4E75-A35C-720B62CCC79D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{929D7ACF-CE00-4C83-BAF6-C1516C5D669B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{929D7ACF-CE00-4C83-BAF6-C1516C5D669B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{929D7ACF-CE00-4C83-BAF6-C1516C5D669B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{929D7ACF-CE00-4C83-BAF6-C1516C5D669B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{541F0067-816D-49EE-B52A-69EB8A2A9878}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{541F0067-816D-49EE-B52A-69EB8A2A9878}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{541F0067-816D-49EE-B52A-69EB8A2A9878}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{541F0067-816D-49EE-B52A-69EB8A2A9878}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
