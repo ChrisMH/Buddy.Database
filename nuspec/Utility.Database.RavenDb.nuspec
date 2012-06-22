@@ -10,11 +10,11 @@
     <description>Utility.Database RavenDB-specific implementation</description>
     <copyright>Copyright 2011</copyright>
     <dependencies>
-      <dependency id="Newtonsoft.Json" version="4.0.8" />
-      <dependency id="NLog" version="2.0.0.2000" />
-      <dependency id="RavenDB" version="1.0.705-Unstable" />
-      <dependency id="Utility" version="0.7.1.0" />
-      <dependency id="Utility.Database" version="$version$"/>
+      <dependency id="Newtonsoft.Json"/>
+      <dependency id="NLog"/>
+      <dependency id="RavenDB"/>
+      <dependency id="Utility"/>
+      <dependency id="Utility.Database"/>
     </dependencies>
   </metadata>
   <files>

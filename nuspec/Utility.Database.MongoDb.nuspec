@@ -10,9 +10,9 @@
     <description>Utility.Database MongoDB-specific implementation</description>
     <copyright>Copyright 2011</copyright>
     <dependencies>
-      <dependency id="mongocsharpdriver" version="1.4.0" />
-      <dependency id="Utility" version="0.7.1" />
-      <dependency id="Utility.Database" version="$version$"/>
+      <dependency id="mongocsharpdriver"/>
+      <dependency id="Utility"/>
+      <dependency id="Utility.Database"/>
     </dependencies>
   </metadata>
   <files>
