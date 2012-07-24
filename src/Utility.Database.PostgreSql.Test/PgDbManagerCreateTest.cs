@@ -48,7 +48,7 @@ namespace Utility.Database.PostgreSql.Test
                       Description = new PgDbDescription
                                     {
                                       ConnectionInfo = GlobalTest.Manager1.Description.ConnectionInfo,
-                                      TemplateName = "template_postgis"
+                                      TemplateName = "template_postgis_20"
                                     }
                     };
 

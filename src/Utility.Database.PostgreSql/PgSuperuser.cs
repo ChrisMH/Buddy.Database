@@ -1,6 +1,6 @@
 ﻿namespace Utility.Database.PostgreSql
 {
-  public class PgSuperuser
+  public class PgSuperuser : IDbSuperuser
   {
     public PgSuperuser()
     {

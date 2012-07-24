@@ -21,6 +21,7 @@ namespace Utility.Database
 
     public List<DbScript> Schemas { get; set; }
     public List<DbScript> Seeds { get; set; }
+    public IDbSuperuser Superuser { get; set; }
 
     public string BaseDirectory
     {

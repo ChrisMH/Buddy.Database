@@ -9,7 +9,6 @@ namespace Utility.Database.PostgreSql
   {
     public PgDbManager()
     {
-      Superuser = new PgSuperuser();
     }
     
     public void Create()
@@ -102,7 +101,7 @@ namespace Utility.Database.PostgreSql
           cmd.CommandText = string.Format("DROP DATABASE IF EXISTS \"{0}\"", Description.ConnectionInfo.DatabaseName);
           cmd.ExecuteNonQuery();
 
-          if(!string.IsNullOrWhiteSpace(Description.ConnectionInfo.UserName) && !Description.ConnectionInfo.UserName.Equals(Superuser.UserName, StringComparison.InvariantCultureIgnoreCase))
+          if(!string.IsNullOrWhiteSpace(Description.ConnectionInfo.UserName) && !Description.ConnectionInfo.UserName.Equals(Description.Superuser.UserName, StringComparison.InvariantCultureIgnoreCase))
           {
             // Delete the role if it is not in use by any databases
             cmd.CommandText = string.Format("SELECT COUNT(*) FROM pg_catalog.pg_shdepend sd " +
@@ -139,7 +138,6 @@ namespace Utility.Database.PostgreSql
     }
     
     public IDbDescription Description { get; set; }
-    public PgSuperuser Superuser { get; set; }
 
 
     internal DbConnection CreateDatabaseConnection()
@@ -147,9 +145,9 @@ namespace Utility.Database.PostgreSql
       VerifyProperties();
 
       var csBuilder = new DbConnectionStringBuilder {ConnectionString = Description.ConnectionInfo.ConnectionString};
-      csBuilder[PgDbConnectionInfo.DatabaseNameKey] = Superuser.DatabaseName;
-      csBuilder[PgDbConnectionInfo.UserNameKey] = Superuser.UserName;
-      csBuilder[PgDbConnectionInfo.PasswordKey] = Superuser.Password;
+      csBuilder[PgDbConnectionInfo.DatabaseNameKey] = ((PgSuperuser)Description.Superuser).DatabaseName;
+      csBuilder[PgDbConnectionInfo.UserNameKey] = Description.Superuser.UserName;
+      csBuilder[PgDbConnectionInfo.PasswordKey] = Description.Superuser.Password;
 
       var conn = new NpgsqlConnection(csBuilder.ConnectionString);
 
@@ -161,8 +159,8 @@ namespace Utility.Database.PostgreSql
       VerifyProperties();
 
       var csBuilder = new DbConnectionStringBuilder {ConnectionString = Description.ConnectionInfo.ConnectionString};
-      csBuilder[PgDbConnectionInfo.UserNameKey] = Superuser.UserName;
-      csBuilder[PgDbConnectionInfo.PasswordKey] = Superuser.Password;
+      csBuilder[PgDbConnectionInfo.UserNameKey] = Description.Superuser.UserName;
+      csBuilder[PgDbConnectionInfo.PasswordKey] = Description.Superuser.Password;
 
       var conn = new NpgsqlConnection(csBuilder.ConnectionString);
 
@@ -171,8 +169,8 @@ namespace Utility.Database.PostgreSql
     
     protected void VerifyProperties()
     {
-      if (Superuser == null) throw new ArgumentException("Superuser is null", "Superuser");
       if (Description == null) throw new ArgumentException("Description is null", "Description");
+      if (Description.Superuser == null) throw new ArgumentException("Description.Superuser is null", "Description.Superuser");
       if (Description.ConnectionInfo == null) throw new ArgumentException("Description.ConnectionInfo is null", "Description.ConnectionInfo");
       if (string.IsNullOrEmpty(Description.ConnectionInfo.ConnectionString)) throw new ArgumentException("Connection information is missing a connection string", "Description.ConnectionInfo.ConnectionString");
 

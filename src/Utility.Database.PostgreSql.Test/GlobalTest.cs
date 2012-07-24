@@ -22,20 +22,27 @@ namespace Utility.Database.PostgreSql.Test
         Logger = new NLogLoggerFactory().GetCurrentInstanceLogger();
 
         Manager1 = new PgDbManager
-                   {
-                     Description = new PgDbDescription {ConnectionInfo = new DbConnectionInfo {ConnectionStringName = "Test1"}},
-                     Superuser = Superuser
-                   };
+        {
+          Description = new PgDbDescription
+          {
+            ConnectionInfo = new DbConnectionInfo { ConnectionStringName = "Test1" },
+            Superuser = Superuser
+          }
+        };
 
         Manager2 = new PgDbManager
-                   {
-                     Description = new PgDbDescription {ConnectionInfo = new DbConnectionInfo {ConnectionStringName = "Test2"}},
-                     Superuser = Superuser
-                   };
+        {
+          Description = new PgDbDescription
+          {
+            ConnectionInfo = new DbConnectionInfo { ConnectionStringName = "Test2" },
+            Superuser = Superuser
+          }
+        };
       }
       catch (Exception e)
       {
-        if (Logger != null) Logger.Fatal(e, "SetUp : {0} : {1}", e.GetType(), e.Message);
+        if (Logger != null)
+          Logger.Fatal(e, "SetUp : {0} : {1}", e.GetType(), e.Message);
         throw;
       }
     }
@@ -48,11 +55,11 @@ namespace Utility.Database.PostgreSql.Test
       }
       catch (Exception e)
       {
-        if (Logger != null) Logger.Fatal(e, "TearDown : {0} : {1}", e.GetType(), e.Message);
+        if (Logger != null)
+          Logger.Fatal(e, "TearDown : {0} : {1}", e.GetType(), e.Message);
         throw;
       }
     }
-
 
     public static void DropTestDatabaseAndRole()
     {
@@ -78,7 +85,6 @@ namespace Utility.Database.PostgreSql.Test
           cmd.ExecuteNonQuery();
         }
       }
-
 
       using (var conn = Manager1.CreateDatabaseConnection())
       {
