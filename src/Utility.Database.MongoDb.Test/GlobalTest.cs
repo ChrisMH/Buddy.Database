@@ -1,24 +1,21 @@
 ﻿using System;
-using MongoDB.Driver;
 using NUnit.Framework;
-using Utility.Logging;
-using Utility.Logging.NLog;
 
 namespace Utility.Database.MongoDb.Test
 {
   [SetUpFixture]
   public class GlobalTest
   {
-    public static ILogger Logger { get; private set; }
     public static MongoDbManager DbManager1 { get; private set; }
     public static MongoDbManager DbManager2 { get; private set; }
+    public static NLog.Logger Logger { get; private set; }
 
     [SetUpAttribute]
     public void SetUp()
     {
       try
       {
-        Logger = new NLogLoggerFactory().GetCurrentInstanceLogger();
+        Logger = NLog.LogManager.GetCurrentClassLogger();
    
         DbManager1 = new MongoDbManager
                      {
@@ -32,7 +29,7 @@ namespace Utility.Database.MongoDb.Test
       }
       catch (Exception e)
       {
-        if (Logger != null) Logger.Fatal(e, "SetUp : {0} : {1}", e.GetType(), e.Message);
+        if (Logger != null) Logger.FatalException(string.Format("SetUp : {0} : {1}", e.GetType(), e.Message), e);
         throw;
       }
     }
@@ -46,7 +43,7 @@ namespace Utility.Database.MongoDb.Test
       }
       catch (Exception e)
       {
-        if (Logger != null) Logger.Fatal(e, "TearDown : {0} : {1}", e.GetType(), e.Message);
+        if (Logger != null) Logger.FatalException(string.Format("TearDown : {0} : {1}", e.GetType(), e.Message), e);
         throw;
       }
     }

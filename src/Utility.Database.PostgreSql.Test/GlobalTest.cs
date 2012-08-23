@@ -1,25 +1,23 @@
 ﻿using System;
 using NUnit.Framework;
 using Npgsql;
-using Utility.Logging;
-using Utility.Logging.NLog;
 
 namespace Utility.Database.PostgreSql.Test
 {
   [SetUpFixture]
   public class GlobalTest
   {
-    public static ILogger Logger { get; private set; }
     public static PgDbManager Manager1 { get; private set; }
     public static PgDbManager Manager2 { get; private set; }
     public static PgSuperuser Superuser = new PgSuperuser();
+    public static NLog.Logger Logger { get; private set; }
 
     [SetUp]
     public void SetUp()
     {
       try
       {
-        Logger = new NLogLoggerFactory().GetCurrentInstanceLogger();
+        Logger = NLog.LogManager.GetCurrentClassLogger();
 
         Manager1 = new PgDbManager
         {
@@ -42,7 +40,7 @@ namespace Utility.Database.PostgreSql.Test
       catch (Exception e)
       {
         if (Logger != null)
-          Logger.Fatal(e, "SetUp : {0} : {1}", e.GetType(), e.Message);
+          Logger.FatalException(string.Format("SetUp : {0} : {1}", e.GetType(), e.Message), e);
         throw;
       }
     }
@@ -56,7 +54,7 @@ namespace Utility.Database.PostgreSql.Test
       catch (Exception e)
       {
         if (Logger != null)
-          Logger.Fatal(e, "TearDown : {0} : {1}", e.GetType(), e.Message);
+          Logger.FatalException(string.Format("TearDown : {0} : {1}", e.GetType(), e.Message), e);
         throw;
       }
     }

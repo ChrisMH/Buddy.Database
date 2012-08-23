@@ -60,7 +60,7 @@ namespace Utility.Database.PostgreSql.Test
 
         using (var cmd = conn.CreateCommand())
         {
-          cmd.CommandText = "SELECT COUNT(*) FROM pg_catalog.pg_tables WHERE schemaname='public' AND tablename='geometry_columns'";
+          cmd.CommandText = "SELECT COUNT(*) FROM pg_catalog.pg_tables WHERE schemaname='public' AND tablename='spatial_ref_sys'";
           Assert.AreEqual(1, Convert.ToInt64(cmd.ExecuteScalar()));
         }
       }
@@ -184,7 +184,7 @@ namespace Utility.Database.PostgreSql.Test
 
         using (var cmd = conn.CreateCommand())
         {
-          cmd.CommandText = "SELECT COUNT(*) FROM pg_catalog.pg_tables WHERE schemaname='public' AND tablename='geometry_columns'";
+          cmd.CommandText = "SELECT COUNT(*) FROM pg_catalog.pg_tables WHERE schemaname='public' AND tablename='spatial_ref_sys'";
           Assert.AreEqual(1, Convert.ToInt64(cmd.ExecuteScalar()));
         }
       }
