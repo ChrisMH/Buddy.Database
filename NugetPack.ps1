@@ -1,18 +1,16 @@
 [string[]] $buildFiles = 
   '.\src\Utility.Database\Utility.Database.csproj',
   '.\src\Utility.Database.Mock\Utility.Database.Mock.csproj',
-  '.\src\Utility.Database.MongoDb\Utility.Database.MongoDb.csproj',
   '.\src\Utility.Database.PostgreSql\Utility.Database.PostgreSql.csproj'
 [string[]] $nuspecFiles = 
   '.\nuspec\Utility.Database.nuspec',
   '.\nuspec\Utility.Database.Mock.nuspec',
-  '.\nuspec\Utility.Database.MongoDb.nuspec',
   '.\nuspec\Utility.Database.PostgreSql.nuspec'
   
 $versionFile = '.\src\SharedAssemblyInfo.cs'
 
 $buildConfiguration = 'Release'
-$outputPath = "$home\Dropbox\Packages"
+$outputPath = "D:\Dropbox\Packages"
 
 Import-Module BuildUtilities
 
