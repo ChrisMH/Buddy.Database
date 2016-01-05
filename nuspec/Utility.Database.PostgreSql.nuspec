@@ -16,7 +16,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\src\Utility.Database.PostgreSql\bin\Release\Utility.Database.PostgreSql.dll" target ="lib\net40"/>
-    <file src="..\src\Utility.Database.PostgreSql\bin\Release\Utility.Database.PostgreSql.pdb" target ="lib\net40"/>
+    <file src="..\src\Utility.Database.PostgreSql\bin\Release\Utility.Database.PostgreSql.dll" target ="lib\net452"/>
+    <file src="..\src\Utility.Database.PostgreSql\bin\Release\Utility.Database.PostgreSql.pdb" target ="lib\net452"/>
   </files>
 </package>
