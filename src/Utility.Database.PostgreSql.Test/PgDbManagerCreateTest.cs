@@ -136,7 +136,7 @@ namespace Utility.Database.PostgreSql.Test
 
         using (var cmd = conn.CreateCommand())
         {
-          cmd.CommandText = "SELECT nspacl FROM pg_catalog.pg_namespace WHERE nspname='public'";
+          cmd.CommandText = "SELECT array_to_string(nspacl, ',') FROM pg_catalog.pg_namespace WHERE nspname='public'";
           var result = Convert.ToString(cmd.ExecuteScalar());
           Assert.That(result.Contains(string.Format("{0}=UC", manager.Description.ConnectionInfo.UserName)));
         }
@@ -164,7 +164,7 @@ namespace Utility.Database.PostgreSql.Test
 
         using (var cmd = conn.CreateCommand())
         {
-          cmd.CommandText = "SELECT nspacl FROM pg_catalog.pg_namespace WHERE nspname='test_schema'";
+          cmd.CommandText = "SELECT array_to_string(nspacl, ',') FROM pg_catalog.pg_namespace WHERE nspname='test_schema'";
           var result = Convert.ToString(cmd.ExecuteScalar());
           Assert.That(result.Contains(string.Format("{0}=UC", manager.Description.ConnectionInfo.UserName)));
         }

@@ -9,7 +9,7 @@ namespace Utility.Database.Mock.Test
     public static IDbManager DbManager1 { get; private set; }
     public static NLog.Logger Logger { get; private set; }
 
-    [SetUp]
+    [OneTimeSetUp]
     public void SetUp()
     {
       try
@@ -30,12 +30,12 @@ namespace Utility.Database.Mock.Test
       }
       catch (Exception e)
       {
-        if (Logger != null) Logger.FatalException(string.Format("SetUp : {0} : {1}", e.GetType(), e.Message), e);
+        if (Logger != null) Logger.Fatal(e, string.Format("SetUp : {0} : {1}", e.GetType(), e.Message));
         throw;
       }
     }
 
-    [TearDown]
+    [OneTimeTearDown]
     public void TearDown()
     {
       try
@@ -43,7 +43,7 @@ namespace Utility.Database.Mock.Test
       }
       catch (Exception e)
       {
-        if (Logger != null) Logger.FatalException(string.Format("TearDown : {0} : {1}", e.GetType(), e.Message), e);
+        if (Logger != null) Logger.Fatal(e, string.Format("TearDown : {0} : {1}", e.GetType(), e.Message));
         throw;
       }
     }

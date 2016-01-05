@@ -99,7 +99,7 @@ namespace Utility.Database.Test
       var result = new DbDescription
                    {
                      XmlRoot = DbDescriptions.RelativeFileSchema,
-                     BaseDirectory = "d:\\DevP\\Utility.Database\\src\\Utility.Database.Test"
+                     BaseDirectory = "c:\\Users\\chogan\\Dropbox\\DevP\\Utility.Database\\src\\Utility.Database.Test"
                    };
 
       Assert.That(result.Schemas.First().Load(), Is.EqualTo("schema"));

@@ -8,7 +8,7 @@ namespace Utility.Database.PostgreSql
     internal const string ServerAddressKey = "host";
     internal const string ServerPortKey = "port";
     internal const string DatabaseNameKey = "database";
-    internal const string UserNameKey = "user id";
+    internal const string UserNameKey = "username";
     internal const string PasswordKey = "password";
     
     public override string ConnectionString

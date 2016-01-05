@@ -12,7 +12,7 @@ namespace Utility.Database.PostgreSql.Test
     public static PgSuperuser Superuser = new PgSuperuser();
     public static NLog.Logger Logger { get; private set; }
 
-    [SetUp]
+    [OneTimeSetUp]
     public void SetUp()
     {
       try
@@ -40,12 +40,12 @@ namespace Utility.Database.PostgreSql.Test
       catch (Exception e)
       {
         if (Logger != null)
-          Logger.FatalException(string.Format("SetUp : {0} : {1}", e.GetType(), e.Message), e);
+          Logger.Fatal(e, string.Format("SetUp : {0} : {1}", e.GetType(), e.Message));
         throw;
       }
     }
 
-    [TearDown]
+    [OneTimeTearDown]
     public void TearDown()
     {
       try
@@ -54,7 +54,7 @@ namespace Utility.Database.PostgreSql.Test
       catch (Exception e)
       {
         if (Logger != null)
-          Logger.FatalException(string.Format("TearDown : {0} : {1}", e.GetType(), e.Message), e);
+          Logger.Fatal(e, string.Format("TearDown : {0} : {1}", e.GetType(), e.Message));
         throw;
       }
     }
