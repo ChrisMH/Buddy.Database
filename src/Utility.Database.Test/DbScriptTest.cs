@@ -51,10 +51,10 @@ namespace Utility.Database.Test
     }
 
     [TestCase(DbScripts.RelativeFileSchema, ScriptType.File, "..\\..\\Resources\\schema.txt")]
-    [TestCase(DbScripts.AbsoluteFileSchema, ScriptType.File, "d:\\DevP\\Utility.Database\\src\\Utility.Database.Test\\Resources\\schema.txt")]
+    [TestCase(DbScripts.AbsoluteFileSchema, ScriptType.File, "C:\\Users\\chogan\\Dropbox\\DevP\\Utility.Database\\src\\Utility.Database.Test\\Resources\\schema.txt")]
     [TestCase(DbScripts.ResourceSchema, ScriptType.Resource, "Utility.Database.Test.Resources.schema.txt")]
     [TestCase(DbScripts.RelativeFileSeed, ScriptType.File, "..\\..\\Resources\\seed.txt")]
-    [TestCase(DbScripts.AbsoluteFileSeed, ScriptType.File, "d:\\DevP\\Utility.Database\\src\\Utility.Database.Test\\Resources\\seed.txt")]
+    [TestCase(DbScripts.AbsoluteFileSeed, ScriptType.File, "C:\\Users\\chogan\\Dropbox\\DevP\\Utility.Database\\src\\Utility.Database.Test\\Resources\\seed.txt")]
     [TestCase(DbScripts.ResourceSeed, ScriptType.Resource, "Utility.Database.Test.Resources.seed.txt")]
     [TestCase(DbScripts.LiteralSchema, ScriptType.Literal, "CREATE SCHEMA literal;CREATE TABLE literal.table (id integer NOT NULL);")]
     [TestCase(DbScripts.LiteralSeed, ScriptType.Literal, "INSERT INTO literal.table VALUES(1);INSERT INTO literal.table VALUES(2);")]

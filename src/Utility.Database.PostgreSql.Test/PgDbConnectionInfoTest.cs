@@ -8,7 +8,7 @@ namespace Utility.Database.PostgreSql.Test
     [Test]
     public void CanGetConnectionStringValues()
     {
-      var result = new PgDbConnectionInfo {ConnectionString = "host=server;port=1;database=databasename;user id=username;password=pwd"};
+      var result = new PgDbConnectionInfo {ConnectionString = "host=server;port=1;database=databasename;username=username;password=pwd"};
 
       Assert.AreEqual("server", result.ServerAddress);
       Assert.AreEqual(1, result.ServerPort);
