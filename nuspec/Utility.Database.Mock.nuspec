@@ -15,7 +15,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\src\Utility.Database.Mock\bin\Release\Utility.Database.Mock.dll" target ="lib\net40"/>
-    <file src="..\src\Utility.Database.Mock\bin\Release\Utility.Database.Mock.pdb" target ="lib\net40"/>
+    <file src="..\src\Utility.Database.Mock\bin\Release\Utility.Database.Mock.dll" target ="lib\net451"/>
+    <file src="..\src\Utility.Database.Mock\bin\Release\Utility.Database.Mock.pdb" target ="lib\net451"/>
   </files>
 </package>
