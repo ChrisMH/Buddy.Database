@@ -10,9 +10,9 @@
     <description>Utility.Database PostgreSql-specific implementation</description>
     <copyright>Copyright 2011</copyright>
     <dependencies>
-      <dependency id="Npgsql"/>
-      <dependency id="Utility"/>
-      <dependency id="Utility.Database"/>
+      <dependency id="Npgsql" version="3.0.5"/>
+      <dependency id="Utility" version="0.7.1"/>
+      <dependency id="Utility.Database" version="0.20.1"/>
     </dependencies>
   </metadata>
   <files>

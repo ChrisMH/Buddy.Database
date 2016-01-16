@@ -10,8 +10,8 @@
     <description>Utility.Database Mock implementation</description>
     <copyright>Copyright 2011</copyright>
     <dependencies>
-      <dependency id="Utility"/>
-      <dependency id="Utility.Database"/>
+      <dependency id="Utility" version="0.7.1"/>
+      <dependency id="Utility.Database" version="0.20.1"/>
     </dependencies>
   </metadata>
   <files>

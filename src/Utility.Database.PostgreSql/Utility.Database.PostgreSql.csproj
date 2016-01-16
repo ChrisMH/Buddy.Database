@@ -54,9 +54,11 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="PgUtility.cs" />
     <Compile Include="PgDbConnectionInfo.cs" />
     <Compile Include="PgDbDescription.cs" />
     <Compile Include="PgDbManager.cs" />
+    <Compile Include="PgParameter.cs" />
     <Compile Include="PgSuperuser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
