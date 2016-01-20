@@ -18,21 +18,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuspec", "nuspec", "{E08805
 		..\nuspec\Utility.Database.RavenDb.nuspec = ..\nuspec\Utility.Database.RavenDb.nuspec
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database45", "Utility.Database\Utility.Database45.csproj", "{7C3DF2C6-65E5-49B6-83D7-960551666DA4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database45", "Utility.Database45\Utility.Database45.csproj", "{7C3DF2C6-65E5-49B6-83D7-960551666DA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database45.Test", "Utility.Database.Test\Utility.Database45.Test.csproj", "{28BE2CC1-C9FE-41AC-BA10-6968BF728B9F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database45.Test", "Utility.Database45.Test\Utility.Database45.Test.csproj", "{28BE2CC1-C9FE-41AC-BA10-6968BF728B9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database.PostgreSql45", "Utility.Database.PostgreSql\Utility.Database.PostgreSql45.csproj", "{85411145-55E5-405B-B5B4-8EC433FE2C81}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database451", "Utility.Database451\Utility.Database451.csproj", "{9B4DB1C3-F194-4EF4-918D-6FAD8ACCC767}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database.PostgreSql45.Test", "Utility.Database.PostgreSql.Test\Utility.Database.PostgreSql45.Test.csproj", "{A721320B-1B2E-4DBF-BE7F-A51D1BA55118}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database452", "Utility.Database452\Utility.Database452.csproj", "{A952D97B-1CB8-4FC3-AA3B-D24A4CBF90E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database451", "Utility.Database\Utility.Database451.csproj", "{9B4DB1C3-F194-4EF4-918D-6FAD8ACCC767}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database.PostgreSql451", "Utility.Database.PostgreSql451\Utility.Database.PostgreSql451.csproj", "{6268FA80-A27D-45D9-90F3-5A39852B028A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database452", "Utility.Database\Utility.Database452.csproj", "{A952D97B-1CB8-4FC3-AA3B-D24A4CBF90E5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database.PostgreSql452", "Utility.Database.PostgreSql452\Utility.Database.PostgreSql452.csproj", "{B6CCB522-4CA2-44F6-B70C-8B88D5224142}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database.PostgreSql451", "Utility.Database.PostgreSql\Utility.Database.PostgreSql451.csproj", "{6268FA80-A27D-45D9-90F3-5A39852B028A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database.PostgreSql45.Test", "Utility.Database.PostgreSql45.Test\Utility.Database.PostgreSql45.Test.csproj", "{A721320B-1B2E-4DBF-BE7F-A51D1BA55118}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database.PostgreSql452", "Utility.Database.PostgreSql\Utility.Database.PostgreSql452.csproj", "{B6CCB522-4CA2-44F6-B70C-8B88D5224142}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database.PostgreSql45", "Utility.Database.PostgreSql45\Utility.Database.PostgreSql45.csproj", "{85411145-55E5-405B-B5B4-8EC433FE2C81}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,14 +48,6 @@ Global
 		{28BE2CC1-C9FE-41AC-BA10-6968BF728B9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28BE2CC1-C9FE-41AC-BA10-6968BF728B9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28BE2CC1-C9FE-41AC-BA10-6968BF728B9F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{85411145-55E5-405B-B5B4-8EC433FE2C81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{85411145-55E5-405B-B5B4-8EC433FE2C81}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{85411145-55E5-405B-B5B4-8EC433FE2C81}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{85411145-55E5-405B-B5B4-8EC433FE2C81}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A721320B-1B2E-4DBF-BE7F-A51D1BA55118}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A721320B-1B2E-4DBF-BE7F-A51D1BA55118}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A721320B-1B2E-4DBF-BE7F-A51D1BA55118}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A721320B-1B2E-4DBF-BE7F-A51D1BA55118}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9B4DB1C3-F194-4EF4-918D-6FAD8ACCC767}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9B4DB1C3-F194-4EF4-918D-6FAD8ACCC767}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B4DB1C3-F194-4EF4-918D-6FAD8ACCC767}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -72,6 +64,14 @@ Global
 		{B6CCB522-4CA2-44F6-B70C-8B88D5224142}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6CCB522-4CA2-44F6-B70C-8B88D5224142}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6CCB522-4CA2-44F6-B70C-8B88D5224142}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A721320B-1B2E-4DBF-BE7F-A51D1BA55118}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A721320B-1B2E-4DBF-BE7F-A51D1BA55118}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A721320B-1B2E-4DBF-BE7F-A51D1BA55118}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A721320B-1B2E-4DBF-BE7F-A51D1BA55118}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85411145-55E5-405B-B5B4-8EC433FE2C81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85411145-55E5-405B-B5B4-8EC433FE2C81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85411145-55E5-405B-B5B4-8EC433FE2C81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85411145-55E5-405B-B5B4-8EC433FE2C81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

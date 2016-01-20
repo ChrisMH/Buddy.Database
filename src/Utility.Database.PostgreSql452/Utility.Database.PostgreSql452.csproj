@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{A952D97B-1CB8-4FC3-AA3B-D24A4CBF90E5}</ProjectGuid>
+    <ProjectGuid>{B6CCB522-4CA2-44F6-B70C-8B88D5224142}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Utility.Database</RootNamespace>
-    <AssemblyName>Utility.Database</AssemblyName>
+    <RootNamespace>Utility.Database.PostgreSql</RootNamespace>
+    <AssemblyName>Utility.Database.PostgreSql</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug452\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -27,39 +27,56 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release452\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Npgsql, Version=3.0.5.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Npgsql.3.0.5\lib\net45\Npgsql.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Utility, Version=0.7.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Utility.0.7.2.0\lib\net452\Utility.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="DbDescription.cs" />
-    <Compile Include="DbManager.cs" />
-    <Compile Include="DbScript.cs" />
-    <Compile Include="DbConnectionInfo.cs" />
-    <Compile Include="IDbConnectionInfo.cs" />
-    <Compile Include="IDbDescription.cs" />
-    <Compile Include="IDbManager.cs" />
-    <Compile Include="IDbSuperuser.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\Utility.Database.PostgreSql45\PgDbConnectionInfo.cs">
+      <Link>PgDbConnectionInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Utility.Database.PostgreSql45\PgDbDescription.cs">
+      <Link>PgDbDescription.cs</Link>
+    </Compile>
+    <Compile Include="..\Utility.Database.PostgreSql45\PgDbManager.cs">
+      <Link>PgDbManager.cs</Link>
+    </Compile>
+    <Compile Include="..\Utility.Database.PostgreSql45\PgParameter.cs">
+      <Link>PgParameter.cs</Link>
+    </Compile>
+    <Compile Include="..\Utility.Database.PostgreSql45\PgSuperuser.cs">
+      <Link>PgSuperuser.cs</Link>
+    </Compile>
+    <Compile Include="..\Utility.Database.PostgreSql45\PgUtility.cs">
+      <Link>PgUtility.cs</Link>
+    </Compile>
+    <Compile Include="..\Utility.Database.PostgreSql45\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Utility.Database452\Utility.Database452.csproj">
+      <Project>{a952d97b-1cb8-4fc3-aa3b-d24a4cbf90e5}</Project>
+      <Name>Utility.Database452</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

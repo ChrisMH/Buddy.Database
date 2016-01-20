@@ -5,12 +5,12 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{85411145-55E5-405B-B5B4-8EC433FE2C81}</ProjectGuid>
+    <ProjectGuid>{9B4DB1C3-F194-4EF4-918D-6FAD8ACCC767}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Utility.Database.PostgreSql</RootNamespace>
-    <AssemblyName>Utility.Database.PostgreSql</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>Utility.Database</RootNamespace>
+    <AssemblyName>Utility.Database</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug45\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -27,49 +27,60 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release45\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Npgsql, Version=3.0.5.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Npgsql.3.0.5\lib\net45\Npgsql.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="nunit.framework, Version=3.0.5813.39031, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.0.1\lib\net45\nunit.framework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Utility, Version=0.7.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Utility.0.7.2.0\lib\net451\Utility.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="PgUtility.cs" />
-    <Compile Include="PgDbConnectionInfo.cs" />
-    <Compile Include="PgDbDescription.cs" />
-    <Compile Include="PgDbManager.cs" />
-    <Compile Include="PgParameter.cs" />
-    <Compile Include="PgSuperuser.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\Utility.Database45\DbConnectionInfo.cs">
+      <Link>DbConnectionInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Utility.Database45\DbDescription.cs">
+      <Link>DbDescription.cs</Link>
+    </Compile>
+    <Compile Include="..\Utility.Database45\DbManager.cs">
+      <Link>DbManager.cs</Link>
+    </Compile>
+    <Compile Include="..\Utility.Database45\DbScript.cs">
+      <Link>DbScript.cs</Link>
+    </Compile>
+    <Compile Include="..\Utility.Database45\IDbConnectionInfo.cs">
+      <Link>IDbConnectionInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Utility.Database45\IDbDescription.cs">
+      <Link>IDbDescription.cs</Link>
+    </Compile>
+    <Compile Include="..\Utility.Database45\IDbManager.cs">
+      <Link>IDbManager.cs</Link>
+    </Compile>
+    <Compile Include="..\Utility.Database45\IDbSuperuser.cs">
+      <Link>IDbSuperuser.cs</Link>
+    </Compile>
+    <Compile Include="..\Utility.Database45\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Utility.Database\Utility.Database45.csproj">
-      <Project>{7c3df2c6-65e5-49b6-83d7-960551666da4}</Project>
-      <Name>Utility.Database45</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

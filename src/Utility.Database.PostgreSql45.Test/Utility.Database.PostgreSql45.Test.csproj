@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug45\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -27,7 +27,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release45\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -106,11 +106,11 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Utility.Database.PostgreSql\Utility.Database.PostgreSql45.csproj">
+    <ProjectReference Include="..\Utility.Database.PostgreSql45\Utility.Database.PostgreSql45.csproj">
       <Project>{85411145-55e5-405b-b5b4-8ec433fe2c81}</Project>
       <Name>Utility.Database.PostgreSql45</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Utility.Database\Utility.Database45.csproj">
+    <ProjectReference Include="..\Utility.Database45\Utility.Database45.csproj">
       <Project>{7c3df2c6-65e5-49b6-83d7-960551666da4}</Project>
       <Name>Utility.Database45</Name>
     </ProjectReference>
