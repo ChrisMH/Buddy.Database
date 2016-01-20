@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{B566649F-3A8D-4E75-A35C-720B62CCC79D}</ProjectGuid>
+    <ProjectGuid>{6268FA80-A27D-45D9-90F3-5A39852B028A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Utility.Database.Mock.Test</RootNamespace>
-    <AssemblyName>Utility.Database.Mock.Test</AssemblyName>
+    <RootNamespace>Utility.Database.PostgreSql</RootNamespace>
+    <AssemblyName>Utility.Database.PostgreSql</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>bin\Debug451\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -27,19 +27,15 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\Release451\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\packages\NLog.4.2.3\lib\net45\NLog.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="nunit.framework, Version=3.0.5813.39031, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.0.1\lib\net45\nunit.framework.dll</HintPath>
+    <Reference Include="Npgsql, Version=3.0.5.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Npgsql.3.0.5\lib\net45\Npgsql.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -54,44 +50,22 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="DbDescriptions.cs" />
-    <Compile Include="MockDatabaseProviderTest.cs" />
-    <Compile Include="MockSeed2.cs" />
-    <Compile Include="MockSeed1.cs" />
-    <Compile Include="GlobalTest.cs" />
-    <Compile Include="MockDbConnectionInfoTest.cs" />
-    <Compile Include="MongoDbManagerCreateTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MongoDbManagerDestroyTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MongoDbManagerSeedTest.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MongoDbManagerTest.cs" />
+    <Compile Include="PgUtility.cs" />
+    <Compile Include="PgDbConnectionInfo.cs" />
+    <Compile Include="PgDbDescription.cs" />
+    <Compile Include="PgDbManager.cs" />
+    <Compile Include="PgParameter.cs" />
+    <Compile Include="PgSuperuser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MockSchema.cs" />
-    <Compile Include="TestMockDatabase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Utility.Database\Utility.Database.csproj">
-      <Project>{7C3DF2C6-65E5-49B6-83D7-960551666DA4}</Project>
-      <Name>Utility.Database</Name>
+    <ProjectReference Include="..\Utility.Database\Utility.Database451.csproj">
+      <Project>{9b4db1c3-f194-4ef4-918d-6fad8accc767}</Project>
+      <Name>Utility.Database451</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="nlog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

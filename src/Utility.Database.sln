@@ -1,28 +1,13 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database", "Utility.Database\Utility.Database.csproj", "{7C3DF2C6-65E5-49B6-83D7-960551666DA4}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database.PostgreSql.Test", "Utility.Database.PostgreSql.Test\Utility.Database.PostgreSql.Test.csproj", "{A721320B-1B2E-4DBF-BE7F-A51D1BA55118}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database.Test", "Utility.Database.Test\Utility.Database.Test.csproj", "{28BE2CC1-C9FE-41AC-BA10-6968BF728B9F}"
-EndProject
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2838C664-6CD7-4B2C-A1D4-A609CF06D56D}"
 	ProjectSection(SolutionItems) = preProject
 		..\readme.md = ..\readme.md
-		packages\repositories.config = packages\repositories.config
 		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database.MongoDb.Test", "Utility.Database.MongoDb.Test\Utility.Database.MongoDb.Test.csproj", "{3A8FF0F3-447F-4406-859A-01BC57BAA4FB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database.PostgreSql", "Utility.Database.PostgreSql\Utility.Database.PostgreSql.csproj", "{85411145-55E5-405B-B5B4-8EC433FE2C81}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database.MongoDb", "Utility.Database.MongoDb\Utility.Database.MongoDb.csproj", "{74098C28-A72D-486D-A67F-5A35991249AE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database.Mock", "Utility.Database.Mock\Utility.Database.Mock.csproj", "{754F9D44-C135-4D75-90FA-02FD8A089F97}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database.Mock.Test", "Utility.Database.Mock.Test\Utility.Database.Mock.Test.csproj", "{B566649F-3A8D-4E75-A35C-720B62CCC79D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuspec", "nuspec", "{E08805D5-13BA-45D5-A2D9-F9028BE3F142}"
 	ProjectSection(SolutionItems) = preProject
@@ -32,6 +17,22 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuspec", "nuspec", "{E08805
 		..\nuspec\Utility.Database.PostgreSql.nuspec = ..\nuspec\Utility.Database.PostgreSql.nuspec
 		..\nuspec\Utility.Database.RavenDb.nuspec = ..\nuspec\Utility.Database.RavenDb.nuspec
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database45", "Utility.Database\Utility.Database45.csproj", "{7C3DF2C6-65E5-49B6-83D7-960551666DA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database45.Test", "Utility.Database.Test\Utility.Database45.Test.csproj", "{28BE2CC1-C9FE-41AC-BA10-6968BF728B9F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database.PostgreSql45", "Utility.Database.PostgreSql\Utility.Database.PostgreSql45.csproj", "{85411145-55E5-405B-B5B4-8EC433FE2C81}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database.PostgreSql45.Test", "Utility.Database.PostgreSql.Test\Utility.Database.PostgreSql45.Test.csproj", "{A721320B-1B2E-4DBF-BE7F-A51D1BA55118}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database451", "Utility.Database\Utility.Database451.csproj", "{9B4DB1C3-F194-4EF4-918D-6FAD8ACCC767}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database452", "Utility.Database\Utility.Database452.csproj", "{A952D97B-1CB8-4FC3-AA3B-D24A4CBF90E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database.PostgreSql451", "Utility.Database.PostgreSql\Utility.Database.PostgreSql451.csproj", "{6268FA80-A27D-45D9-90F3-5A39852B028A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility.Database.PostgreSql452", "Utility.Database.PostgreSql\Utility.Database.PostgreSql452.csproj", "{B6CCB522-4CA2-44F6-B70C-8B88D5224142}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,34 +44,34 @@ Global
 		{7C3DF2C6-65E5-49B6-83D7-960551666DA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C3DF2C6-65E5-49B6-83D7-960551666DA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C3DF2C6-65E5-49B6-83D7-960551666DA4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A721320B-1B2E-4DBF-BE7F-A51D1BA55118}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A721320B-1B2E-4DBF-BE7F-A51D1BA55118}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A721320B-1B2E-4DBF-BE7F-A51D1BA55118}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A721320B-1B2E-4DBF-BE7F-A51D1BA55118}.Release|Any CPU.Build.0 = Release|Any CPU
 		{28BE2CC1-C9FE-41AC-BA10-6968BF728B9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{28BE2CC1-C9FE-41AC-BA10-6968BF728B9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28BE2CC1-C9FE-41AC-BA10-6968BF728B9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28BE2CC1-C9FE-41AC-BA10-6968BF728B9F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3A8FF0F3-447F-4406-859A-01BC57BAA4FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3A8FF0F3-447F-4406-859A-01BC57BAA4FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3A8FF0F3-447F-4406-859A-01BC57BAA4FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3A8FF0F3-447F-4406-859A-01BC57BAA4FB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{85411145-55E5-405B-B5B4-8EC433FE2C81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{85411145-55E5-405B-B5B4-8EC433FE2C81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{85411145-55E5-405B-B5B4-8EC433FE2C81}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{85411145-55E5-405B-B5B4-8EC433FE2C81}.Release|Any CPU.Build.0 = Release|Any CPU
-		{74098C28-A72D-486D-A67F-5A35991249AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{74098C28-A72D-486D-A67F-5A35991249AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{74098C28-A72D-486D-A67F-5A35991249AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{74098C28-A72D-486D-A67F-5A35991249AE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{754F9D44-C135-4D75-90FA-02FD8A089F97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{754F9D44-C135-4D75-90FA-02FD8A089F97}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{754F9D44-C135-4D75-90FA-02FD8A089F97}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{754F9D44-C135-4D75-90FA-02FD8A089F97}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B566649F-3A8D-4E75-A35C-720B62CCC79D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B566649F-3A8D-4E75-A35C-720B62CCC79D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B566649F-3A8D-4E75-A35C-720B62CCC79D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B566649F-3A8D-4E75-A35C-720B62CCC79D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A721320B-1B2E-4DBF-BE7F-A51D1BA55118}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A721320B-1B2E-4DBF-BE7F-A51D1BA55118}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A721320B-1B2E-4DBF-BE7F-A51D1BA55118}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A721320B-1B2E-4DBF-BE7F-A51D1BA55118}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B4DB1C3-F194-4EF4-918D-6FAD8ACCC767}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B4DB1C3-F194-4EF4-918D-6FAD8ACCC767}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B4DB1C3-F194-4EF4-918D-6FAD8ACCC767}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B4DB1C3-F194-4EF4-918D-6FAD8ACCC767}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A952D97B-1CB8-4FC3-AA3B-D24A4CBF90E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A952D97B-1CB8-4FC3-AA3B-D24A4CBF90E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A952D97B-1CB8-4FC3-AA3B-D24A4CBF90E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A952D97B-1CB8-4FC3-AA3B-D24A4CBF90E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6268FA80-A27D-45D9-90F3-5A39852B028A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6268FA80-A27D-45D9-90F3-5A39852B028A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6268FA80-A27D-45D9-90F3-5A39852B028A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6268FA80-A27D-45D9-90F3-5A39852B028A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6CCB522-4CA2-44F6-B70C-8B88D5224142}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6CCB522-4CA2-44F6-B70C-8B88D5224142}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6CCB522-4CA2-44F6-B70C-8B88D5224142}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6CCB522-4CA2-44F6-B70C-8B88D5224142}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
