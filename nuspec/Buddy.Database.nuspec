@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Buddy.Database</id>
+    <version>$version$</version>
+    <title>Buddy.Database</title>
+    <authors>Chris Hogan</authors>
+    <owners>Chris Hogan</owners>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <projectUrl>https://github.com/ChrisMH/Buddy.Database</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Database utilities</description>
+    <copyright>Copyright 2016</copyright>
+    <tags>Buddy database testing</tags>
+    <dependencies>
+      <dependency id="Buddy" version="1.0.0"/>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\src\Buddy.Database45\bin\Release\Buddy.Database.dll" target ="lib\net45"/>
+    <file src="..\src\Buddy.Database45\bin\Release\Buddy.Database.pdb" target ="lib\net45"/>
+    <file src="..\src\Buddy.Database451\bin\Release\Buddy.Database.dll" target ="lib\net451"/>
+    <file src="..\src\Buddy.Database451\bin\Release\Buddy.Database.pdb" target ="lib\net451"/>
+    <file src="..\src\Buddy.Database452\bin\Release\Buddy.Database.dll" target ="lib\net452"/>
+    <file src="..\src\Buddy.Database452\bin\Release\Buddy.Database.pdb" target ="lib\net452"/>
+  </files>
+</package>
