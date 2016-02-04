@@ -1,19 +1,15 @@
 [string[]] $buildFiles = 
-  '.\src\Buddy.Database\Buddy.Database40.csproj',
-  '.\src\Buddy.Database\Buddy.Database45.csproj',
-  '.\src\Buddy.Database\Buddy.Database451csproj',
-  '.\src\Buddy.Database\Buddy.Database452.csproj',
-  '.\src\Buddy.Database.PostgreSql\Buddy.Database.PostgreSql40.csproj',
-  '.\src\Buddy.Database.PostgreSql\Buddy.Database.PostgreSql45.csproj',
-  '.\src\Buddy.Database.PostgreSql\Buddy.Database.PostgreSql451.csproj',
-  '.\src\Buddy.Database.PostgreSql\Buddy.Database.PostgreSql452.csproj'
-[string[]] $nuspecFiles = 
-  '.\nuspec\Buddy.Database.nuspec',
-  '.\nuspec\Buddy.Database.PostgreSql.nuspec'
+  '.\src\Buddy.Database40\Buddy.Database40.csproj',
+  '.\src\Buddy.Database45\Buddy.Database45.csproj',
+  '.\src\Buddy.Database451\Buddy.Database451.csproj',
+  '.\src\Buddy.Database452\Buddy.Database452.csproj',
+  '.\src\Buddy.Database.PostgreSql40\Buddy.Database.PostgreSql40.csproj',
+  '.\src\Buddy.Database.PostgreSql45\Buddy.Database.PostgreSql45.csproj',
+  '.\src\Buddy.Database.PostgreSql451\Buddy.Database.PostgreSql451.csproj',
+  '.\src\Buddy.Database.PostgreSql452\Buddy.Database.PostgreSql452.csproj'
   
 $versionFile = '.\src\SharedAssemblyInfo.cs'
 
-$buildConfiguration = 'Release'
 $outputPath = Join-Path $HOME "Dropbox\Packages"
 
 Import-Module BuildUtilities
@@ -22,14 +18,16 @@ $version = Get-Version (Resolve-Path $versionFile)
   
 New-Path $outputPath
 
-#foreach($buildFile in $buildFiles)
-#{
-#  Invoke-Build (Resolve-Path $buildFile) $buildConfiguration
-#}
-
-foreach($nuspecFile in $nuspecFiles)
+foreach($buildFile in $buildFiles)
 {
-  New-Package (Resolve-Path $nuspecFile) $version $outputPath
+  Invoke-Build (Resolve-Path $buildFile) 'Debug'
+  Invoke-Build (Resolve-Path $buildFile) 'Release'
 }
+
+
+New-Package (Resolve-Path '.\nuspec\Buddy.Database.nuspec') $version $outputPath
+New-Package (Resolve-Path '.\nuspec\Buddy.Database.Debug.nuspec') "$version-debug" $outputPath
+New-Package (Resolve-Path '.\nuspec\Buddy.Database.PostgreSql.nuspec') $version $outputPath
+New-Package (Resolve-Path '.\nuspec\Buddy.Database.PostgreSql.Debug.nuspec') "$version-debug" $outputPath
 
 Remove-Module BuildUtilities

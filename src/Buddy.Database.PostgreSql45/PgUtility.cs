@@ -79,43 +79,47 @@ namespace Buddy.Database.PostgreSql
             fieldIndex += 3;
             return string.Format("ST_SetSRID(ST_MakePoint(:p{0},:p{1},:p{2}), 4326)", fieldIndex - 3, fieldIndex - 2, fieldIndex - 1);
         }
-
+        
         public static string CreateDbLinkConnection(IDbConnectionInfo connectionInfo)
         {
             var builder = new NpgsqlConnectionStringBuilder(connectionInfo.ConnectionString);
             var dbLink = new StringBuilder();
             
-            if (builder.ContainsKey("host"))
+            if (builder.ContainsKey(PgDbConnectionInfo.ServerAddressKey))
             {
                 if (dbLink.Length > 0) dbLink.Append(" ");
-                dbLink.Append("host=").Append(builder["host"]);
+                dbLink.Append("host=").Append(builder[PgDbConnectionInfo.ServerAddressKey]);
             }
 
-            if (builder.ContainsKey("port"))
+            if (builder.ContainsKey(PgDbConnectionInfo.ServerPortKey))
             {
                 if (dbLink.Length > 0) dbLink.Append(" ");
-                dbLink.Append("port=").Append(builder["port"]);
+                dbLink.Append("port=").Append(builder[PgDbConnectionInfo.ServerPortKey]);
             }
 
-            if (builder.ContainsKey("database"))
+            if (builder.ContainsKey(PgDbConnectionInfo.DatabaseNameKey))
             {
                 if (dbLink.Length > 0) dbLink.Append(" ");
-                dbLink.Append("dbname=").Append(builder["database"]);
+                dbLink.Append("dbname=").Append(builder[PgDbConnectionInfo.DatabaseNameKey]);
             }
 
-            if (builder.ContainsKey("username"))
+            if (builder.ContainsKey(PgDbConnectionInfo.UserNameKey))
             {
                 if (dbLink.Length > 0) dbLink.Append(" ");
-                dbLink.Append("user=").Append(builder["username"]);
+                dbLink.Append("user=").Append(builder[PgDbConnectionInfo.UserNameKey]);
+            }
+            else if (builder.ContainsKey(PgDbConnectionInfo.UserIdKey))
+            {
+                if (dbLink.Length > 0) dbLink.Append(" ");
+                dbLink.Append("user=").Append(builder[PgDbConnectionInfo.UserIdKey]);
             }
 
-            if (builder.ContainsKey("password"))
+            if (builder.ContainsKey(PgDbConnectionInfo.PasswordKey))
             {
                 if (dbLink.Length > 0) dbLink.Append(" ");
-                dbLink.Append("password=").Append(builder["password"]);
+                dbLink.Append("password=").Append(builder[PgDbConnectionInfo.PasswordKey]);
             }
             return dbLink.ToString();
-
         }
     }
 }
