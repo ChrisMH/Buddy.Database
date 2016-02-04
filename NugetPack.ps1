@@ -1,9 +1,11 @@
 [string[]] $buildFiles = 
+  '.\src\Buddy.Database\Buddy.Database40.csproj',
   '.\src\Buddy.Database\Buddy.Database45.csproj',
   '.\src\Buddy.Database\Buddy.Database451csproj',
   '.\src\Buddy.Database\Buddy.Database452.csproj',
-  '.\src\Buddy.Database.PostgreSql\Buddy.Database.PostgreSql45.csproj'
-  '.\src\Buddy.Database.PostgreSql\Buddy.Database.PostgreSql451.csproj'
+  '.\src\Buddy.Database.PostgreSql\Buddy.Database.PostgreSql40.csproj',
+  '.\src\Buddy.Database.PostgreSql\Buddy.Database.PostgreSql45.csproj',
+  '.\src\Buddy.Database.PostgreSql\Buddy.Database.PostgreSql451.csproj',
   '.\src\Buddy.Database.PostgreSql\Buddy.Database.PostgreSql452.csproj'
 [string[]] $nuspecFiles = 
   '.\nuspec\Buddy.Database.nuspec',

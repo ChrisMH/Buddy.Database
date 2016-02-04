@@ -5,12 +5,12 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{7C3DF2C6-65E5-49B6-83D7-960551666DA4}</ProjectGuid>
+    <ProjectGuid>{01BD0362-8317-4D68-B54A-3C7273A6A949}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Buddy.Database</RootNamespace>
-    <AssemblyName>Buddy.Database</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <RootNamespace>Buddy.Database.PostgreSql</RootNamespace>
+    <AssemblyName>Buddy.Database.PostgreSql</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -34,12 +34,15 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Buddy, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Buddy.1.0.1.0\lib\net45\Buddy.dll</HintPath>
+    <Reference Include="Mono.Security, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <HintPath>..\packages\Npgsql.2.2.7\lib\net40\Mono.Security.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Npgsql, Version=2.2.7.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Npgsql.2.2.7\lib\net40\Npgsql.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -48,18 +51,36 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Buddy.Database.PostgreSql45\PgUtility.cs">
+      <Link>PgUtility.cs</Link>
+    </Compile>
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="DbDescription.cs" />
-    <Compile Include="DbManager.cs" />
-    <Compile Include="DbScript.cs" />
-    <Compile Include="DbConnectionInfo.cs" />
-    <Compile Include="IDbConnectionInfo.cs" />
-    <Compile Include="IDbDescription.cs" />
-    <Compile Include="IDbManager.cs" />
-    <Compile Include="IDbSuperuser.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\Buddy.Database.PostgreSql45\PgDbConnectionInfo.cs">
+      <Link>PgDbConnectionInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Buddy.Database.PostgreSql45\PgDbDescription.cs">
+      <Link>PgDbDescription.cs</Link>
+    </Compile>
+    <Compile Include="..\Buddy.Database.PostgreSql45\PgDbManager.cs">
+      <Link>PgDbManager.cs</Link>
+    </Compile>
+    <Compile Include="..\Buddy.Database.PostgreSql45\PgParameter.cs">
+      <Link>PgParameter.cs</Link>
+    </Compile>
+    <Compile Include="..\Buddy.Database.PostgreSql45\PgSuperuser.cs">
+      <Link>PgSuperuser.cs</Link>
+    </Compile>
+    <Compile Include="..\Buddy.Database.PostgreSql45\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Buddy.Database40\Buddy.Database40.csproj">
+      <Project>{3aaf699c-47bf-4ba8-a5b0-c6184b6241e1}</Project>
+      <Name>Buddy.Database40</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

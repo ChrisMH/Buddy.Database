@@ -13,10 +13,12 @@
     <copyright>Copyright 2016</copyright>
     <tags>Buddy database testing</tags>
     <dependencies>
-      <dependency id="Buddy" version="1.0.0"/>
+      <dependency id="Buddy" version="1.0.1"/>
     </dependencies>
   </metadata>
   <files>
+    <file src="..\src\Buddy.Database40\bin\Release\Buddy.Database.dll" target ="lib\net40"/>
+    <file src="..\src\Buddy.Database40\bin\Release\Buddy.Database.pdb" target ="lib\net40"/>
     <file src="..\src\Buddy.Database45\bin\Release\Buddy.Database.dll" target ="lib\net45"/>
     <file src="..\src\Buddy.Database45\bin\Release\Buddy.Database.pdb" target ="lib\net45"/>
     <file src="..\src\Buddy.Database451\bin\Release\Buddy.Database.dll" target ="lib\net451"/>
