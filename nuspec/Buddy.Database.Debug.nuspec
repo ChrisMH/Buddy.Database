@@ -13,7 +13,7 @@
     <copyright>Copyright 2016</copyright>
     <tags>Buddy database testing</tags>
     <dependencies>
-      <dependency id="Buddy" version="1.0.2.0-debug"/>
+      <dependency id="Buddy" version="1.0.2.1-debug"/>
     </dependencies>
   </metadata>
   <files>
