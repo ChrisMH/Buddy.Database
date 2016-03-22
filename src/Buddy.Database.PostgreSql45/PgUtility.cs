@@ -65,11 +65,27 @@ namespace Buddy.Database.PostgreSql
         {
             if (values == null || values.Length != 1)
                 throw new ArgumentException("values not supplied", "values");
+            if (values[0] is DateTime)
+                throw new ArgumentException("SimpleValueGenerator is inappropriate for DateTime types.  Use TimestampWithoutTimezoneValueGenerator.", "values");
 
             fieldValues.Add(values[0]);
             return string.Format(":p{0}", fieldIndex++);
         }
 
+        public static string TimestampWithoutTimezoneValueGenerator(ref int fieldIndex, List<object> fieldValues, params object[] values)
+        {
+            if (values == null || values.Length != 1)
+                throw new ArgumentException("values not supplied", "values");
+            if (!(values[0] is DateTime))
+                throw new ArgumentException("value is not a DateTime", "values");
+
+            var timestamp = (DateTime)values[0];
+
+            var isoTimestamp = timestamp.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ");
+
+            return string.Format("'{0}' AT TIME ZONE 'UTC'", isoTimestamp);
+        }
+        
         public static string GeographicPointValueGenerator(ref int fieldIndex, List<object> fieldValues, params object[] values)
         {
             if (values == null || values.Length != 3)

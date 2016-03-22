@@ -3,10 +3,14 @@
   '.\src\Buddy.Database45\Buddy.Database45.csproj',
   '.\src\Buddy.Database451\Buddy.Database451.csproj',
   '.\src\Buddy.Database452\Buddy.Database452.csproj',
+  '.\src\Buddy.Database46\Buddy.Database46.csproj',
+  '.\src\Buddy.Database461\Buddy.Database461.csproj',
   '.\src\Buddy.Database.PostgreSql40\Buddy.Database.PostgreSql40.csproj',
   '.\src\Buddy.Database.PostgreSql45\Buddy.Database.PostgreSql45.csproj',
   '.\src\Buddy.Database.PostgreSql451\Buddy.Database.PostgreSql451.csproj',
-  '.\src\Buddy.Database.PostgreSql452\Buddy.Database.PostgreSql452.csproj'
+  '.\src\Buddy.Database.PostgreSql452\Buddy.Database.PostgreSql452.csproj',
+  '.\src\Buddy.Database.PostgreSql46\Buddy.Database.PostgreSql46.csproj',
+  '.\src\Buddy.Database.PostgreSql461\Buddy.Database.PostgreSql461.csproj'
   
 $versionFile = '.\src\SharedAssemblyInfo.cs'
 
