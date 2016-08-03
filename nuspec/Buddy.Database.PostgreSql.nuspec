@@ -13,12 +13,12 @@
         <dependencies>
 
             <group targetFramework="net40">
-                <dependency id="Buddy.Database" version="1.0.2.4" />
+                <dependency id="Buddy.Database" version="1.0.3.0" />
                 <dependency id="Npgsql" version="2.2.7" />
             </group>
 
             <group>
-                <dependency id="Buddy.Database" version="1.0.2.4" />
+                <dependency id="Buddy.Database" version="1.0.3.0" />
                 <dependency id="Npgsql" version="3.0.5" />
             </group>
 

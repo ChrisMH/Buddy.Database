@@ -3,7 +3,7 @@ using System.Data.Common;
 
 namespace Buddy.Database.PostgreSql
 {
-    internal sealed class PgDbConnectionInfo : DbConnectionInfo
+    public class PgDbConnectionInfo : DbConnectionInfo
     {
         internal const string ServerAddressKey = "host";
         internal const string ServerPortKey = "port";
