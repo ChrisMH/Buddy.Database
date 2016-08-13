@@ -13,13 +13,15 @@
         <dependencies>
 
             <group targetFramework="net40">
-                <dependency id="Buddy.Database" version="1.0.3.0" />
+                <dependency id="Buddy" version="1.0.2.3" />
+                <dependency id="Buddy.Database" version="1.0.3.1" />
                 <dependency id="Npgsql" version="2.2.7" />
             </group>
 
             <group>
-                <dependency id="Buddy.Database" version="1.0.3.0" />
-                <dependency id="Npgsql" version="3.0.5" />
+                <dependency id="Buddy" version="1.0.2.3" />
+                <dependency id="Buddy.Database" version="1.0.3.1" />
+                <dependency id="Npgsql" version="3.1.7" />
             </group>
 
         </dependencies>
@@ -27,16 +29,10 @@
 
     <files>
         <file src="..\src\Buddy.Database.PostgreSql40\bin\Release\Buddy.Database.PostgreSql.dll" target="lib\net40" />
-        <file src="..\src\Buddy.Database.PostgreSql40\bin\Release\Buddy.Database.PostgreSql.pdb" target="lib\net40" />
         <file src="..\src\Buddy.Database.PostgreSql45\bin\Release\Buddy.Database.PostgreSql.dll" target="lib\net45" />
-        <file src="..\src\Buddy.Database.PostgreSql45\bin\Release\Buddy.Database.PostgreSql.pdb" target="lib\net45" />
         <file src="..\src\Buddy.Database.PostgreSql451\bin\Release\Buddy.Database.PostgreSql.dll" target="lib\net451" />
-        <file src="..\src\Buddy.Database.PostgreSql451\bin\Release\Buddy.Database.PostgreSql.pdb" target="lib\net451" />
         <file src="..\src\Buddy.Database.PostgreSql452\bin\Release\Buddy.Database.PostgreSql.dll" target="lib\net452" />
-        <file src="..\src\Buddy.Database.PostgreSql452\bin\Release\Buddy.Database.PostgreSql.pdb" target="lib\net452" />
         <file src="..\src\Buddy.Database.PostgreSql46\bin\Release\Buddy.Database.PostgreSql.dll" target="lib\net46" />
-        <file src="..\src\Buddy.Database.PostgreSql46\bin\Release\Buddy.Database.PostgreSql.pdb" target="lib\net46" />
         <file src="..\src\Buddy.Database.PostgreSql461\bin\Release\Buddy.Database.PostgreSql.dll" target="lib\net461" />
-        <file src="..\src\Buddy.Database.PostgreSql461\bin\Release\Buddy.Database.PostgreSql.pdb" target="lib\net461" />
     </files>
 </package>

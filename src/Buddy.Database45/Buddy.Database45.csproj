@@ -34,8 +34,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Buddy, Version=1.0.2.2, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Buddy.1.0.2.2\lib\net45\Buddy.dll</HintPath>
+    <Reference Include="Buddy, Version=1.0.2.3, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Buddy.1.0.2.3\lib\net45\Buddy.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
