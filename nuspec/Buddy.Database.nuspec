@@ -19,10 +19,16 @@
     </metadata>
     <files>
         <file src="..\src\Buddy.Database40\bin\Release\Buddy.Database.dll" target="lib\net40" />
+        <file src="..\src\Buddy.Database40\bin\Release\Buddy.Database.pdb" target="lib\net40" />
         <file src="..\src\Buddy.Database45\bin\Release\Buddy.Database.dll" target="lib\net45" />
+        <file src="..\src\Buddy.Database45\bin\Release\Buddy.Database.pdb" target="lib\net45" />
         <file src="..\src\Buddy.Database451\bin\Release\Buddy.Database.dll" target="lib\net451" />
+        <file src="..\src\Buddy.Database451\bin\Release\Buddy.Database.pdb" target="lib\net451" />
         <file src="..\src\Buddy.Database452\bin\Release\Buddy.Database.dll" target="lib\net452" />
+        <file src="..\src\Buddy.Database452\bin\Release\Buddy.Database.pdb" target="lib\net452" />
         <file src="..\src\Buddy.Database46\bin\Release\Buddy.Database.dll" target="lib\net46" />
+        <file src="..\src\Buddy.Database46\bin\Release\Buddy.Database.pdb" target="lib\net46" />
         <file src="..\src\Buddy.Database461\bin\Release\Buddy.Database.dll" target="lib\net461" />
+        <file src="..\src\Buddy.Database461\bin\Release\Buddy.Database.pdb" target="lib\net461" />
     </files>
 </package>
