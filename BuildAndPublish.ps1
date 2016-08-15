@@ -45,7 +45,7 @@ $outputPath = ".\out"                   # relative to script directory
 $nuspecPath = ".\nuspec"                # relative to script directory
 $versionFile = 'SharedAssemblyInfo.cs'  # relative to $srcRoot
 
-$repository = "http://nuget.hogancode.com:81/Hogan/nuget"
+$repository = "http://nuget.hogancode.com/Hogan/nuget"
 $apiKey = "Chris051010"
 
 
