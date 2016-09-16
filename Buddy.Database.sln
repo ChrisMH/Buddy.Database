@@ -5,14 +5,9 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2838C664-6CD7-4B2C-A1D4-A609CF06D56D}"
 	ProjectSection(SolutionItems) = preProject
-		..\readme.md = ..\readme.md
+		nuspec\Buddy.Database.nuspec = nuspec\Buddy.Database.nuspec
+		nuspec\Buddy.Database.PostgreSql.nuspec = nuspec\Buddy.Database.PostgreSql.nuspec
 		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuspec", "nuspec", "{E08805D5-13BA-45D5-A2D9-F9028BE3F142}"
-	ProjectSection(SolutionItems) = preProject
-		..\nuspec\Buddy.Database.nuspec = ..\nuspec\Buddy.Database.nuspec
-		..\nuspec\Buddy.Database.PostgreSql.nuspec = ..\nuspec\Buddy.Database.PostgreSql.nuspec
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Buddy.Database45", "Buddy.Database45\Buddy.Database45.csproj", "{7C3DF2C6-65E5-49B6-83D7-960551666DA4}"

@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Data.Common;
 using System.Reflection;
+using Buddy.Utility;
 
 namespace Buddy.Database
 {
