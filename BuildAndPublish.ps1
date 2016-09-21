@@ -26,13 +26,11 @@ $ErrorActionPreference = "Stop"
 $solution = "Buddy.Database.sln"         #relative to $srcRoot
 
 [string[]] $projects =          #relative to $srcRoot
-  "Buddy.Database40\Buddy.Database40.csproj",
   "Buddy.Database45\Buddy.Database45.csproj",
   "Buddy.Database451\Buddy.Database451.csproj",
   "Buddy.Database452\Buddy.Database452.csproj",
   "Buddy.Database46\Buddy.Database46.csproj",
   "Buddy.Database461\Buddy.Database461.csproj",
-  "Buddy.Database.PostgreSql40\Buddy.Database.PostgreSql40.csproj",
   "Buddy.Database.PostgreSql45\Buddy.Database.PostgreSql45.csproj",
   "Buddy.Database.PostgreSql451\Buddy.Database.PostgreSql451.csproj",
   "Buddy.Database.PostgreSql452\Buddy.Database.PostgreSql452.csproj",

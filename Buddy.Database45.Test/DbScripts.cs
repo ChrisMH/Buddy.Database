@@ -24,10 +24,10 @@
     public const string MissingResourceSeed = "<Schema type=\"Resource\">schema.txt</Schema>";
 
     public const string RelativeFileSchema = "<Schema type=\"File\">..\\..\\Resources\\schema.txt</Schema>";
-    public const string AbsoluteFileSchema = "<Schema type=\"File\">C:\\Users\\chogan\\Dropbox\\DevP\\Buddy.Database\\src\\Buddy.Database.Test\\Resources\\schema.txt</Schema>";
+    public const string AbsoluteFileSchema = "<Schema type=\"File\">C:\\Users\\chogan\\Dropbox\\DevP\\Buddy.Database\\Buddy.Database45.Test\\Resources\\schema.txt</Schema>";
     public const string ResourceSchema = "<Schema type=\"Resource\">Buddy.Database.Test.Resources.schema.txt</Schema>";
     public const string RelativeFileSeed = "<Schema type=\"File\">..\\..\\Resources\\seed.txt</Schema>";
-    public const string AbsoluteFileSeed = "<Schema type=\"File\">C:\\Users\\chogan\\Dropbox\\DevP\\Buddy.Database\\src\\Buddy.Database.Test\\Resources\\seed.txt</Schema>";
+    public const string AbsoluteFileSeed = "<Schema type=\"File\">C:\\Users\\chogan\\Dropbox\\DevP\\Buddy.Database\\Buddy.Database45.Test\\Resources\\seed.txt</Schema>";
     public const string ResourceSeed = "<Schema type=\"Resource\">Buddy.Database.Test.Resources.seed.txt</Schema>";
     public const string LiteralSchema = "<Schema type=\"Literal\">CREATE SCHEMA literal;CREATE TABLE literal.table (id integer NOT NULL);</Schema>";
     public const string LiteralSeed = "<Seed type=\"Literal\">INSERT INTO literal.table VALUES(1);INSERT INTO literal.table VALUES(2);</Seed>";

@@ -13,25 +13,12 @@
         <description>Buddy.Database PostgreSql-specific implementation</description>
         <copyright>Copyright 2016</copyright>
         <dependencies>
-
-            <group targetFramework="net40">
-                <dependency id="Buddy" version="1.0.3" />
-                <dependency id="Buddy.Database" version="1.0.4" />
-                <dependency id="Npgsql" version="2.2.7" />
-            </group>
-
-            <group>
-                <dependency id="Buddy" version="1.0.3" />
-                <dependency id="Buddy.Database" version="1.0.4" />
-                <dependency id="Npgsql" version="3.1.7" />
-            </group>
-
+            <dependency id="Buddy.Database" version="1.1.0" />
+            <dependency id="Npgsql" version="3.1.7" />
         </dependencies>
     </metadata>
 
     <files>
-        <file src="..\Buddy.Database.PostgreSql40\bin\Release\Buddy.Database.PostgreSql.dll" target="lib\net40" />
-        <file src="..\Buddy.Database.PostgreSql40\bin\Release\Buddy.Database.PostgreSql.pdb" target="lib\net40" />
         <file src="..\Buddy.Database.PostgreSql45\bin\Release\Buddy.Database.PostgreSql.dll" target="lib\net45" />
         <file src="..\Buddy.Database.PostgreSql45\bin\Release\Buddy.Database.PostgreSql.pdb" target="lib\net45" />
         <file src="..\Buddy.Database.PostgreSql451\bin\Release\Buddy.Database.PostgreSql.dll" target="lib\net451" />
