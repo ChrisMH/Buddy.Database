@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Buddy.Database;
 using Npgsql;
+using Buddy.Enum;
 
 namespace Buddy.Database.PostgreSql
 {
@@ -96,6 +97,16 @@ namespace Buddy.Database.PostgreSql
             return string.Format("ST_SetSRID(ST_MakePoint(:p{0},:p{1},:p{2}), 4326)", fieldIndex - 3, fieldIndex - 2, fieldIndex - 1);
         }
         
+        public static string EnumDescriptionValueGenerator(ref int fieldIndex, List<object> fieldValues, params object[] values)
+        {
+            if (values == null || values.Length != 1)
+                throw new ArgumentException("values not supplied", "values");
+            if (!values[0].GetType().IsEnum)
+                throw new ArgumentException("value is not an enumerated type", "values");
+
+            return ((System.Enum)values[0]).GetDescription();
+        }
+
         public static string CreateDbLinkConnection(IDbConnectionInfo connectionInfo)
         {
             var builder = new NpgsqlConnectionStringBuilder(connectionInfo.ConnectionString);
