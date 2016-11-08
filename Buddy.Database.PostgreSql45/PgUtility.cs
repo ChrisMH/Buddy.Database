@@ -104,7 +104,9 @@ namespace Buddy.Database.PostgreSql
             if (!values[0].GetType().IsEnum)
                 throw new ArgumentException("value is not an enumerated type", "values");
 
-            return ((System.Enum)values[0]).GetDescription();
+            
+            fieldValues.Add(((System.Enum)values[0]).GetDescription());
+            return string.Format(":p{0}", fieldIndex++);
         }
 
         public static string CreateDbLinkConnection(IDbConnectionInfo connectionInfo)
