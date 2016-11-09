@@ -14,7 +14,7 @@
         <copyright>Copyright 2016</copyright>
         <tags>Buddy database testing</tags>
         <dependencies>
-            <dependency id="Buddy" version="1.6.3" />
+            <dependency id="Buddy" version="1.7" />
         </dependencies>
     </metadata>
     <files>
