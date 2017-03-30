@@ -1,13 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26323.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2838C664-6CD7-4B2C-A1D4-A609CF06D56D}"
 	ProjectSection(SolutionItems) = preProject
 		nuspec\Buddy.Database.nuspec = nuspec\Buddy.Database.nuspec
 		nuspec\Buddy.Database.PostgreSql.nuspec = nuspec\Buddy.Database.PostgreSql.nuspec
-		BuildAndPublish.ps1 = BuildAndPublish.ps1
 		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
 	EndProjectSection
 EndProject

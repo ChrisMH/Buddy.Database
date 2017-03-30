@@ -14,7 +14,9 @@
         <copyright>Copyright 2016</copyright>
         <tags>Buddy database testing</tags>
         <dependencies>
-            <dependency id="Buddy" version="1.7" />
+            <dependency id="Buddy" version="1.12" />
+            <dependency id="Newtonsoft.Json" version="10.0" />
+            <dependency id="System.Linq.Dynamic" version="1.0" />
         </dependencies>
     </metadata>
     <files>
