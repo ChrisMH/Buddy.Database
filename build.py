@@ -59,7 +59,7 @@ import subprocess
 from docopt import docopt
 
 
-buildCmd = os.path.join(os.environ["WINDIR"], r"Microsoft.NET\Framework\v4.0.30319\MSBuild.exe")
+buildCmd = os.path.join(os.environ["PROGRAMFILES(X86)"], r"MSBuild\14.0\Bin\MSBuild.exe")
 nugetCmd = os.path.join(os.environ["PROGRAMFILES(X86)"], r"nuget\nuget.exe")
 version = ""
 
