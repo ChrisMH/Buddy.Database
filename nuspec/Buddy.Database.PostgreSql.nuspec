@@ -13,11 +13,11 @@
         <description>Buddy.Database PostgreSql-specific implementation</description>
         <copyright>Copyright 2016</copyright>
         <dependencies>
-            <dependency id="Buddy" version="1.13" />
+            <dependency id="Buddy" version="1.15" />
             <dependency id="Buddy.Database" version="1.4" />
-            <dependency id="Newtonsoft.Json" version="9.0" />
+            <dependency id="Newtonsoft.Json" version="10.0" />
             <dependency id="Npgsql" version="3.2" />
-            <dependency id="System.Linq.Dynamic" version="1.0" />
+            <dependency id="System.Linq.Dynamic" version="1.0.7" />
             <dependency id="System.Threading.Tasks.Extensions" version="4.3" />
         </dependencies>
     </metadata>
