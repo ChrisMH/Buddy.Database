@@ -24,7 +24,7 @@ srcRoot = r"."
 outputPath = r"out"
 packagesPath = r"packages"
 versionFile = r"SharedAssemblyInfo.cs"
-repository = "https://nuget.org/api/v2/package"
+repository = "https://www.nuget.org/api/v2/package"
 
 solutionFile = r"Buddy.Database.sln"
 

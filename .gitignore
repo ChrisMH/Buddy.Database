@@ -6,3 +6,4 @@ build/
 out/
 *.csproj.user
 *.suo
+packages/
